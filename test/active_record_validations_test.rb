@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class Room < ActiveRecord::Base
-  validates_presence_of :location
+  validates_presence_of :location, :foo, :bar
 end
 
 context "should_validate_presence_of" do
@@ -34,4 +34,16 @@ context "should_validate_presence_of" do
     should("have 1 failure") { topic.failures }.equals(1)
     should("have no errors") { topic.errors }.equals(0)
   end # when attribute does not require presence
+
+  context "with multiple attributes required but not valid" do
+    setup do
+      @test_context.should_validate_presence_of :foo, :bar
+      @test_context.report
+      @test_report
+    end
+
+    should("pass 2 tests") { topic.passes }.equals(2)
+    should("have no failures") { topic.failures }.equals(0)
+    should("have no errors") { topic.errors }.equals(0)
+  end # with multiple attributes required but not valid
 end # should_validate_presence_of

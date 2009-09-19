@@ -2,11 +2,13 @@ module Protest
   module ActiveRecord
     module Macros
 
-      def should_validate_presence_of(attribute)
-        should("require value for #{attribute}") do
-          topic.write_attribute(attribute, nil)
-          topic.valid?
-          topic.errors.on(attribute)
+      def should_validate_presence_of(*attributes)
+        attributes.each do |attribute|
+          should("require value for #{attribute}") do
+            topic.write_attribute(attribute, nil)
+            topic.valid?
+            topic.errors.on(attribute)
+          end
         end
       end
 
