@@ -25,11 +25,27 @@ module Protest
       #    should_allow_values_for :email, "a@b.cd"
       #    should_allow_values_for :email, "a@b.cd", "e@f.gh"
       def should_allow_values_for(attribute, *values)
-        Array(values).each do |value|
+        values.each do |value|
           should("allow value of \"#{value}\" for #{attribute}") do
             topic.write_attribute(attribute, value)
             topic.valid?
             topic.errors.on(attribute).nil?
+          end
+        end
+      end
+
+      # An ActiveRecord assertion that expects to fail with a given value or set of values for a given
+      # attribute.
+      #
+      # Example
+      #    should_not_allow_values_for :email, "a@b.cd"
+      #    should_not_allow_values_for :email, "a@b.cd", "e@f.gh"
+      def should_not_allow_values_for(attribute, *values)
+        values.each do |value|
+          should("allow value of \"#{value}\" for #{attribute}") do
+            topic.write_attribute(attribute, value)
+            topic.valid?
+            topic.errors.on(attribute)
           end
         end
       end

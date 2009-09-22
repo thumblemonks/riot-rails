@@ -1,45 +1,18 @@
 require 'test_helper'
 
 context "should_validate_presence_of" do
-  setup do
-    @test_report = Protest::NilReport.new
-    @test_context = Protest::Context.new("test context", @test_report)
-    @test_context.setup { Room.new }
+  setup_and_run_context("when attribute requires presence", 1, 0, 0) do |ctx|
+    ctx.setup { Room.new }
+    ctx.should_validate_presence_of :location
   end
 
-  context "when attribute requires presence" do
-    setup do
-      @test_context.should_validate_presence_of :location
-      @test_context.report
-      @test_report
-    end
+  setup_and_run_context("when attribute does not require presence", 0, 1, 0) do |ctx|
+    ctx.setup { Room.new }
+    ctx.should_validate_presence_of :contents
+  end
 
-    should("pass 1 test") { topic.passes }.equals(1)
-    should("have no failures") { topic.failures }.equals(0)
-    should("have no errors") { topic.errors }.equals(0)
-  end # when attribute requires presence
-
-  context "when attribute does not require presence" do
-    setup do
-      @test_context.should_validate_presence_of :contents
-      @test_context.report
-      @test_report
-    end
-
-    should("pass no tests") { topic.passes }.equals(0)
-    should("have 1 failure") { topic.failures }.equals(1)
-    should("have no errors") { topic.errors }.equals(0)
-  end # when attribute does not require presence
-
-  context "with multiple attributes required but not valid" do
-    setup do
-      @test_context.should_validate_presence_of :foo, :bar
-      @test_context.report
-      @test_report
-    end
-
-    should("pass 2 tests") { topic.passes }.equals(2)
-    should("have no failures") { topic.failures }.equals(0)
-    should("have no errors") { topic.errors }.equals(0)
-  end # with multiple attributes required but not valid
+  setup_and_run_context("with multiple attributes required but not valid", 2, 0, 0) do |ctx|
+    ctx.setup { Room.new }
+    ctx.should_validate_presence_of :foo, :bar
+  end
 end # should_validate_presence_of

@@ -1,45 +1,35 @@
 require 'test_helper'
 
 context "should_allow_values_for" do
-  setup do
-    @test_report = Protest::NilReport.new
-    @test_context = Protest::Context.new("test context", @test_report)
-    @test_context.setup { Room.new }
+  setup_and_run_context("when attribute allows a value", 1, 0, 0) do |ctx|
+    ctx.setup { Room.new }
+    ctx.should_allow_values_for :email, "a@b.cd"
   end
 
-  context "when attribute allows a value" do
-    setup do
-      @test_context.should_allow_values_for :email, "a@b.cd"
-      @test_context.report
-      @test_report
-    end
+  setup_and_run_context("when attribute allows multiple values", 2, 0, 0) do |ctx|
+    ctx.setup { Room.new }
+    ctx.should_allow_values_for :email, "a@b.cd", "e@f.gh"
+  end
 
-    should("pass 1 test") { topic.passes }.equals(1)
-    should("have no failures") { topic.failures }.equals(0)
-    should("have no errors") { topic.errors }.equals(0)
-  end # when attribute allows a value
-
-  context "when attribute allows multiple values" do
-    setup do
-      @test_context.should_allow_values_for :email, "a@b.cd", "e@f.gh"
-      @test_context.report
-      @test_report
-    end
-
-    should("pass 2 tests") { topic.passes }.equals(2)
-    should("have no failures") { topic.failures }.equals(0)
-    should("have no errors") { topic.errors }.equals(0)
-  end # when attribute allows multiple values
-
-  context "when attribute is provided a valid and an invalid value" do
-    setup do
-      @test_context.should_allow_values_for :email, "a", "e@f.gh"
-      @test_context.report
-      @test_report
-    end
-
-    should("pass 1 test") { topic.passes }.equals(1)
-    should("have 1 failure") { topic.failures }.equals(1)
-    should("have no errors") { topic.errors }.equals(0)
-  end # when attribute allows multiple values
+  setup_and_run_context("when attribute is provided a valid and an invalid value", 1, 1, 0) do |ctx|
+    ctx.setup { Room.new }
+    ctx.should_allow_values_for :email, "a", "e@f.gh"
+  end
 end # should_allow_values_for
+
+context "should_not_allow_values_for" do
+  setup_and_run_context("when attribute does not allow a value", 1, 0, 0) do |ctx|
+    ctx.setup { Room.new }
+    ctx.should_not_allow_values_for :email, "a"
+  end
+
+  setup_and_run_context("when attribute does not allow multiple values", 2, 0, 0) do |ctx|
+    ctx.setup { Room.new }
+    ctx.should_not_allow_values_for :email, "a", "e"
+  end
+
+  setup_and_run_context("when attribute is provided a valid and an invalid value", 1, 1, 0) do |ctx|
+    ctx.setup { Room.new }
+    ctx.should_not_allow_values_for :email, "a", "e@f.gh"
+  end
+end # should_not_allow_values_for
