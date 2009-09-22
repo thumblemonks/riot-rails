@@ -1,7 +1,6 @@
 module Protest
   module ActiveRecord
     module Macros
-
       # An ActiveRecord assertion that expects to fail when a given attribute or attributes are validated
       # with no value provided to them.
       #
@@ -38,8 +37,8 @@ module Protest
       # attribute.
       #
       # Example
-      #    should_not_allow_values_for :email, "a@b.cd"
-      #    should_not_allow_values_for :email, "a@b.cd", "e@f.gh"
+      #    should_not_allow_values_for :email, "a"
+      #    should_not_allow_values_for :email, "a", "foo.bar"
       def should_not_allow_values_for(attribute, *values)
         values.each do |value|
           should("allow value of \"#{value}\" for #{attribute}") do
