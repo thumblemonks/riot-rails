@@ -1,9 +1,5 @@
 require 'test_helper'
 
-class Room < ActiveRecord::Base
-  validates_presence_of :location, :foo, :bar
-end
-
 context "should_validate_presence_of" do
   setup do
     @test_report = Protest::NilReport.new
