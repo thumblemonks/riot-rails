@@ -21,6 +21,7 @@ context "should_not_allow_values_for" do
   setup_and_run_context("when attribute does not allow a value", 1, 0, 0) do |ctx|
     ctx.setup { Room.new }
     ctx.should_not_allow_values_for :email, "a"
+    ctx.assertions.each {|a| STDOUT.puts a.raised if a.errored?}
   end
 
   setup_and_run_context("when attribute does not allow multiple values", 2, 0, 0) do |ctx|
