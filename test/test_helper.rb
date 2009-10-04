@@ -52,3 +52,5 @@ module RiotRails
 end
 
 Riot::Context.instance_eval { include RiotRails::Context }
+
+at_exit { Riot.report }
