@@ -1,4 +1,4 @@
-require 'protest/rails'
+require 'riot/rails'
 require 'activerecord'
 
 RAILS_ROOT = File.dirname(__FILE__) + '/rails_root'
@@ -24,7 +24,7 @@ class Room < ActiveRecord::Base
 end
 
 # Test refactorings
-module ProtestRails
+module RiotRails
   module Context
     def asserts_passes_failures_errors(passes=0, failures=0, errors=0)
       should("pass #{passes} test(s)") { topic.passes }.equals(passes)
@@ -32,19 +32,23 @@ module ProtestRails
       should("error on #{errors} test(s)") { topic.errors }.equals(errors)
     end
 
-    def setup_and_run_context(name, *passes_failures_errors)
+    def setup_with_test_context(&block)
+      setup do
+        @test_report = Riot::NilReport.new
+        @test_context = Riot::Context.new("test context", @test_report)
+        yield(@test_context)
+        @test_context.report
+        @test_report
+      end
+    end
+
+    def setup_and_run_context(name, *passes_failures_errors, &block)
       context name do
-        setup do
-          @test_report = Protest::NilReport.new
-          @test_context = Protest::Context.new("test context", @test_report)
-          yield(@test_context)
-          @test_context.report
-          @test_report
-        end
+        setup_with_test_context(&block)
         asserts_passes_failures_errors(*passes_failures_errors)
       end
     end
   end
 end
 
-Protest::Context.instance_eval { include ProtestRails::Context }
+Riot::Context.instance_eval { include RiotRails::Context }
