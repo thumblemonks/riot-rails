@@ -5,7 +5,7 @@ task :default => [:test]
 
 desc "Run tests"
 task :test do
-  $:.concat ['./test', './lib']
+  $:.concat(['./test', './lib'])
   Dir.glob("./test/*_test.rb").each { |test| require test }
 end
 

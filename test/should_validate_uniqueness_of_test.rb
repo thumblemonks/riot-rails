@@ -1,6 +1,6 @@
 require 'test_helper'
 
-context "should_validate_presence_of" do
+context "should_validate_uniqueness_of" do
   context "without a persisted record" do
     setup_with_test_context do |test_ctx|
       test_ctx.setup { Room.new }

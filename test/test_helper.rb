@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'riot/rails'
 require 'activerecord'
 
