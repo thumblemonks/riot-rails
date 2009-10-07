@@ -22,6 +22,11 @@ end
 class Room < ActiveRecord::Base
   validates_presence_of :location, :foo, :bar
   validates_format_of :email, :with => /^\w+@\w+\.\w+$/
+  validates_uniqueness_of :email
+
+  def self.create_with_good_data
+    create!(:location => "a", :foo => "b", :bar => "c", :email => "a@b.c")
+  end
 end
 
 # Test refactorings

@@ -1,6 +1,7 @@
 require 'test_helper'
 
 context "should_validate_uniqueness_of" do
+
   context "without a persisted record" do
     setup_with_test_context do |test_ctx|
       test_ctx.setup { Room.new }
@@ -13,4 +14,12 @@ context "should_validate_uniqueness_of" do
       @test_context.assertions.first.result.message
     end.equals("expected topic not to be a new record")
   end # without a persisted record
+
+  context "with a persisted record" do
+    setup_and_run_context("when attribute requires uniqueness", 1, 0, 0) do |test_ctx|
+      test_ctx.setup { Room.create_with_good_data }
+      test_ctx.should_validate_uniqueness_of :email
+    end
+  end # with a persisted record
+
 end # should_validate_presence_of
