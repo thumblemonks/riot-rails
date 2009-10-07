@@ -24,8 +24,8 @@ class Room < ActiveRecord::Base
   validates_format_of :email, :with => /^\w+@\w+\.\w+$/
   validates_uniqueness_of :email
 
-  def self.create_with_good_data
-    create!(:location => "a", :foo => "b", :bar => "c", :email => "a@b.c")
+  def self.create_with_good_data(attributes={})
+    create!({:location => "a", :foo => "b", :bar => "c", :email => "a@b.c"}.merge(attributes))
   end
 end
 
@@ -58,5 +58,3 @@ module RiotRails
 end
 
 Riot::Context.instance_eval { include RiotRails::Context }
-
-at_exit { Riot.report }

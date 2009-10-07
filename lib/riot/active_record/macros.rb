@@ -10,8 +10,8 @@ module Riot
       def should_validate_presence_of(*attributes)
         attributes.each do |attribute|
           should("require value for #{attribute}") do
-            !get_error_from_recording_value(topic, attribute, nil).nil?
-          end
+            get_error_from_writing_value(topic, attribute, nil)
+          end.exists
         end
       end
 
@@ -24,8 +24,8 @@ module Riot
       def should_allow_values_for(attribute, *values)
         values.each do |value|
           should("allow value of \"#{value}\" for #{attribute}") do
-            get_error_from_recording_value(topic, attribute, value).nil?
-          end
+            get_error_from_writing_value(topic, attribute, value)
+          end.nil
         end
       end
 
@@ -38,8 +38,8 @@ module Riot
       def should_not_allow_values_for(attribute, *values)
         values.each do |value|
           should("allow value of \"#{value}\" for #{attribute}") do
-            !get_error_from_recording_value(topic, attribute, value).nil?
-          end
+            get_error_from_writing_value(topic, attribute, value)
+          end.exists
         end
       end
 
@@ -50,12 +50,15 @@ module Riot
       # Example
       #    should_validate_uniqueness_of :email
       def should_validate_uniqueness_of(attribute)
+        asserts "topic is not a new record when testing uniqueness of #{attribute}" do
+          !topic.new_record?
+        end
+
         should "require #{attribute} to be a unique value" do
-          fail("expected topic not to be a new record") if topic.new_record?
           copied_model = topic.class.new
           copied_value = topic.read_attribute(attribute)
-          !get_error_from_recording_value(copied_model, attribute, copied_value).nil?
-        end
+          get_error_from_writing_value(copied_model, attribute, copied_value)
+        end.exists
       end
     end # Macros
   end # ActiveRecord
@@ -63,7 +66,7 @@ module Riot
   module Helpers
     module Situation
     private
-      def get_error_from_recording_value(model, attribute, value)
+      def get_error_from_writing_value(model, attribute, value)
         model.write_attribute(attribute, value)
         model.valid?
         model.errors.on(attribute)

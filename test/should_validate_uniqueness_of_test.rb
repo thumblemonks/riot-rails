@@ -2,24 +2,19 @@ require 'test_helper'
 
 context "should_validate_uniqueness_of" do
 
-  context "without a persisted record" do
-    setup_with_test_context do |test_ctx|
-      test_ctx.setup { Room.new }
-      test_ctx.should_validate_uniqueness_of :email
-    end
+  setup_and_run_context("without a persisted record", 0, 2, 0) do |test_ctx|
+    test_ctx.setup { Room.new(:email => "foo@bar.baz") }
+    test_ctx.should_validate_uniqueness_of :email
+  end
 
-    asserts("the test is a failure") { @test_context.assertions.first.failed? }
+  setup_and_run_context("with a persisted record", 2, 0, 0) do |test_ctx|
+    test_ctx.setup { Room.create_with_good_data(:email => "foo@bar.baz") }
+    test_ctx.should_validate_uniqueness_of :email
+  end
 
-    should "require a persisted record before moving on" do
-      @test_context.assertions.first.result.message
-    end.equals("expected topic not to be a new record")
-  end # without a persisted record
-
-  context "with a persisted record" do
-    setup_and_run_context("when attribute requires uniqueness", 1, 0, 0) do |test_ctx|
-      test_ctx.setup { Room.create_with_good_data }
-      test_ctx.should_validate_uniqueness_of :email
-    end
-  end # with a persisted record
+  setup_and_run_context("with a persisted record but not validating uniqueness", 1, 1, 0) do |test_ctx|
+    test_ctx.setup { Room.create_with_good_data(:email => "goo@car.caz") }
+    test_ctx.should_validate_uniqueness_of :foo
+  end
 
 end # should_validate_presence_of
