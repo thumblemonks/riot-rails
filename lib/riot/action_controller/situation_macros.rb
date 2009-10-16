@@ -1,5 +1,5 @@
-module Riot
-  module ActionController
+module Riot #:nodoc:
+  module ActionController #:nodoc:
 
     module SituationMacros
       attr_reader :controller, :request, :response
