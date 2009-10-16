@@ -57,6 +57,35 @@ module Riot #:nodoc:
         actual_code = actual.response.response_code
         expected_code == actual_code || fail("expected response code #{expected_code}, not #{actual_code}")
       end
+
+      # Asserts that the response from an action is a redirect and that the path or URL matches your
+      # expectations. If the response code is not in the 300s, the assertion will fail. If the reponse code
+      # is fine, but the redirect-to path or URL do not exactly match your expectation, the assertion will
+      # fail.
+      #
+      # +redirected_to+ expects you to provide your expected path in a block. This is so you can use named
+      # routes, which is - as it turns out - handy. It's also what I would expect to be able to do.
+      #
+      #   controlling :people
+      #   setup do
+      #     post :create, :person { ... }
+      #   end
+      #
+      #   controller.redirected_to { person_path(...) }
+      #
+      # PS: There is a difference between saying +named_route_path+ and +named_route_url+ and Riot Rails will
+      # be very strict (read: annoying) about it :)
+      def redirected_to(&expectation_block)
+        actual_response_code = actual.response.response_code
+        if (300...400).member?(actual_response_code)
+          expected_redirect = actual.url_for(situation.instance_eval(&expectation_block))
+          actual_redirect = actual.url_for(actual.response.redirected_to)
+          msg = "expected to redirect to <#{expected_redirect}>, not <#{actual_redirect}>"
+          expected_redirect == actual_redirect || fail(msg)
+        else
+          fail("expected response to be a redirect, but was #{actual_response_code}")
+        end
+      end
     end # AssertionMacros
 
   end # ActionController
