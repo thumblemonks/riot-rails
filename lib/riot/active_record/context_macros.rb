@@ -1,6 +1,7 @@
 module Riot
   module ActiveRecord
-    module Macros
+
+    module ContextMacros
       # An ActiveRecord assertion that expects to fail when a given attribute or attributes are validated
       # when a nil value is provided to them.
       #
@@ -60,20 +61,9 @@ module Riot
           get_error_from_writing_value(copied_model, attribute, copied_value)
         end.exists
       end
-    end # Macros
-  end # ActiveRecord
+    end # ContextMacros
 
-  module Helpers
-    module Situation
-    private
-      def get_error_from_writing_value(model, attribute, value)
-        model.write_attribute(attribute, value)
-        model.valid?
-        model.errors.on(attribute)
-      end
-    end # Situation
-  end # Helpers
+  end # ActiveRecord
 end # Riot
 
-Riot::Context.instance_eval { include Riot::ActiveRecord::Macros }
-Riot::Situation.instance_eval { include Riot::Helpers::Situation }
+Riot::Context.instance_eval { include Riot::ActiveRecord::ContextMacros }

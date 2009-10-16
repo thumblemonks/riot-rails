@@ -1,6 +1,8 @@
 require 'rubygems'
+require 'active_record'
+require 'action_controller'
+
 require 'riot/rails'
-require 'activerecord'
 
 RAILS_ROOT = File.dirname(__FILE__) + '/rails_root'
 
