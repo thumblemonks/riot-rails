@@ -5,30 +5,45 @@
 
 Gem::Specification.new do |s|
   s.name = %q{riot_rails}
-  s.version = "0.0.1"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin 'Gus' Knowlden"]
-  s.date = %q{2009-10-11}
+  s.date = %q{2009-10-16}
   s.description = %q{Riot specific test support for Rails apps. Protest the slow app.}
   s.email = %q{gus@gusg.us}
   s.extra_rdoc_files = [
     "README.markdown"
   ]
   s.files = [
-    "MIT-LICENSE",
+    ".gitignore",
+     "MIT-LICENSE",
      "README.markdown",
      "Rakefile",
      "VERSION",
-     "lib/riot/active_record/macros.rb",
+     "lib/riot/action_controller.rb",
+     "lib/riot/action_controller/assertion_macros.rb",
+     "lib/riot/action_controller/context_macros.rb",
+     "lib/riot/action_controller/situation_macros.rb",
+     "lib/riot/active_record.rb",
+     "lib/riot/active_record/context_macros.rb",
+     "lib/riot/active_record/situation_macros.rb",
      "lib/riot/rails.rb",
      "rails/init.rb",
      "riot_rails.gemspec",
+     "test/action_controller/action_assigns_variable_test.rb",
+     "test/action_controller/controller_context_test.rb",
+     "test/action_controller/redirected_to_test.rb",
+     "test/action_controller/renders_template_test.rb",
+     "test/action_controller/renders_test.rb",
+     "test/action_controller/response_status_test.rb",
+     "test/active_record/should_allow_values_for_test.rb",
+     "test/active_record/should_validate_presence_of_test.rb",
+     "test/active_record/should_validate_uniqueness_of_test.rb",
+     "test/rails_root/app/views/rendered_templates/foo_bar.erb",
+     "test/rails_root/config/routes.rb",
      "test/rails_root/db/schema.rb",
-     "test/should_allow_values_for_test.rb",
-     "test/should_validate_presence_of_test.rb",
-     "test/should_validate_uniqueness_of_test.rb",
-     "test/test_helper.rb"
+     "test/teststrap.rb"
   ]
   s.homepage = %q{http://github.com/thumblemonks/riot_rails}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -36,11 +51,18 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Riot specific test support for Rails apps}
   s.test_files = [
-    "test/rails_root/db/schema.rb",
-     "test/should_allow_values_for_test.rb",
-     "test/should_validate_presence_of_test.rb",
-     "test/should_validate_uniqueness_of_test.rb",
-     "test/test_helper.rb"
+    "test/action_controller/action_assigns_variable_test.rb",
+     "test/action_controller/controller_context_test.rb",
+     "test/action_controller/redirected_to_test.rb",
+     "test/action_controller/renders_template_test.rb",
+     "test/action_controller/renders_test.rb",
+     "test/action_controller/response_status_test.rb",
+     "test/active_record/should_allow_values_for_test.rb",
+     "test/active_record/should_validate_presence_of_test.rb",
+     "test/active_record/should_validate_uniqueness_of_test.rb",
+     "test/rails_root/config/routes.rb",
+     "test/rails_root/db/schema.rb",
+     "test/teststrap.rb"
   ]
 
   if s.respond_to? :specification_version then
