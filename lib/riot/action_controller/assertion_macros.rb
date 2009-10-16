@@ -17,6 +17,29 @@ module Riot #:nodoc:
           expected == actual_body || fail(msg)
         end
       end
+
+      # Asserts that the HTTP response code equals your expectation. You can use the symbolized form of the
+      # status code or the integer code itself. Not currently supporting status ranges; such as: +:success+,
+      # +:redirect+, etc.
+      #
+      #   controller.response_code(:ok)
+      #   controller.response_code(200)
+      #   
+      #   controller.response_code(:not_found)
+      #   controller.response_code(404)
+      #   
+      #   # A redirect
+      #   controller.response_code(:found)
+      #   controller.response_code(302)
+      #
+      # See +ActionController::StatusCodes+ for the list of available codes.
+      def response_code(expected_code)
+        if expected_code.kind_of?(Symbol)
+          expected_code = ::ActionController::StatusCodes::SYMBOL_TO_STATUS_CODE[expected_code]
+        end
+        actual_code = actual.response.response_code
+        expected_code == actual_code || fail("expected response code #{expected_code}, not #{actual_code}")
+      end
     end # AssertionMacros
 
   end # ActionController

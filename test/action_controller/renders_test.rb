@@ -1,9 +1,7 @@
 require 'teststrap'
 
 class RendersController < ActionController::Base
-  def index
-    render :text => "Yo mama"
-  end
+  def index; render :text => "Yo mama"; end
 end
 
 context "asserting the body of a response" do
