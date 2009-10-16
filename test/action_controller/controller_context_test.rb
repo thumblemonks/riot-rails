@@ -16,17 +16,26 @@ context "controlling in a context" do
   topic.assigns(:response)
   
   context "the assigned controller" do
-    setup { topic.instance_variable_get("@controller") }
+    setup { topic.controller }
+
     topic.kind_of(FoosController)
+
+    should("have an empty params hash") do
+      topic.params
+    end.equals({})
+
+    should("return a test request when asking for request") do
+      topic.request
+    end.kind_of(::ActionController::TestRequest)
   end # the assigned controller
 
   context "the assigned request" do
-    setup { topic.instance_variable_get("@request") }
+    setup { topic.request }
     topic.kind_of(::ActionController::TestRequest)
   end # the assigned request
 
   context "the assigned response" do
-    setup { topic.instance_variable_get("@response") }
+    setup { topic.response }
     topic.kind_of(::ActionController::TestResponse)
   end # the assigned response
 

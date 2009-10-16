@@ -9,6 +9,8 @@ module Riot
           @request = ::ActionController::TestRequest.new
           @response = ::ActionController::TestResponse.new
           @controller = controller_class.new
+          @controller.params = {}
+          @controller.request = @request
         end
       end
 
