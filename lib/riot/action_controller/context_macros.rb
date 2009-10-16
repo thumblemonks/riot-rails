@@ -11,6 +11,10 @@ module Riot
           @controller = controller_class.new
         end
       end
+
+      def controller
+        asserts("controller") { @controller }
+      end
     end # ContextMacros
 
   end # ActionController
