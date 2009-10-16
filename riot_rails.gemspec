@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{riot_rails}
-  s.version = "0.0.2"
+  s.version = "0.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin 'Gus' Knowlden"]
@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
      "test/active_record/should_allow_values_for_test.rb",
      "test/active_record/should_validate_presence_of_test.rb",
      "test/active_record/should_validate_uniqueness_of_test.rb",
-     "test/rails_root/app/views/rendered_templates/foo_bar.erb",
+     "test/rails_root/app/views/rendered_templates/foo_bar.html.erb",
      "test/rails_root/config/routes.rb",
      "test/rails_root/db/schema.rb",
      "test/teststrap.rb"
