@@ -36,7 +36,7 @@ context "asserting the rendered template for an action" do
 
       asserts("topic message") do
         topic.result.message
-      end.matches(/expected template "bar_foo", not "rendered_templates\/foo_bar.erb"/)
+      end.matches(/expected template "bar_foo", not "rendered_templates\/foo_bar.html.erb"/)
     end # when rendered template does not match expectation
 
   end # that rendered a template
@@ -87,7 +87,7 @@ context "asserting the rendered template for an action" do
 
     asserts("topic message") do
       topic.result.message
-    end.matches(/expected template "foo", not "rendered_templates\/foo_bar.erb"/)
+    end.matches(/expected template "foo", not "rendered_templates\/foo_bar.html.erb"/)
   end # that rendered a template with a partial match on template name
 
 end # asserting the rendered template for an action

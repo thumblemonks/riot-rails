@@ -32,7 +32,7 @@ module Riot #:nodoc:
         actual_template_path = actual.response.rendered[:template].to_s
         actual_template_name = File.basename(actual_template_path)
         msg = "expected template #{name.inspect}, not #{actual_template_path.inspect}"
-        actual_template_name.to_s.match(/^#{name}(\.\w+)?$/) || fail(msg)
+        actual_template_name.to_s.match(/^#{name}(\.\w+)*$/) || fail(msg)
       end
 
       # Asserts that the HTTP response code equals your expectation. You can use the symbolized form of the
