@@ -18,6 +18,23 @@ module Riot #:nodoc:
         end
       end
 
+      # Asserts that the name you provide is the basename of the rendered template. For instance, if you
+      # expect the rendered template is named "foo_bar.html.haml" and you pass "foo_bar" into
+      # renders_template, the assertion would pass. If instead you pass "foo" into renders_template, the
+      # assertion will fail. Using Rails' assert_template both assertions would pass
+      #
+      #   controlling :things
+      #   controller.renders_template(:index)
+      #   controller.renders_template("index")
+      #   controller.renders_template("index.erb") # fails even if that's the name of the template
+      def renders_template(name)
+        name = name.to_s
+        actual_template_path = actual.response.rendered[:template].to_s
+        actual_template_name = File.basename(actual_template_path)
+        msg = "expected template #{name.inspect}, not #{actual_template_path.inspect}"
+        actual_template_name.to_s.match(/^#{name}(\.\w+)?$/) || fail(msg)
+      end
+
       # Asserts that the HTTP response code equals your expectation. You can use the symbolized form of the
       # status code or the integer code itself. Not currently supporting status ranges; such as: +:success+,
       # +:redirect+, etc.

@@ -12,7 +12,7 @@ end
 #
 # Setup faux Rails environment
 
-RAILS_ROOT = File.dirname(__FILE__) + '/rails_root'
+RAILS_ROOT = File.join(File.dirname(__FILE__), 'rails_root')
 
 require File.join(RAILS_ROOT, "config", "routes.rb")
 
@@ -21,6 +21,8 @@ shhh do
   ActiveRecord::Base.establish_connection("test")
   load(File.join(RAILS_ROOT, "db", "schema.rb"))
 end
+
+ActionController::Base.view_paths = [File.join(RAILS_ROOT, 'app', 'views')]
 
 #
 # Model definition
