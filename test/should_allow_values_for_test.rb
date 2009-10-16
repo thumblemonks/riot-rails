@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'teststrap'
 
 context "should_allow_values_for" do
   setup_and_run_context("when attribute allows a value", 1, 0, 0) do |test_ctx|

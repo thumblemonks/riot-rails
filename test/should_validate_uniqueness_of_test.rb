@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'teststrap'
 
 context "should_validate_uniqueness_of" do
 

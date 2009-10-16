@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'teststrap'
 
 context "should_validate_presence_of" do
   setup_and_run_context("when attribute requires presence", 1, 0, 0) do |test_ctx|
