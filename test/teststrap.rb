@@ -2,10 +2,6 @@ require 'rubygems'
 require 'active_record'
 require 'action_controller'
 
-require 'riot/rails'
-
-RAILS_ROOT = File.dirname(__FILE__) + '/rails_root'
-
 def shhh(&block)
   orig_out = $stdout
   $stdout = StringIO.new
@@ -13,14 +9,22 @@ def shhh(&block)
   $stdout = orig_out
 end
 
-# Database setup
+#
+# Setup faux Rails environment
+
+RAILS_ROOT = File.dirname(__FILE__) + '/rails_root'
+
+require File.join(RAILS_ROOT, "config", "routes.rb")
+
 shhh do
   ActiveRecord::Base.configurations = {"test" => { "adapter" => "sqlite3", "database" => ":memory:"}}
   ActiveRecord::Base.establish_connection("test")
   load(File.join(RAILS_ROOT, "db", "schema.rb"))
 end
 
+#
 # Model definition
+
 class Room < ActiveRecord::Base
   validates_presence_of :location, :foo, :bar
   validates_format_of :email, :with => /^\w+@\w+\.\w+$/
@@ -31,7 +35,11 @@ class Room < ActiveRecord::Base
   end
 end
 
+#
 # Test refactorings
+
+require 'riot/rails'
+
 module RiotRails
   module Context
     def asserts_passes_failures_errors(passes=0, failures=0, errors=0)
