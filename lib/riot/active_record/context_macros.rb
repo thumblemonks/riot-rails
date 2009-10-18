@@ -2,20 +2,6 @@ module Riot
   module ActiveRecord
 
     module ContextMacros
-      # An ActiveRecord assertion that expects to fail when a given attribute or attributes are validated
-      # when a nil value is provided to them.
-      #
-      # Example
-      #    should_validate_presence_of :name
-      #    should_validate_presence_of :name, :email
-      def should_validate_presence_of(*attributes)
-        attributes.each do |attribute|
-          should("require value for #{attribute}") do
-            get_error_from_writing_value(topic, attribute, nil)
-          end.exists
-        end
-      end
-
       # An ActiveRecord assertion that expects to pass with a given value or set of values for a given
       # attribute.
       #
