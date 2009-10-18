@@ -1,6 +1,6 @@
 require 'teststrap'
 
-context "should_allow_values_for" do
+context "allows_values_for" do
   setup_and_run_context("when attribute allows a value", 1, 0, 0) do |test_ctx|
     test_ctx.setup { Room.new }
     test_ctx.topic.allows_values_for :email, "a@b.cd"
@@ -15,9 +15,9 @@ context "should_allow_values_for" do
     test_ctx.setup { Room.new }
     test_ctx.topic.allows_values_for :email, "a", "e@f.gh"
   end
-end # should_allow_values_for
+end # allows_values_for
 
-context "should_not_allow_values_for" do
+context "does_not_allow_values_for" do
   setup_and_run_context("when attribute does not allow a value", 1, 0, 0) do |test_ctx|
     test_ctx.setup { Room.new }
     test_ctx.topic.does_not_allow_values_for :email, "a"
@@ -33,4 +33,4 @@ context "should_not_allow_values_for" do
     test_ctx.setup { Room.new }
     test_ctx.topic.does_not_allow_values_for :email, "a", "e@f.gh"
   end
-end # should_not_allow_values_for
+end # does_not_allow_values_for

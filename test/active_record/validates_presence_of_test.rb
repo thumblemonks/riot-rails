@@ -1,6 +1,6 @@
 require 'teststrap'
 
-context "should_validate_presence_of" do
+context "validates_presence_of" do
   setup_and_run_context("when attribute requires presence", 1, 0, 0) do |test_ctx|
     test_ctx.setup { Room.new }
     test_ctx.topic.validates_presence_of(:location)
@@ -10,4 +10,4 @@ context "should_validate_presence_of" do
     test_ctx.setup { Room.new }
     test_ctx.topic.validates_presence_of(:contents)
   end
-end # should_validate_presence_of
+end # validates_presence_of

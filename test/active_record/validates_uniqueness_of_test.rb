@@ -1,6 +1,6 @@
 require 'teststrap'
 
-context "should_validate_uniqueness_of" do
+context "validates_uniqueness_of" do
 
   setup_and_run_context("without a persisted record", 0, 1, 0) do |test_ctx|
     test_ctx.setup { Room.new(:email => "foo@bar.baz") }
@@ -17,4 +17,4 @@ context "should_validate_uniqueness_of" do
     test_ctx.topic.validates_uniqueness_of :foo
   end
 
-end # should_validate_presence_of
+end # validates_uniqueness_of
