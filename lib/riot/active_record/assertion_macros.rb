@@ -52,6 +52,24 @@ module Riot
         fail(msg) unless good_values.empty?
       end
 
+      # An ActiveRecord assertion that expects to fail with an attribute is not valid for record because the
+      # value of the attribute is not unique. Requires the topic of the context to be a created record; one
+      # that returns false for a call to +new_record?+.
+      #
+      # Example
+      #    should_validate_uniqueness_of :email
+      def validates_uniqueness_of(attribute)
+        actual_record = actual
+        if actual_record.new_record?
+          fail("topic is not a new record when testing uniqueness of #{attribute}")
+        else
+          copied_model = actual_record.class.new
+          copied_value = actual_record.read_attribute(attribute)
+          msg = "expected to fail because #{attribute.inspect} is not unique"
+          error_from_writing_value(copied_model, attribute, copied_value) || fail(msg)
+        end
+      end
+
     private
 
       def error_from_writing_value(model, attribute, value)
