@@ -6,7 +6,6 @@ module Riot
       # An ActiveRecord assertion that expects to fail when a given attribute is validated after a nil value
       # is provided to it.
       #
-      # Example
       #    context "a User" do
       #      setup { User.new }
       #      topic.validates_presence_of(:name)
@@ -19,7 +18,6 @@ module Riot
       # An ActiveRecord assertion that expects to pass with a given value or set of values for a given
       # attribute.
       #
-      # Example
       #    context "a User" do
       #      setup { User.new }
       #      topic.allows_values_for :email, "a@b.cd"
@@ -37,7 +35,6 @@ module Riot
       # An ActiveRecord assertion that expects to fail with a given value or set of values for a given
       # attribute.
       #
-      # Example
       #    context "a User" do
       #      setup { User.new }
       #      topic.does_not_allow_values_for :email, "a"
@@ -56,8 +53,10 @@ module Riot
       # value of the attribute is not unique. Requires the topic of the context to be a created record; one
       # that returns false for a call to +new_record?+.
       #
-      # Example
-      #    should_validate_uniqueness_of :email
+      #    context "a User" do
+      #      setup { User.create(:email => "a@b.cde", ... ) }
+      #      topic.validates_uniqueness_of :email
+      #    end
       def validates_uniqueness_of(attribute)
         actual_record = actual
         if actual_record.new_record?
@@ -70,6 +69,25 @@ module Riot
         end
       end
 
+      # An ActiveRecord assertion macro that expects to pass when a given attribute is defined as +has_many+
+      # association. Will fail if an association is not defined for the attribute and if the association is
+      # not +has_many.
+      #
+      #   context "a Room" do
+      #     setup { Room.new }
+      #
+      #     topic.has_many(:doors)
+      #     topic.has_many(:floors) # should probably fail given our current universe :)
+      #   end
+      def has_many(attribute)
+        reflection = actual.class.reflect_on_association(attribute)
+        static_msg = "expected #{attribute.inspect} to be a has_many association, but was "
+        if reflection.nil?
+          fail(static_msg + "not")
+        elsif "has_many" != reflection.macro.to_s
+          fail(static_msg + "a #{reflection.macro} instead")
+        end
+      end
     private
 
       def error_from_writing_value(model, attribute, value)
