@@ -63,6 +63,9 @@ module Riot
           fail("topic is not a new record when testing uniqueness of #{attribute}")
         else
           copied_model = actual_record.class.new
+          actual_record.attributes.each do |dup_attribute, dup_value|
+            actual_record.write_attribute(dup_attribute, dup_value)
+          end
           copied_value = actual_record.read_attribute(attribute)
           msg = "expected to fail because #{attribute.inspect} is not unique"
           error_from_writing_value(copied_model, attribute, copied_value) || fail(msg)

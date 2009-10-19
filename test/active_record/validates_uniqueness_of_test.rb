@@ -3,7 +3,7 @@ require 'teststrap'
 context "validates_uniqueness_of" do
 
   setup_and_run_context("without a persisted record", 0, 1, 0) do |test_ctx|
-    test_ctx.setup { Room.new(:email => "foo@bar.baz") }
+    test_ctx.setup { Room.new(:email => "foo@bar.baz", :foo => "what") }
     test_ctx.topic.validates_uniqueness_of :email
   end
 

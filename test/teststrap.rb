@@ -2,9 +2,20 @@ require 'rubygems'
 require 'active_record'
 require 'action_controller'
 
+class NilIO
+  def write(*args); end
+  def close(*args); end
+  def puts(*args); end
+  def path; nil; end
+  def fsync; 0; end
+  def to_s; "hello"; end
+  def sync; true; end
+  def sync=(arg); arg; end
+end
+
 def shhh(&block)
   orig_out = $stdout
-  $stdout = StringIO.new
+  $stdout = NilIO.new
   yield
   $stdout = orig_out
 end
@@ -22,6 +33,7 @@ shhh do
   load(File.join(RAILS_ROOT, "db", "schema.rb"))
 end
 
+ActiveRecord::Base.logger = Logger.new(NilIO.new)
 ActionController::Base.view_paths = [File.join(RAILS_ROOT, 'app', 'views')]
 
 #
