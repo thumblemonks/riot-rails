@@ -64,7 +64,7 @@ module Riot
         else
           copied_model = actual_record.class.new
           actual_record.attributes.each do |dup_attribute, dup_value|
-            actual_record.write_attribute(dup_attribute, dup_value)
+            copied_model.write_attribute(dup_attribute, dup_value)
           end
           copied_value = actual_record.read_attribute(attribute)
           msg = "expected to fail because #{attribute.inspect} is not unique"
