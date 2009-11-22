@@ -3,7 +3,7 @@ require 'teststrap'
 context "testing has_many" do
 
   setup do
-    context = Riot::Context.new("has_many test context", Riot::NilReport.new)
+    context = Riot::Context.new("has_many test context", Riot::SilentReporter.new)
     context.setup { Room.new }
     context.topic
   end

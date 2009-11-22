@@ -7,7 +7,7 @@ end
 context "asserting the body of a response" do
 
   setup do
-    context = Riot::Context.new("renders", Riot::NilReport.new)
+    context = Riot::Context.new("renders", Riot::SilentReporter.new)
     context.controlling :renders
     context.setup { get :index }
     context

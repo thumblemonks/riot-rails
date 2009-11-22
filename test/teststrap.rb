@@ -67,7 +67,7 @@ module RiotRails
 
     def setup_with_test_context(&block)
       setup do
-        @test_report = Riot::NilReport.new
+        @test_report = Riot::SilentReporter.new
         @test_context = Riot::Context.new("test context", @test_report)
         yield(@test_context)
         @test_context.report
@@ -85,3 +85,24 @@ module RiotRails
 end
 
 Riot::Context.instance_eval { include RiotRails::Context }
+
+#
+## Let's see if we can get this way working sometime in the future
+
+# def get(action, options={})
+#   @env = {}
+#   @request = ActionController::TestRequest.new(@env)
+#   # @request = Rack::MockRequest.new(@app)
+#   # @response = @request.request("GET", path, options)
+#   # request = ActionController::TestRequest.new(@env)
+#   @request.query_parameters["action"] = action
+#   @env["action_controller.rescue.request"] = @request
+#   @env["action_controller.rescue.response"] = ActionController::TestResponse.new
+#   @app.call(@env)
+# end
+
+# setup do
+  # DashboardsController.instance_eval { include ActionController::TestCase::RaiseActionExceptions }
+  # @controller_class = DashboardsController
+  # @app = DashboardsController
+# end

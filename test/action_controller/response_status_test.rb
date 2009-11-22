@@ -9,7 +9,7 @@ end
 context "asserting the response status for an action" do
 
   setup do
-    context = Riot::Context.new("response status", Riot::NilReport.new)
+    context = Riot::Context.new("response status", Riot::SilentReporter.new)
     context.controlling :response_codes
     context
   end

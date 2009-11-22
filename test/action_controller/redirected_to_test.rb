@@ -8,7 +8,7 @@ end
 context "asserting the redirect of an action" do
 
   setup do
-    context = Riot::Context.new("redirected to", Riot::NilReport.new)
+    context = Riot::Context.new("redirected to", Riot::SilentReporter.new)
     context.controlling :redirected_to
     context
   end

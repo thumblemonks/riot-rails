@@ -6,19 +6,19 @@ end
 context "controlling in a context" do
 
   setup do
-    @ctx = Riot::Context.new("foo", Riot::NilReport.new)
+    @ctx = Riot::Context.new("foo", Riot::SilentReporter.new)
     @ctx.controlling :foos
     @ctx.situation
   end
 
-  topic.assigns(:controller)
-  topic.assigns(:request)
-  topic.assigns(:response)
+  asserts_topic.assigns(:controller)
+  asserts_topic.assigns(:request)
+  asserts_topic.assigns(:response)
   
   context "the assigned controller" do
     setup { topic.controller }
 
-    topic.kind_of(FoosController)
+    asserts_topic.kind_of(FoosController)
 
     should("have an empty params hash") do
       topic.params
@@ -31,18 +31,18 @@ context "controlling in a context" do
 
   context "the assigned request" do
     setup { topic.request }
-    topic.kind_of(::ActionController::TestRequest)
+    asserts_topic.kind_of(::ActionController::TestRequest)
   end # the assigned request
 
   context "the assigned response" do
     setup { topic.response }
-    topic.kind_of(::ActionController::TestResponse)
+    asserts_topic.kind_of(::ActionController::TestResponse)
   end # the assigned response
 
   context "calling controller" do
     setup { @ctx.controller }
 
-    topic.kind_of(Riot::Assertion)
+    asserts_topic.kind_of(Riot::Assertion)
 
     asserts("assertion name") { topic.description }.equals("foo asserts controller")
 

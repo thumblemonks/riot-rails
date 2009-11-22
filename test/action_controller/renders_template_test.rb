@@ -8,7 +8,7 @@ end
 context "asserting the rendered template for an action" do
 
   setup do
-    context = Riot::Context.new("rendered template", Riot::NilReport.new)
+    context = Riot::Context.new("rendered template", Riot::SilentReporter.new)
     context.controlling :rendered_templates
     context
   end
