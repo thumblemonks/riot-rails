@@ -1,60 +1,50 @@
 require 'teststrap'
 
 class RedirectedToController < ActionController::Base
-  def index; redirect_to new_gremlin_path; end
-  def show; render :text => ""; end
+  def index
+    redirect_to new_gremlin_path
+  end
+
+  def show
+    render :text => ""
+  end
 end
 
-context "asserting the redirect of an action" do
+context "Asserting the redirect of an action" do
 
   setup do
-    context = Riot::Context.new("redirected to", Riot::SilentReporter.new)
-    context.controlling :redirected_to
+    @situation = Riot::Situation.new
+    context = Riot::Context.new("redirected to") {}
+    context.controlling(:redirected_to).last.run(@situation)
     context
   end
 
   context "when doing an actual redirect" do
-
     setup do
-      topic.setup { get :index }
+      topic.setup { get :index }.last.run(@situation)
       topic
     end
 
     should "pass when expected url matches actual redirect url" do
-      assertion = topic.controller
-      assertion.redirected_to { new_gremlin_path }
-      assertion.passed?
-    end
+      topic.asserts_controller.redirected_to(lambda { new_gremlin_path }).run(@situation)
+    end.equals([:pass])
 
-    context "and expected url does not match actual redirect url exactly" do
-      setup do
-        assertion = topic.controller
-        assertion.redirected_to { new_gremlin_url }
-        assertion
-      end
-
-      asserts("topic failed") { topic.failed? }
-
-      asserts("topic message") do
-        topic.result.message
-      end.matches(%r[expected to redirect to <http://test.host/gremlins/new>, not </gremlins/new>])
-    end # and expected url does not match actual redirect url exactly
+    should "fail with when expected url does not exactly matches actual redirect url" do
+      topic.asserts_controller.redirected_to(
+        lambda { new_gremlin_url } ).run(@situation)
+    end.equals([:fail, "expected to redirect to <http://test.host/gremlins/new>, not </gremlins/new>"])
 
   end # when doing an actual redirect
 
   context "when not actually doing a redirect" do
     setup do
-      topic.setup { get :show }
-      assertion = topic.controller
-      assertion.redirected_to { new_gremlin_path }
-      assertion
+      topic.setup { get :show }.last.run(@situation)
+      topic
     end
-
-    asserts("topic failed") { topic.failed? }
-
-    asserts("topic message") do
-      topic.result.message
-    end.matches(%r[expected response to be a redirect, but was 200])
+  
+    should "fail with message about expecting a redirect" do
+      topic.asserts_controller.redirected_to(lambda { new_gremlin_path }).run(@situation)
+    end.equals([:fail, "expected response to be a redirect, but was 200"])
   end # when not actually doing a redirect
 
-end # asserting the redirect of an action
+end # Asserting the redirect of an action

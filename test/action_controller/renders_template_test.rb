@@ -5,89 +5,66 @@ class RenderedTemplatesController < ActionController::Base
   def text_me; render :text => "blah"; end
 end
 
-context "asserting the rendered template for an action" do
-
+context "Asserting the rendered template for an action" do
   setup do
-    context = Riot::Context.new("rendered template", Riot::SilentReporter.new)
-    context.controlling :rendered_templates
+    @situation = Riot::Situation.new
+    context = Riot::Context.new("rendered_template") {}
+    context.controlling(:rendered_templates).last.run(@situation)
     context
   end
 
   context "that rendered a template" do
     setup do
-      topic.setup { get :foo_bar }
+      topic.setup { get :foo_bar }.last.run(@situation)
       topic
     end
 
     should "pass when rendered template name matches expectation" do
-      assertion = topic.controller
-      assertion.renders_template('foo_bar')
-      assertion.passed?
-    end
+      topic.asserts_controller.renders_template('foo_bar').run(@situation)
+    end.equals([:pass])
 
-    context "when rendered template does not match expectation" do
-      setup do
-        assertion = topic.controller
-        assertion.renders_template('bar_foo')
-        assertion
-      end
-
-      asserts("topic failed") { topic.failed? }
-
-      asserts("topic message") do
-        topic.result.message
-      end.matches(/expected template "bar_foo", not "rendered_templates\/foo_bar.html.erb"/)
-    end # when rendered template does not match expectation
+    should "fail when rendered template does not match expectation" do
+      topic.asserts_controller.renders_template('bar_foo').run(@situation)
+    end.equals([:fail, %Q{expected template "bar_foo", not "rendered_templates/foo_bar.html.erb"}])
 
   end # that rendered a template
 
-  context "that did not render a template as expected" do
+  context "that did not render a template, as was expected" do
     setup do
-      topic.setup { get :text_me }
+      topic.setup { get :text_me }.last.run(@situation)
       topic
     end
 
     should "pass when providing nil as expectation" do
-      assertion = topic.controller
-      assertion.renders_template(nil)
-      assertion.passed?
-    end
+      topic.asserts_controller.renders_template(nil).run(@situation)
+    end.equals([:pass])
 
     should "pass when providing empty string as expectation" do
-      assertion = topic.controller
-      assertion.renders_template("")
-      assertion.passed?
-    end
-  end # that did not render a template as expected
+      topic.asserts_controller.renders_template("").run(@situation)
+    end.equals([:pass])
+  end # that did not render a template, as was expected
 
   context "that did not render a template but expected one" do
     setup do
-      topic.setup { get :text_me }
-      assertion = topic.controller
-      assertion.renders_template('text_me')
-      assertion
+      topic.setup { get :text_me }.last.run(@situation)
+      topic
     end
 
-    asserts("topic failed") { topic.failed? }
-
-    asserts("topic message") do
-      topic.result.message
-    end.matches(/expected template "text_me", not ""/)
+    should("fail with message") do
+      topic.asserts_controller.renders_template('text_me').run(@situation)
+    end.equals([:fail, %Q{expected template "text_me", not ""}])
   end # that did not render a template but expected one
 
   context "that rendered a template with a partial match on template name" do
     setup do
-      topic.setup { get :foo_bar }
-      assertion = topic.controller
-      assertion.renders_template('foo')
-      assertion
+      topic.setup { get :foo_bar }.last.run(@situation)
+      topic
     end
 
-    asserts("topic failed") { topic.failed? }
+    should("fail with message") do
+      topic.asserts_controller.renders_template('foo').run(@situation)
+    end.equals([:fail, %Q{expected template "foo", not "rendered_templates/foo_bar.html.erb"}])
 
-    asserts("topic message") do
-      topic.result.message
-    end.matches(/expected template "foo", not "rendered_templates\/foo_bar.html.erb"/)
   end # that rendered a template with a partial match on template name
 
-end # asserting the rendered template for an action
+end # Asserting the rendered template for an action

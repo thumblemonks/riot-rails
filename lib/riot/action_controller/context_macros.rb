@@ -28,16 +28,16 @@ module Riot #:nodoc:
       #     controlling :foos
       #     setup { get :index }
       #
-      #     controller.response_status(:found)
-      #     controller.redirected_to { new_foo_path }
+      #     asserts_controller.response_status(:found)
+      #     asserts_controller.redirected_to { new_foo_path }
       #   end
       #
       # Works the same as if you wrote the following assertions:
       #
-      #   asserts("controller") { @controller }.response_status(:found)
-      #   asserts("controller") { @controller }.redirected_to { new_foo_path }
-      def controller
-        asserts("controller") { @controller }
+      #   asserts("controller") { controller }.response_status(:found)
+      #   asserts("controller") { controller }.redirected_to { new_foo_path }
+      def asserts_controller
+        asserts("controller") { controller }
       end
     end # ContextMacros
 

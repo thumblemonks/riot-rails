@@ -1,3 +1,5 @@
+$:.unshift File.join(File.dirname(__FILE__), "..", "lib")
+
 require 'rubygems'
 require 'active_record'
 require 'action_controller'

@@ -6,25 +6,23 @@ class ResponseCodesController < ActionController::Base
   def make_me; render :text => "", :status => 201; end
 end
 
-context "asserting the response status for an action" do
-
+context "Asserting the response status for an action" do
   setup do
-    context = Riot::Context.new("response status", Riot::SilentReporter.new)
-    context.controlling :response_codes
+    @situation = Riot::Situation.new
+    context = Riot::Context.new("response status")
+    context.controlling(:response_codes).last.run(@situation)
     context
   end
 
   context "returning OK" do
     setup do
-      topic.setup { get :ok_go }
+      topic.setup { get :ok_go }.last.run(@situation)
       topic
     end
 
     should "pass when asked if :ok" do
-      assertion = topic.controller
-      assertion.response_code(:ok)
-      assertion.passed?
-    end
+      topic.asserts_controller.response_code(:ok).run(@situation)
+    end.equals([:pass])
 
     should "pass when asked if 200" do
       assertion = topic.controller
@@ -85,4 +83,4 @@ context "asserting the response status for an action" do
     end
   end # that has explicit status
 
-end # asserting the status of a response
+end # Asserting the status of a response

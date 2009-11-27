@@ -4,53 +4,29 @@ class RendersController < ActionController::Base
   def index; render :text => "Yo mama"; end
 end
 
-context "asserting the body of a response" do
-
+context "Asserting the body of a response" do
   setup do
-    context = Riot::Context.new("renders", Riot::SilentReporter.new)
-    context.controlling :renders
-    context.setup { get :index }
+    @situation = Riot::Situation.new
+    context = Riot::Context.new("renders") {}
+    context.controlling(:renders).last.run(@situation)
+    context.setup { get :index }.last.run(@situation)
     context
   end
 
   should "assert rendered action body equals expected" do
-    assertion = topic.controller
-    assertion.renders("Yo mama")
-    assertion.passed?
-  end
+    topic.asserts_controller.renders("Yo mama").run(@situation)
+  end.equals([:pass])
 
-  context "when rendered action body does not equal expected" do
-    setup do
-      assertion = topic.controller
-      assertion.renders("Yo")
-      assertion
-    end
-
-    asserts("topic failed") { topic.failed? }
-
-    asserts("topic message") do
-      topic.result.message
-    end.matches(/expected response body "Yo mama" to equal "Yo"/)
-  end # when rendered action body does not equal expected
+  should "fail when rendered action body does not equal expected" do
+    topic.asserts_controller.renders("Yo").run(@situation)
+  end.equals([:fail, %Q{expected response body "Yo mama" to equal "Yo"}])
 
   should "assert rendered action body matches expected" do
-    assertion = topic.controller
-    assertion.renders(/mama/)
-    assertion.passed?
-  end
+    topic.asserts_controller.renders(/mama/).run(@situation)
+  end.equals([:pass])
 
-  context "when rendered action body does not match expected" do
-    setup do
-      assertion = topic.controller
-      assertion.renders(/obama/)
-      assertion
-    end
+  should "fail when rendered action body does not match expected" do
+    topic.asserts_controller.renders(/obama/).run(@situation)
+  end.equals([:fail, %Q{expected response body "Yo mama" to match /obama/}])
 
-    asserts("topic failed") { topic.failed? }
-
-    asserts("topic message") do
-      topic.result.message
-    end.matches(/expected response body "Yo mama" to match \/obama\//)
-  end # when rendered action body does not match expected
-
-end # asserting the body of a response
+end # Asserting the body of a response
