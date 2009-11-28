@@ -1,36 +1,35 @@
 require 'teststrap'
 
-context "allows_values_for" do
-  setup_and_run_context("when attribute allows a value", 1, 0, 0) do |test_ctx|
-    test_ctx.setup { Room.new }
-    test_ctx.topic.allows_values_for :email, "a@b.cd"
-  end
+context "The allow_values_for assertion macro" do
+  setup_test_context
+  setup { topic.asserts("room") { Room.new } }
 
-  setup_and_run_context("when attribute allows multiple values", 1, 0, 0) do |test_ctx|
-    test_ctx.setup { Room.new }
-    test_ctx.topic.allows_values_for :email, "a@b.cd", "e@f.gh"
-  end
+  should("pass when attribute allows a value") do
+    topic.allows_values_for(:email, "a@b.cd").run(Riot::Situation.new)
+  end.equals([:pass])
 
-  setup_and_run_context("when attribute is provided a valid and an invalid value", 0, 1, 0) do |test_ctx|
-    test_ctx.setup { Room.new }
-    test_ctx.topic.allows_values_for :email, "a", "e@f.gh"
-  end
-end # allows_values_for
+  should("pass when attribute allows multiple values") do
+    topic.allows_values_for(:email, "a@b.cd", "e@f.gh").run(Riot::Situation.new)
+  end.equals([:pass])
 
-context "does_not_allow_values_for" do
-  setup_and_run_context("when attribute does not allow a value", 1, 0, 0) do |test_ctx|
-    test_ctx.setup { Room.new }
-    test_ctx.topic.does_not_allow_values_for :email, "a"
-    test_ctx.assertions.each {|a| STDOUT.puts a.raised if a.errored?}
-  end
+  should("fail when attribute is provided a valid and an invalid value") do
+    topic.allows_values_for(:email, "a", "e@f.gh").run(Riot::Situation.new)
+  end.equals([:fail, %Q{expected :email to allow value(s) ["a"]}])
+end # The allow_values_for assertion macro
 
-  setup_and_run_context("when attribute does not allow multiple values", 1, 0, 0) do |test_ctx|
-    test_ctx.setup { Room.new }
-    test_ctx.topic.does_not_allow_values_for :email, "a", "e"
-  end
+context "The does_not_allow_values_for assertion macro" do
+  setup_test_context
+  setup { topic.asserts("room") { Room.new } }
 
-  setup_and_run_context("when attribute is provided a valid and an invalid value", 0, 1, 0) do |test_ctx|
-    test_ctx.setup { Room.new }
-    test_ctx.topic.does_not_allow_values_for :email, "a", "e@f.gh"
-  end
-end # does_not_allow_values_for
+  should("pass when attribute does not allow a value") do
+    topic.does_not_allow_values_for(:email, "a").run(Riot::Situation.new)
+  end.equals([:pass])
+
+  should("pass when attribute does not allow multiple values") do
+    topic.does_not_allow_values_for(:email, "a", "e").run(Riot::Situation.new)
+  end.equals([:pass])
+
+  should("fail when attribute is provided a valid and an invalid value") do
+    topic.does_not_allow_values_for(:email, "a", "e@f.gh").run(Riot::Situation.new)
+  end.equals([:fail, %Q{expected :email not to allow value(s) ["e@f.gh"]}])
+end # The does_not_allow_values_for assertion macro

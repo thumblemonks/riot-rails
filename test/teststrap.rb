@@ -84,6 +84,10 @@ module RiotRails
     #   end
     # end
 
+    def setup_test_context
+      setup { Riot::Context.new("test context") {} }
+    end
+
     def setup_for_assertion_test(&block)
       setup do
         topic.setup(&block).last.run(@situation)

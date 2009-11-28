@@ -90,9 +90,10 @@ class Riot::Assertion
       pass
     end
   end
-private
 
-  def error_from_writing_value(model, attribute, value)
+protected
+
+  def self.error_from_writing_value(model, attribute, value)
     model.write_attribute(attribute, value)
     model.valid?
     model.errors.on(attribute)
