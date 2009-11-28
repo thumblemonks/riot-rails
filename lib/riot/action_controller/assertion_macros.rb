@@ -60,15 +60,14 @@ class Riot::Assertion
   # fail.
   #
   # +redirected_to+ expects you to provide your expected path in a lambda. This is so you can use named
-  # routes, which are - as it turns out - handy. It's also what I would expect to be able to do. Using
-  # lambdas is not ideal, so if you're smart, solve this problem :)
+  # routes, which are - as it turns out - handy. It's also what I would expect to be able to do.
   #
   #   controlling :people
   #   setup do
   #     post :create, :person { ... }
   #   end
   #
-  #   controller.redirected_to( lambda { person_path(...) } )
+  #   controller.redirected_to { person_path(...) }
   #
   # PS: There is a difference between saying +named_route_path+ and +named_route_url+ and Riot Rails will
   # be very strict (read: annoying) about it :)

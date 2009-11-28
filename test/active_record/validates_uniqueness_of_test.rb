@@ -1,20 +1,23 @@
 require 'teststrap'
 
-context "validates_uniqueness_of" do
+context "The validates_uniqueness_of assertion macro" do
+  setup_test_context
 
-  setup_and_run_context("without a persisted record", 0, 1, 0) do |test_ctx|
-    test_ctx.setup { Room.new(:email => "foo@bar.baz", :foo => "what") }
-    test_ctx.topic.validates_uniqueness_of :email
-  end
+  should("fail without a persisted record") do
+    topic.asserts("room") do
+      Room.new(:email => "foo@bar.baz", :foo => "what")
+    end.validates_uniqueness_of(:email).run(Riot::Situation.new)
+  end.equals([:fail, "topic is not a new record when testing uniqueness of email"])
 
-  setup_and_run_context("with a persisted record", 1, 0, 0) do |test_ctx|
-    test_ctx.setup { Room.create_with_good_data(:email => "foo@bar.baz") }
-    test_ctx.topic.validates_uniqueness_of :email
-  end
+  should("pass with a persisted record") do
+    topic.asserts("room") do
+      Room.create_with_good_data(:email => "foo@bar.baz")
+    end.validates_uniqueness_of(:email).run(Riot::Situation.new)
+  end.equals([:pass])
 
-  setup_and_run_context("with a persisted record but not validating uniqueness", 0, 1, 0) do |test_ctx|
-    test_ctx.setup { Room.create_with_good_data(:email => "goo@car.caz") }
-    test_ctx.topic.validates_uniqueness_of :foo
-  end
-
-end # validates_uniqueness_of
+  should("fail with a persisted record but not validating uniqueness") do
+    topic.asserts("room") do
+      Room.new(:email => "goo@car.caz")
+    end.validates_uniqueness_of(:foo).run(Riot::Situation.new)
+  end.equals([:fail, "topic is not a new record when testing uniqueness of foo"])
+end # The validates_uniqueness_of assertion macro

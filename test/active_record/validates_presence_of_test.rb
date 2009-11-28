@@ -1,13 +1,14 @@
 require 'teststrap'
 
-context "validates_presence_of" do
-  setup_and_run_context("when attribute requires presence", 1, 0, 0) do |test_ctx|
-    test_ctx.setup { Room.new }
-    test_ctx.topic.validates_presence_of(:location)
-  end
+context "The validates_presence_of assertion macro" do
+  setup_test_context
+  setup { topic.asserts("room") { Room.new } }
 
-  setup_and_run_context("when attribute does not require presence", 0, 1, 0) do |test_ctx|
-    test_ctx.setup { Room.new }
-    test_ctx.topic.validates_presence_of(:contents)
-  end
-end # validates_presence_of
+  should("pass when attribute requires presence") do
+    topic.validates_presence_of(:location).run(Riot::Situation.new)
+  end.equals([:pass])
+
+  should("fail when attribute does not require presence") do
+    topic.validates_presence_of(:contents).run(Riot::Situation.new)
+  end.equals([:fail, "expected to validate presence of :contents"])
+end # The validates_presence_of assertion macro
