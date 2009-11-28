@@ -32,7 +32,7 @@ begin
     gem.email = "gus@gusg.us"
     gem.homepage = "http://github.com/thumblemonks/riot_rails"
     gem.authors = ["Justin 'Gus' Knowlden"]
-    gem.add_development_dependency("riot", ">= 0.9.7")
+    gem.add_dependency("riot", ">= 0.10.2")
     gem.add_development_dependency("activerecord", ">= 2.3.2")
   end
   Jeweler::GemcutterTasks.new

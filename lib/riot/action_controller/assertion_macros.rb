@@ -72,11 +72,9 @@ class Riot::Assertion
   #
   # PS: There is a difference between saying +named_route_path+ and +named_route_url+ and Riot Rails will
   # be very strict (read: annoying) about it :)
-  assertion(:redirected_to) do |actual, *expectings|
-    expectation_block = expectings.last
+  assertion(:redirected_to) do |actual, expected_redirect|
     actual_response_code = actual.response.response_code
     if (300...400).member?(actual_response_code)
-      expected_redirect = actual.url_for(actual.instance_eval(&expectation_block)) # need to execute in situation somehow
       actual_redirect = actual.url_for(actual.response.redirected_to)
       msg = "expected to redirect to <#{expected_redirect}>, not <#{actual_redirect}>"
       expected_redirect == actual_redirect ? pass : fail(msg)

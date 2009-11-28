@@ -11,7 +11,6 @@ class RedirectedToController < ActionController::Base
 end
 
 context "Asserting the redirect of an action" do
-
   setup do
     @situation = Riot::Situation.new
     context = Riot::Context.new("redirected to") {}
@@ -20,31 +19,23 @@ context "Asserting the redirect of an action" do
   end
 
   context "when doing an actual redirect" do
-    setup do
-      topic.setup { get :index }.last.run(@situation)
-      topic
+    setup_for_assertion_test { get :index }
+
+    assertion_test_passes("when expected url matches actual redirect url") do
+      topic.asserts_controller.redirected_to { new_gremlin_path }
     end
 
-    should "pass when expected url matches actual redirect url" do
-      topic.asserts_controller.redirected_to(lambda { new_gremlin_path }).run(@situation)
-    end.equals([:pass])
-
-    should "fail with when expected url does not exactly matches actual redirect url" do
-      topic.asserts_controller.redirected_to(
-        lambda { new_gremlin_url } ).run(@situation)
-    end.equals([:fail, "expected to redirect to <http://test.host/gremlins/new>, not </gremlins/new>"])
-
+    assertion_test_fails("when expected url does not exactly match actual redirect url",
+    "expected to redirect to <http://test.host/gremlins/new>, not </gremlins/new>") do
+      topic.asserts_controller.redirected_to { new_gremlin_url }
+    end
   end # when doing an actual redirect
 
   context "when not actually doing a redirect" do
-    setup do
-      topic.setup { get :show }.last.run(@situation)
-      topic
+    setup_for_assertion_test { get :show }
+    assertion_test_fails("with message about expecting a redirect",
+    "expected response to be a redirect, but was 200") do
+      topic.asserts_controller.redirected_to { new_gremlin_path }
     end
-  
-    should "fail with message about expecting a redirect" do
-      topic.asserts_controller.redirected_to(lambda { new_gremlin_path }).run(@situation)
-    end.equals([:fail, "expected response to be a redirect, but was 200"])
   end # when not actually doing a redirect
-
 end # Asserting the redirect of an action

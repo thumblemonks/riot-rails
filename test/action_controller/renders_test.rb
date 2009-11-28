@@ -13,20 +13,18 @@ context "Asserting the body of a response" do
     context
   end
 
-  should "assert rendered action body equals expected" do
-    topic.asserts_controller.renders("Yo mama").run(@situation)
-  end.equals([:pass])
+  assertion_test_passes("when body equals expected") { topic.asserts_controller.renders("Yo mama") }
 
-  should "fail when rendered action body does not equal expected" do
-    topic.asserts_controller.renders("Yo").run(@situation)
-  end.equals([:fail, %Q{expected response body "Yo mama" to equal "Yo"}])
+  assertion_test_fails("when rendered action body does not equal expected",
+  %Q{expected response body "Yo mama" to equal "Yo"}) do
+    topic.asserts_controller.renders("Yo")
+  end
 
-  should "assert rendered action body matches expected" do
-    topic.asserts_controller.renders(/mama/).run(@situation)
-  end.equals([:pass])
+  assertion_test_passes("when body matches expected") { topic.asserts_controller.renders(/mama/) }
 
-  should "fail when rendered action body does not match expected" do
-    topic.asserts_controller.renders(/obama/).run(@situation)
-  end.equals([:fail, %Q{expected response body "Yo mama" to match /obama/}])
+  assertion_test_fails("when rendered action body does not match expected",
+  %Q{expected response body "Yo mama" to match /obama/}) do
+    topic.asserts_controller.renders(/obama/)
+  end
 
 end # Asserting the body of a response
