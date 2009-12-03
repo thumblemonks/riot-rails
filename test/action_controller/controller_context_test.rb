@@ -19,6 +19,6 @@ context "A controller test" do
 
   asserts("an unknown action call") do
     get :burberry
-  end.raises(ActionController::UnknownAction, "No action responded to burberry")
+  end.raises(::ActionController::UnknownAction, "No action responded to burberry")
 
 end # a controller test
