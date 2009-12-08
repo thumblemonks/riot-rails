@@ -56,7 +56,6 @@ class Riot::Assertion
   #    end
   assertion(:allow_bad_value) do |actual, attribute, value, expected_error_msg|
     actual_errors = error_from_writing_value(actual, attribute, value)
-    debugger if $dbg
     error_present = actual_errors.kind_of?(Regexp) ?
                     actual_errors.to_a.any? {|error| error =~ expected_error_msg } :
                     actual_errors.to_a.any? {|error| error == expected_error_msg }
