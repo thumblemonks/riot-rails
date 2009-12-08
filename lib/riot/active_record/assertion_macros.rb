@@ -46,6 +46,24 @@ class Riot::Assertion
     good_values.empty? ? pass : fail(msg)
   end
 
+  # An ActiveRecord assertion that expects to fail with valid attribute or with excepted error
+  # message not matching to the list of errors for that attribute
+  #
+  #    context "a User" do
+  #      setup { User.new }
+  #      topic.allow_bad_value :email, "fake", "is invalid"
+  #      topic.allow_bad_value :email, "another fake", /invalid/
+  #    end
+  assertion(:allow_bad_value) do |actual, attribute, value, expected_error_msg|
+    actual_errors = error_from_writing_value(actual, attribute, value)
+    debugger if $dbg
+    error_present = actual_errors.kind_of?(Regexp) ?
+                    actual_errors.to_a.any? {|error| error =~ expected_error_msg } :
+                    actual_errors.to_a.any? {|error| error == expected_error_msg }
+    msg = "expected #{attribute.inspect} be invalid with value #{value} and error msg #{expected_error_msg}"
+    error_present ? pass : fail(msg)
+  end
+
   # An ActiveRecord assertion that expects to fail with an attribute is not valid for record because the
   # value of the attribute is not unique. Requires the topic of the context to be a created record; one
   # that returns false for a call to +new_record?+.
