@@ -14,7 +14,7 @@ context "Asserting the redirect of an action" do
   setup do
     @situation = Riot::Situation.new
     context = Riot::Context.new("redirected to") {}
-    context.controlling(:redirected_to).last.run(@situation)
+    context.controlling(:redirected_to).run(@situation)
     context
   end
 

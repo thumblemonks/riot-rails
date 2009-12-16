@@ -10,7 +10,7 @@ context "Asserting the response status for an action" do
   setup do
     @situation = Riot::Situation.new
     context = Riot::Context.new("response status") {}
-    context.controlling(:response_codes).last.run(@situation)
+    context.controlling(:response_codes).run(@situation)
     context
   end
 

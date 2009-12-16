@@ -9,7 +9,7 @@ context "Asserting the rendered template for an action" do
   setup do
     @situation = Riot::Situation.new
     context = Riot::Context.new("rendered_template") {}
-    context.controlling(:rendered_templates).last.run(@situation)
+    context.controlling(:rendered_templates).run(@situation)
     context
   end
 

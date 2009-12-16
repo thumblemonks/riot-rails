@@ -90,7 +90,7 @@ module RiotRails
 
     def setup_for_assertion_test(&block)
       setup do
-        topic.setup(&block).last.run(@situation)
+        topic.setup(&block).run(@situation)
         topic
       end
     end
