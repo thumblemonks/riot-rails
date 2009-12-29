@@ -61,29 +61,6 @@ require 'riot/rails'
 
 module RiotRails
   module Context
-    # def asserts_passes_failures_errors(passes=0, failures=0, errors=0)
-    #   should("pass #{passes} test(s)") { topic.passes }.equals(passes)
-    #   should("fail #{failures} test(s)") { topic.failures }.equals(failures)
-    #   should("error on #{errors} test(s)") { topic.errors }.equals(errors)
-    # end
-    # 
-    # def setup_with_test_context(&block)
-    #   setup do
-    #     @test_report = Riot::SilentReporter.new
-    #     @test_context = Riot::Context.new("test context", @test_report)
-    #     yield(@test_context)
-    #     @test_context.report
-    #     @test_report
-    #   end
-    # end
-    # 
-    # def setup_and_run_context(name, *passes_failures_errors, &block)
-    #   context name do
-    #     setup_with_test_context(&block)
-    #     asserts_passes_failures_errors(*passes_failures_errors)
-    #   end
-    # end
-
     def setup_test_context
       setup { Riot::Context.new("test context") {} }
     end
