@@ -21,7 +21,7 @@ context "Asserting the redirect of an action" do
   context "when doing an actual redirect" do
     setup_for_assertion_test { get :index }
 
-    assertion_test_passes("when expected url matches actual redirect url") do
+    assertion_test_passes("when expected url matches actual redirect url", "redirected to /gremlins/new") do
       topic.asserts_controller.redirected_to { new_gremlin_path }
     end
 

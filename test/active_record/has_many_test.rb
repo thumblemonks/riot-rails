@@ -6,7 +6,7 @@ context "The has_many assertion macro" do
 
   should("pass when record has a has_many association defined for attribute") do
     topic.has_many(:doors).run(Riot::Situation.new)
-  end.equals([:pass])
+  end.equals([:pass, "has many :doors"])
 
   should("fail when record does not have a has_many association defined for attribute") do
     topic.has_many(:windows).run(Riot::Situation.new)

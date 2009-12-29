@@ -6,11 +6,11 @@ context "The allow_values_for assertion macro" do
 
   should("pass when attribute allows a value") do
     topic.allows_values_for(:email, "a@b.cd").run(Riot::Situation.new)
-  end.equals([:pass])
+  end.equals([:pass, nil])
 
   should("pass when attribute allows multiple values") do
     topic.allows_values_for(:email, "a@b.cd", "e@f.gh").run(Riot::Situation.new)
-  end.equals([:pass])
+  end.equals([:pass, nil])
 
   should("fail when attribute is provided a valid and an invalid value") do
     topic.allows_values_for(:email, "a", "e@f.gh").run(Riot::Situation.new)
@@ -23,34 +23,42 @@ context "The does_not_allow_values_for assertion macro" do
 
   should("pass when attribute does not allow a value") do
     topic.does_not_allow_values_for(:email, "a").run(Riot::Situation.new)
-  end.equals([:pass])
+  end.equals([:pass, nil])
 
   should("pass when attribute does not allow multiple values") do
     topic.does_not_allow_values_for(:email, "a", "e").run(Riot::Situation.new)
-  end.equals([:pass])
+  end.equals([:pass, nil])
 
   should("fail when attribute is provided a valid and an invalid value") do
     topic.does_not_allow_values_for(:email, "a", "e@f.gh").run(Riot::Situation.new)
   end.equals([:fail, %Q{expected :email not to allow value(s) ["e@f.gh"]}])
 end # The does_not_allow_values_for assertion macro
 
-context "The allow_bad_value assertion macro" do
+context "The is_invalid_when assertion macro" do
   setup_test_context
   setup { topic.asserts("room") { Room.new } }
 
-  should("pass when invalid attribute's error msg is in its list of errors") do
-    topic.allow_bad_value(:email, "fake", "is invalid").run(Riot::Situation.new)
-  end.equals([:pass])
+  should("pass when attribute is invalid") do
+    topic.is_invalid_when(:email, "fake").run(Riot::Situation.new)
+  end.equals([:pass, %Q{attribute :email is invalid}])
 
-  should("pass when invalid attribute's error msg matches one in its list of errors") do
-    topic.allow_bad_value(:email, "fake", "is invalid").run(Riot::Situation.new)
-  end.equals([:pass])
+  should("pass when error message equals one in its list of errors") do
+    topic.is_invalid_when(:email, "fake", "is invalid").run(Riot::Situation.new)
+  end.equals([:pass, %Q{attribute :email is invalid}])
 
-  should("when attribute is valid") do
-    topic.allow_bad_value(:email, "a@b.cd", "is invalid").run(Riot::Situation.new)
-  end.equals([:fail, "expected :email be invalid with value a@b.cd and error msg is invalid"])
+  should("pass when error message matches one in its list of errors") do
+    topic.is_invalid_when(:email, "fake", /invalid/).run(Riot::Situation.new)
+  end.equals([:pass, %Q{attribute :email is invalid}])
 
-  should("fail when error msg is not in the list of attribute's errors") do
-    topic.allow_bad_value(:email, "fake", "can't be blank").run(Riot::Situation.new)
-  end.equals([:fail, "expected :email be invalid with value fake and error msg can't be blank"])
-end # The allow_bad_value assertion macro
+  should("fail when attribute is valid") do
+    topic.is_invalid_when(:email, "a@b.cd", "is invalid").run(Riot::Situation.new)
+  end.equals([:fail, %Q{expected :email to be invalid when value is "a@b.cd"}])
+
+  should("fail when exact error message not found") do
+    topic.is_invalid_when(:email, "fake", "can't be blank").run(Riot::Situation.new)
+  end.equals([:fail, %Q{expected :email to be invalid with error message "can't be blank"}])
+
+  should("fail when error message not matched to returned errors") do
+    topic.is_invalid_when(:email, "fake", /blank/).run(Riot::Situation.new)
+  end.equals([:fail, %Q{expected :email to be invalid with error message /blank/}])
+end # The is_invalid_when assertion macro

@@ -7,17 +7,17 @@ context "The validates_uniqueness_of assertion macro" do
     topic.asserts("room") do
       Room.new(:email => "foo@bar.baz", :foo => "what")
     end.validates_uniqueness_of(:email).run(Riot::Situation.new)
-  end.equals([:fail, "topic is not a new record when testing uniqueness of email"])
+  end.equals([:fail, "topic is not a new record when testing uniqueness of :email"])
 
   should("pass with a persisted record") do
     topic.asserts("room") do
       Room.create_with_good_data(:email => "foo@bar.baz")
     end.validates_uniqueness_of(:email).run(Riot::Situation.new)
-  end.equals([:pass])
+  end.equals([:pass, ":email is unique"])
 
   should("fail with a persisted record but not validating uniqueness") do
     topic.asserts("room") do
-      Room.new(:email => "goo@car.caz")
+      Room.create_with_good_data(:email => "goo@car.caz")
     end.validates_uniqueness_of(:foo).run(Riot::Situation.new)
-  end.equals([:fail, "topic is not a new record when testing uniqueness of foo"])
+  end.equals([:fail, "expected to fail because :foo is not unique"])
 end # The validates_uniqueness_of assertion macro

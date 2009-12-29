@@ -6,7 +6,7 @@ context "The validates_presence_of assertion macro" do
 
   should("pass when attribute requires presence") do
     topic.validates_presence_of(:location).run(Riot::Situation.new)
-  end.equals([:pass])
+  end.equals([:pass, "validates presence of :location"])
 
   should("fail when attribute does not require presence") do
     topic.validates_presence_of(:contents).run(Riot::Situation.new)
