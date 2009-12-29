@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{riot_rails}
-  s.version = "0.0.7"
+  s.version = "0.0.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin 'Gus' Knowlden"]
-  s.date = %q{2009-12-18}
+  s.date = %q{2009-12-29}
   s.description = %q{Riot specific test support for Rails apps. Protest the slow app.}
   s.email = %q{gus@gusg.us}
   s.extra_rdoc_files = [
