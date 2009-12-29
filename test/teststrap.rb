@@ -48,6 +48,7 @@ class Room < ActiveRecord::Base
 
   has_many :doors
   has_one :floor
+  belongs_to :house
 
   def self.create_with_good_data(attributes={})
     create!({:location => "a", :foo => "b", :bar => "c", :email => "a@b.c"}.merge(attributes))

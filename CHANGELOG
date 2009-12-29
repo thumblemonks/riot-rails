@@ -1,0 +1,8 @@
+*master*
+
+* Added the #belongs_to ActiveRecord assertion macro [jaknowlden]
+
+    context "a Room" do
+      setup { Room.new }
+      asserts_topic.belongs_to(:house)
+    end

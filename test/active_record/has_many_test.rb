@@ -10,7 +10,7 @@ context "The has_many assertion macro" do
 
   should("fail when record does not have a has_many association defined for attribute") do
     topic.has_many(:windows).run(Riot::Situation.new)
-  end.equals([:fail, "expected :windows to be a has_many association, but was not"])
+  end.equals([:fail, "expected :windows to be a has_many association"])
 
   should("fail when attribute is not a has_many, but is a has_one association") do
     topic.has_many(:floor).run(Riot::Situation.new)
