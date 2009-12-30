@@ -63,8 +63,8 @@ require 'riot/rails'
 
 module RiotRails
   module Context
-    def setup_test_context
-      setup { Riot::Context.new("test context") {} }
+    def setup_test_context(context_description="test context")
+      setup { Riot::Context.new(context_description) {} }
     end
 
     def setup_for_assertion_test(&block)
