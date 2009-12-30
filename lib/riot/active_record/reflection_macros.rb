@@ -7,13 +7,10 @@ module RiotRails
     private
       def assert_reflection(expected, record, attribute)
         reflection = record.class.reflect_on_association(attribute)
-        static_msg = "expected #{attribute.inspect} to be a #{expected} association"
-        if reflection.nil?
-          fail(static_msg)
-        elsif expected != reflection.macro.to_s
-          fail(static_msg + ", but was a #{reflection.macro} instead")
+        if !reflection.nil? && (expected == reflection.macro.to_s)
+          pass("#{attribute.inspect} is a #{expected} association")
         else
-          pass("#{expected.gsub('_', ' ')} #{attribute.inspect}")
+          fail("#{attribute.inspect} is not a #{expected} association")
         end
       end
     end

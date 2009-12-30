@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".gitignore",
+     "CHANGELOG",
      "MIT-LICENSE",
      "README.markdown",
      "Rakefile",
@@ -27,6 +28,8 @@ Gem::Specification.new do |s|
      "lib/riot/action_controller/situation_macros.rb",
      "lib/riot/active_record.rb",
      "lib/riot/active_record/assertion_macros.rb",
+     "lib/riot/active_record/reflection_macros.rb",
+     "lib/riot/active_record/validation_macros.rb",
      "lib/riot/rails.rb",
      "rails/init.rb",
      "riot_rails.gemspec",
@@ -36,6 +39,7 @@ Gem::Specification.new do |s|
      "test/action_controller/renders_test.rb",
      "test/action_controller/response_status_test.rb",
      "test/active_record/allowing_values_test.rb",
+     "test/active_record/belongs_to_test.rb",
      "test/active_record/has_many_test.rb",
      "test/active_record/validates_presence_of_test.rb",
      "test/active_record/validates_uniqueness_of_test.rb",
@@ -56,6 +60,7 @@ Gem::Specification.new do |s|
      "test/action_controller/renders_test.rb",
      "test/action_controller/response_status_test.rb",
      "test/active_record/allowing_values_test.rb",
+     "test/active_record/belongs_to_test.rb",
      "test/active_record/has_many_test.rb",
      "test/active_record/validates_presence_of_test.rb",
      "test/active_record/validates_uniqueness_of_test.rb",
