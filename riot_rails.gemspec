@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
      "lib/riot/active_record/reflection_macros.rb",
      "lib/riot/active_record/validation_macros.rb",
      "lib/riot/rails.rb",
+     "lib/riot/rails_context.rb",
      "rails/init.rb",
      "riot_rails.gemspec",
      "test/action_controller/controller_context_test.rb",
@@ -43,6 +44,7 @@ Gem::Specification.new do |s|
      "test/active_record/has_many_test.rb",
      "test/active_record/validates_presence_of_test.rb",
      "test/active_record/validates_uniqueness_of_test.rb",
+     "test/rails_context_test.rb",
      "test/rails_root/app/views/rendered_templates/foo_bar.html.erb",
      "test/rails_root/config/routes.rb",
      "test/rails_root/db/schema.rb",
@@ -64,6 +66,7 @@ Gem::Specification.new do |s|
      "test/active_record/has_many_test.rb",
      "test/active_record/validates_presence_of_test.rb",
      "test/active_record/validates_uniqueness_of_test.rb",
+     "test/rails_context_test.rb",
      "test/rails_root/config/routes.rb",
      "test/rails_root/db/schema.rb",
      "test/teststrap.rb"

@@ -6,7 +6,7 @@ module RiotRails
   end
 
   module TopLevel
-    def rails_context(description, context_class=Context, &definition)
+    def rails_context(description, context_class=Riot::Context, &definition)
       RiotRails.railsify_context(description) do
         context(description.to_s, context_class, &definition)
       end
@@ -22,5 +22,5 @@ module RiotRails
   end # Context
 end # RiotRails
 
-Riot.extend(RiotRails::TopLevel)
+Object.instance_eval { include RiotRails::TopLevel }
 Riot::Context.instance_eval { include RiotRails::Context }

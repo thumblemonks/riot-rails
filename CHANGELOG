@@ -1,5 +1,18 @@
 *master*
 
+* Added initial #rails_context. Assumes ActiveRecord class for now [jaknowlden]
+
+    class Room < ActiveRecord::Base
+      # ...
+    end
+
+    # TEST
+
+    rails_context Room do
+      asserts_topic.belongs_to(:house)
+      asserts_topic.validates_presence_of(:house_id)
+    end
+
 * Added the #belongs_to ActiveRecord assertion macro [jaknowlden]
 
     context "a Room" do

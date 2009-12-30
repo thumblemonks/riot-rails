@@ -3,7 +3,7 @@ require 'teststrap'
 context "A rails_context" do
   setup_test_context
 
-  asserts("Riot") { Riot }.respond_to(:rails_context)
+  asserts("Object") { Object }.respond_to(:rails_context)
 
   asserts("a new Riot::Context") do
     Riot::Context.new("foo") {}
