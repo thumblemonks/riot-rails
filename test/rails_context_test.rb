@@ -1,6 +1,36 @@
 require 'teststrap'
 
-context "A rails_context" do
+context "The basic RailsContext" do
+  setup do
+    RiotRails::RailsContext.new("Ya Ya") { }
+  end
+
+  asserts_topic.kind_of(Riot::Context)
+  asserts(:transactional?).not!
+  asserts(:transaction_helper).equals(::ActiveRecord::Base)
+end # The basic RailsContext
+
+context "The transactional RailsContext" do
+  setup do
+    helper = Class.new { def self.transaction(&block) yield; end }
+    RiotRails::RailsContext.new("Ya Ya", :transactional => true, :transaction_helper => helper) { }
+  end
+
+  asserts(:transactional?)
+
+  asserts("calling local run") do
+    topic.local_run(Riot::SilentReporter.new, Riot::Situation.new)
+  end.raises(::ActiveRecord::Rollback)
+
+  context "with a child context" do
+    setup do
+      topic.context("call me submarine") {}
+    end
+    asserts(:transactional?)
+  end
+end # The transactional RailsContext
+
+context "The rails_context macro" do
   setup_test_context
 
   asserts("Object") { Object }.respond_to(:rails_context)
@@ -36,7 +66,7 @@ context "A rails_context" do
           (defined_contexts << Riot::Context.new(description, &definition)).last
         end
 
-        extend RiotRails::TopLevel
+        extend RiotRails::Root
       end
       new_riot.rails_context(Room) {}
       new_riot
@@ -45,4 +75,4 @@ context "A rails_context" do
     asserts(:defined_contexts).size(1)
   end # defined from the root
 
-end # The rails_context
+end # The rails_context macro

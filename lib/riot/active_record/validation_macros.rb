@@ -104,7 +104,7 @@ module RiotRails
       def evaluate(actual, attribute)
         actual_record = actual
         if actual_record.new_record?
-          fail("topic is not a new record when testing uniqueness of #{attribute.inspect}")
+          fail("must use a persisted record when testing uniqueness of #{attribute.inspect}")
         else
           copied_model = actual_record.class.new
           actual_record.attributes.each do |dup_attribute, dup_value|

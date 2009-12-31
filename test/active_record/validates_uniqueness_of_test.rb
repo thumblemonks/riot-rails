@@ -7,7 +7,7 @@ context "The validates_uniqueness_of assertion macro" do
     topic.asserts("room") do
       Room.new(:email => "foo@bar.baz", :foo => "what")
     end.validates_uniqueness_of(:email).run(Riot::Situation.new)
-  end.equals([:fail, "topic is not a new record when testing uniqueness of :email"])
+  end.equals([:fail, "must use a persisted record when testing uniqueness of :email"])
 
   should("pass with a persisted record") do
     topic.asserts("room") do
