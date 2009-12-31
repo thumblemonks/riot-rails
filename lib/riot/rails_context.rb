@@ -47,10 +47,8 @@ module RiotRails
   #   rails_context SomeKindOfClass do
   #   end
   module Root
-    def rails_context(description, context_class=Riot::Context, &definition)
-      RiotRails.railsify_context(description) do
-        context(description.to_s, context_class, &definition)
-      end
+    def rails_context(description, &definition)
+      RiotRails.railsify_context(description) { context(description.to_s, RailsContext, &definition) }
     end
   end # Base
 
@@ -62,9 +60,7 @@ module RiotRails
   #   end
   module Context
     def rails_context(description, &definition)
-      RiotRails.railsify_context(description) do
-        context(description.to_s, &definition)
-      end
+      RiotRails.railsify_context(description) { new_context(description.to_s, RailsContext, &definition) }
     end
   end # Context
 end # RiotRails

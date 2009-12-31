@@ -43,6 +43,10 @@ context "The rails_context macro" do
     Riot::Context.new("foo") {}.rails_context(Room) {}.description
   end.equals("foo Room")
 
+  asserts("its type") do
+    Riot::Context.new("foo") {}.rails_context(Room) {}
+  end.kind_of(RiotRails::RailsContext)
+
   context "for an ActiveRecord object" do
     setup do
       situation = Riot::Situation.new
@@ -62,8 +66,8 @@ context "The rails_context macro" do
     setup do
       new_riot = Class.new do
         def self.defined_contexts; @contexts ||= []; end
-        def self.context(description, context_class=Context, &definition)
-          (defined_contexts << Riot::Context.new(description, &definition)).last
+        def self.context(description, context_class, &definition)
+          (defined_contexts << context_class.new(description, &definition)).last
         end
 
         extend RiotRails::Root
@@ -73,6 +77,7 @@ context "The rails_context macro" do
     end
 
     asserts(:defined_contexts).size(1)
+    asserts("context type") { topic.defined_contexts.first }.kind_of(RiotRails::RailsContext)
   end # defined from the root
 
 end # The rails_context macro
