@@ -1,5 +1,17 @@
 *master*
 
+* Added transactional support to RailsContext. Disabled by default [jaknowlden]
+
+    rails_context Room
+      set :transactional, true
+    end
+
+* Added option enabling to RailsContext [jaknowlden]
+
+    rails_context Room
+      set :this, "that"
+    end
+
 * Added initial #rails_context. Assumes ActiveRecord class for now [jaknowlden]
 
     class Room < ActiveRecord::Base

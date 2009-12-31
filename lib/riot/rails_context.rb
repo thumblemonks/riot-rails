@@ -6,7 +6,18 @@ module RiotRails
       setup_options(parent, options)
       super(description, parent, &definition)
     end
-    
+
+    # Returns true if current context or a parent context has the transactional option enabled. To enable,
+    # anywhere within a rails_context or a child context thereof, do:
+    #
+    #   rails_context Foo do
+    #     context "sub context" do
+    #       set :transactional, true
+    #     end
+    #   end
+    #
+    # Transactional support is disabled by default. When enabled, all transactions are rolled back when the
+    # context is done executing.
     def transactional?
       options[:transactional] || (parent.respond_to?(:transactional?) && parent.transactional?)
     end

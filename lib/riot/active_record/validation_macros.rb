@@ -1,34 +1,26 @@
 module RiotRails
   module ActiveRecord
+  protected
 
-    # An ActiveRecord assertion that expects to fail when a given attribute is validated after a nil value
-    # is provided to it.
-    #
-    #    context "a User" do
-    #      setup { User.new }
-    #      asserts_topic.validates_presence_of(:name)
-    #    end
-    class ValidatesPresenceOfMacro < AssertionMacro
-      register :validates_presence_of
-
-      def evaluate(actual, attribute)
-        if error_from_writing_value(actual, attribute, nil)
-          pass("validates presence of #{attribute.inspect}")
-        else
-          fail("expected to validate presence of #{attribute.inspect}")
-        end
+    class ValidationAssertionMacro < Riot::AssertionMacro
+    private
+      def error_from_writing_value(model, attribute, value)
+        model.write_attribute(attribute, value)
+        model.valid?
+        model.errors.on(attribute)
       end
     end
+
+  public
 
     # An ActiveRecord assertion that expects to pass with a given value or set of values for a given
     # attribute.
     #
-    #    context "a User" do
-    #      setup { User.new }
+    #    rails_context User do
     #      asserts_topic.allows_values_for :email, "a@b.cd"
     #      asserts_topic.allows_values_for :email, "a@b.cd", "e@f.gh"
     #    end
-    class AllowsValuesForMacro < AssertionMacro
+    class AllowsValuesForMacro < ValidationAssertionMacro
       register :allows_values_for
 
       def evaluate(actual, attribute, *values)
@@ -44,12 +36,11 @@ module RiotRails
     # An ActiveRecord assertion that expects to fail with a given value or set of values for a given
     # attribute.
     #
-    #    context "a User" do
-    #      setup { User.new }
+    #    rails_context User do
     #      asserts_topic.does_not_allow_values_for :email, "a"
     #      asserts_topic.does_not_allow_values_for :email, "a@b", "e f@g.h"
     #    end
-    class DoesNotAllowValuesForMacro < AssertionMacro
+    class DoesNotAllowValuesForMacro < ValidationAssertionMacro
       register :does_not_allow_values_for
       def evaluate(actual, attribute, *values)
         good_values = []
@@ -64,12 +55,11 @@ module RiotRails
     # An ActiveRecord assertion that expects to fail with invalid value for an attribute. Optionally, the 
     # error message can be provided as the exact string or as regular expression.
     #
-    #    context "a User" do
-    #      setup { User.new }
+    #    rails_context User do
     #      asserts_topic.is_invalid_when :email, "fake", "is invalid"
     #      asserts_topic.is_invalid_when :email, "another fake", /invalid/
     #    end
-    class IsInvalidWhenMacro < AssertionMacro
+    class IsInvalidWhenMacro < ValidationAssertionMacro
       register :is_invalid_when
 
       def evaluate(actual, attribute, value, expected_error=nil)
@@ -90,15 +80,33 @@ module RiotRails
       end
     end
 
+    # An ActiveRecord assertion that expects to fail when a given attribute is validated after a nil value
+    # is provided to it.
+    #
+    #    rails_context User do
+    #      asserts_topic.validates_presence_of(:name)
+    #    end
+    class ValidatesPresenceOfMacro < ValidationAssertionMacro
+      register :validates_presence_of
+
+      def evaluate(actual, attribute)
+        if error_from_writing_value(actual, attribute, nil)
+          pass("validates presence of #{attribute.inspect}")
+        else
+          fail("expected to validate presence of #{attribute.inspect}")
+        end
+      end
+    end
+
     # An ActiveRecord assertion that expects to fail with an attribute is not valid for record because the
     # value of the attribute is not unique. Requires the topic of the context to be a created record; one
     # that returns false for a call to +new_record?+.
     #
-    #    context "a User" do
+    #    rails_context User do
     #      setup { User.create(:email => "a@b.cde", ... ) }
     #      asserts_topic.validates_uniqueness_of :email
     #    end
-    class ValidatesUniquenessOfMacro < AssertionMacro
+    class ValidatesUniquenessOfMacro < ValidationAssertionMacro
       register :validates_uniqueness_of
       
       def evaluate(actual, attribute)
@@ -120,5 +128,33 @@ module RiotRails
       end
     end
 
+    # An ActiveRecord assertion to test that the length of the value of an attribute must be within a 
+    # specified range. Assertion fails if: there are errors when min/max characters are used, there are no 
+    # errors when min-1/max+1 characters are used.
+    #
+    #    rails_context User do
+    #      asserts_topic.validates_length_of :name, (2..36)
+    #    end
+    #
+    # TODO: allow for options on what to validate
+    class ValidatesLengthOfMacro < ValidationAssertionMacro
+      register :validates_length_of
+
+      def evaluate(actual, attribute, range)
+        min, max = range.first, range.last
+        [min, max].each do |length|
+          errors = error_from_writing_value(actual, attribute, "r" * length)
+          return fail("#{attribute.inspect} should be able to be #{length} characters") if errors
+        end
+
+        if (min-1) > 0 && error_from_writing_value(actual, attribute, "r" * (min-1)).nil?
+          fail("#{attribute.inspect} expected to be more than #{min-1} characters")
+        elsif error_from_writing_value(actual, attribute, "r" * (max+1)).nil?
+          fail("#{attribute.inspect} expected to be less than #{max+1} characters")
+        else
+          pass("validates length of #{attribute.inspect} is within #{range.inspect}")
+        end
+      end
+    end
   end # ActiveRecord
 end # RiotRails

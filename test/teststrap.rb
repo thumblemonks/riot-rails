@@ -42,9 +42,11 @@ ActionController::Base.view_paths = [File.join(RAILS_ROOT, 'app', 'views')]
 # Model definition
 
 class Room < ActiveRecord::Base
-  validates_presence_of :location, :foo, :bar
+  validates_presence_of :location
   validates_format_of :email, :with => /^\w+@\w+\.\w+$/
   validates_uniqueness_of :email
+  validates_length_of :name, :within => 5..20
+  validates_length_of :contents, :within => 0..100, :allow_blank => true
 
   has_many :doors
   has_one :floor
@@ -52,7 +54,7 @@ class Room < ActiveRecord::Base
   belongs_to :owner
 
   def self.create_with_good_data(attributes={})
-    create!({:location => "a", :foo => "b", :bar => "c", :email => "a@b.c"}.merge(attributes))
+    create!({:location => "a", :email => "a@b.c", :name => "Junior"}.merge(attributes))
   end
 end
 

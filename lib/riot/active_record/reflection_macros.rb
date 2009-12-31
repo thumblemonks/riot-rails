@@ -1,9 +1,8 @@
 module RiotRails
   module ActiveRecord
-
   protected
 
-    class ReflectionAssertionMacro < AssertionMacro
+    class ReflectionAssertionMacro < Riot::AssertionMacro
     private
       def assert_reflection(expected, record, attribute)
         reflection = record.class.reflect_on_association(attribute)

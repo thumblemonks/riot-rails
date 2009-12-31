@@ -3,7 +3,6 @@ ActiveRecord::Schema.define(:version => 1) do
     t.string :location
     t.string :email
     t.string :contents
-    t.string :foo
-    t.string :bar
+    t.string :name
   end
 end
