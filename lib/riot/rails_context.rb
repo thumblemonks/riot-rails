@@ -6,7 +6,7 @@ module RiotRails
       setup_options(parent, options)
       super(description, parent, &definition)
     end
-
+    
     def transactional?
       options[:transactional] || (parent.respond_to?(:transactional?) && parent.transactional?)
     end
@@ -22,6 +22,8 @@ module RiotRails
         raise ::ActiveRecord::Rollback
       end
     end
+
+    def set(property, value) options[property] = value; end
   private
     attr_reader :options
 
