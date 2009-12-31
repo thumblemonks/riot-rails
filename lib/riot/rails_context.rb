@@ -1,9 +1,8 @@
 module RiotRails
   
   class RailsContext < Riot::Context
-    def initialize(description, *parent_and_options, &definition)
-      parent, options = extract_parent_and_options(parent_and_options)
-      setup_options(parent, options)
+    def initialize(description, parent=nil, &definition)
+      @options = {:transactional => false, :transaction_helper => ::ActiveRecord::Base}
       super(description, parent, &definition)
     end
 
@@ -37,16 +36,6 @@ module RiotRails
     def set(property, value) options[property] = value; end
   private
     attr_reader :options
-
-    def extract_parent_and_options(args)
-      options = args.last.kind_of?(Hash) ? args.pop : {}
-      [args.shift, options]
-    end
-    
-    def setup_options(parent, provided)
-      defaults = {:transactional => false, :transaction_helper => ::ActiveRecord::Base}
-      @options = defaults.merge(provided)
-    end
   end
 
   def self.railsify_context(description, &block)
