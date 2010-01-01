@@ -1,8 +1,8 @@
 require 'teststrap'
 
-context "The basic RailsContext" do
+context "The basic RailsContext " do
   setup do
-    RiotRails::RailsContext.new("Ya Ya") { }
+    RiotRails::RailsContext.new("Room") { }
   end
 
   asserts_topic.kind_of(Riot::Context)
@@ -13,7 +13,7 @@ end # The basic RailsContext
 context "The transactional RailsContext" do
   setup do
     helper = Class.new { def self.transaction(&block) yield; end }
-    RiotRails::RailsContext.new("Ya Ya") do
+    RiotRails::RailsContext.new("Room") do
       set :transactional, true
       set :transaction_helper, helper
     end
@@ -49,6 +49,16 @@ context "The rails_context macro" do
   asserts("its type") do
     Riot::Context.new("foo") {}.rails_context(Room) {}
   end.kind_of(RiotRails::RailsContext)
+
+  context "with description as a string" do
+    setup do
+      situation = Riot::Situation.new
+      (topic.rails_context("Hi mom") {}).local_run(Riot::SilentReporter.new, situation)
+      situation
+    end
+
+    asserts("situation.topic") { topic.topic }.nil
+  end # with description as a string
 
   context "for an ActiveRecord object" do
     setup do

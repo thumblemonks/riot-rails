@@ -1,14 +1,20 @@
 *master*
 
+* Added validates_length_of assertion macro (minimalistic) [jaknowlden]
+
+    rails_context Room do
+      asserts_topic.validates_length_of :name, (2..36)
+    end
+
 * Added transactional support to RailsContext. Disabled by default [jaknowlden]
 
-    rails_context Room
+    rails_context Room do
       set :transactional, true
     end
 
 * Added option enabling to RailsContext [jaknowlden]
 
-    rails_context Room
+    rails_context Room do
       set :this, "that"
     end
 

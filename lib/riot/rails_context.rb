@@ -40,7 +40,7 @@ module RiotRails
 
   def self.railsify_context(description, &block)
     new_ctx = yield
-    new_ctx.setup { description.new }
+    new_ctx.setup { description.new } if description.kind_of?(Class)
     new_ctx
   end
 
