@@ -156,5 +156,22 @@ module RiotRails
         end
       end
     end
+
+    class AttributeIsInvalidMacro < ValidationAssertionMacro
+      register :attribute_is_invalid
+
+      def evaluate(actual, attribute, error_message)
+        actual.valid?
+        errors = actual.errors.on(attribute)
+        if errors.nil?
+          fail("#{attribute.inspect} expected to be invalid")
+        elsif errors.include?(error_message)
+          pass("#{attribute.inspect} is invalid")
+        else
+          fail("#{attribute.inspect} is invalid, but #{error_message.inspect} is not a valid error message")
+        end
+      end
+    end
+
   end # ActiveRecord
 end # RiotRails

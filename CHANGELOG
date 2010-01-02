@@ -1,5 +1,11 @@
 *master*
 
+* Added the attribute_is_invalid validation macro [jaknowlden]
+
+    rails_context Room do
+      asserts("location") { topic.location = nil }.attribute_is_invalid(:location, "can't be blank")
+    end
+
 * Added validates_length_of assertion macro (minimalistic) [jaknowlden]
 
     rails_context Room do

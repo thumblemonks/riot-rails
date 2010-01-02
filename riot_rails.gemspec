@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin 'Gus' Knowlden"]
-  s.date = %q{2009-12-31}
+  s.date = %q{2010-01-01}
   s.description = %q{Riot specific test support for Rails apps. Protest the slow app.}
   s.email = %q{gus@gusg.us}
   s.extra_rdoc_files = [
@@ -40,6 +40,7 @@ Gem::Specification.new do |s|
      "test/action_controller/renders_test.rb",
      "test/action_controller/response_status_test.rb",
      "test/active_record/allowing_values_test.rb",
+     "test/active_record/attribute_is_invalid_test.rb",
      "test/active_record/belongs_to_test.rb",
      "test/active_record/has_many_test.rb",
      "test/active_record/validates_length_of_test.rb",
@@ -63,6 +64,7 @@ Gem::Specification.new do |s|
      "test/action_controller/renders_test.rb",
      "test/action_controller/response_status_test.rb",
      "test/active_record/allowing_values_test.rb",
+     "test/active_record/attribute_is_invalid_test.rb",
      "test/active_record/belongs_to_test.rb",
      "test/active_record/has_many_test.rb",
      "test/active_record/validates_length_of_test.rb",
