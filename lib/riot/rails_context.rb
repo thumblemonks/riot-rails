@@ -3,7 +3,15 @@ module RiotRails
   class RailsContext < Riot::Context
     def initialize(description, parent=nil, &definition)
       @options = {:transactional => false, :transaction_helper => ::ActiveRecord::Base}
-      super(description, parent, &definition)
+      super(description.to_s, parent, &definition)
+    end
+
+    # Technically, this is a secret ... but whatever. It's ruby. Basically, just make this setup more
+    # important than any of the others.
+    # 
+    # Yes I can. See ... I just did!
+    def premium_setup(&definition)
+      @setups.unshift(::Riot::Setup.new(&definition)).first;
     end
 
     # Returns true if current context or a parent context has the transactional option enabled. To enable,
@@ -40,27 +48,27 @@ module RiotRails
 
   def self.railsify_context(description, &block)
     new_ctx = yield
-    new_ctx.setup { description.new } if description.kind_of?(Class)
+    new_ctx.premium_setup { description.new } if description.kind_of?(Class)
     new_ctx
   end
 
-  # Things an Object needs at the root level
-  # 
-  #   rails_context SomeKindOfClass do
-  #   end
   module Root
+    # Things an Object needs at the root level
+    # 
+    #   rails_context SomeKindOfClass do
+    #   end
     def rails_context(description, &definition)
       RiotRails.railsify_context(description) { context(description.to_s, RailsContext, &definition) }
     end
   end # Base
 
-  # Things a running context needs
-  # 
-  #   context "Something" do
-  #     rails_context SomeKindOfClass do
-  #     end
-  #   end
   module Context
+    # Things a running context needs
+    # 
+    #   context "Something" do
+    #     rails_context SomeKindOfClass do
+    #     end
+    #   end
     def rails_context(description, &definition)
       RiotRails.railsify_context(description) { new_context(description.to_s, RailsContext, &definition) }
     end

@@ -63,15 +63,15 @@ context "The rails_context macro" do
   context "for an ActiveRecord object" do
     setup do
       situation = Riot::Situation.new
-      (topic.rails_context(Room) {}).local_run(Riot::SilentReporter.new, situation)
-      situation
+      topic.rails_context(Room) do
+        hookup { topic.email = "i.am@chee.se" }
+      end.local_run(Riot::SilentReporter.new, situation)
+      situation.topic
     end
   
-    context "with situational topic" do
-      setup { topic.topic }
-      asserts_topic.kind_of(Room)
-      asserts(:new_record?)
-    end # the situational topic
+    asserts_topic.kind_of(Room)
+    asserts(:new_record?)
+    asserts(:email).equals("i.am@chee.se")
   end # for an ActiveRecord object
 
   context "defined from the root" do
