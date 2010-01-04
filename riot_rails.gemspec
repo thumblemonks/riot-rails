@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin 'Gus' Knowlden"]
-  s.date = %q{2010-01-01}
+  s.date = %q{2010-01-03}
   s.description = %q{Riot specific test support for Rails apps. Protest the slow app.}
   s.email = %q{gus@gusg.us}
   s.extra_rdoc_files = [
@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
      "lib/riot/action_controller/situation_macros.rb",
      "lib/riot/active_record.rb",
      "lib/riot/active_record/assertion_macros.rb",
+     "lib/riot/active_record/database_macros.rb",
      "lib/riot/active_record/reflection_macros.rb",
      "lib/riot/active_record/validation_macros.rb",
      "lib/riot/rails.rb",
@@ -42,6 +43,7 @@ Gem::Specification.new do |s|
      "test/active_record/allowing_values_test.rb",
      "test/active_record/attribute_is_invalid_test.rb",
      "test/active_record/belongs_to_test.rb",
+     "test/active_record/has_database_index_on_test.rb",
      "test/active_record/has_many_test.rb",
      "test/active_record/validates_length_of_test.rb",
      "test/active_record/validates_presence_of_test.rb",
@@ -66,6 +68,7 @@ Gem::Specification.new do |s|
      "test/active_record/allowing_values_test.rb",
      "test/active_record/attribute_is_invalid_test.rb",
      "test/active_record/belongs_to_test.rb",
+     "test/active_record/has_database_index_on_test.rb",
      "test/active_record/has_many_test.rb",
      "test/active_record/validates_length_of_test.rb",
      "test/active_record/validates_presence_of_test.rb",

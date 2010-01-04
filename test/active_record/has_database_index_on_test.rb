@@ -13,7 +13,7 @@ context "The has_database_index_on macro" do
 
     def build_assertion(table, columns, unique=false)
       database_connection = MockConnection.new({table => [ define_index(table, columns, unique) ]})
-      # I'll inject your dependecy! ;)
+      # I'll inject your dependency! ;)
       RiotRails::ActiveRecord::HasDatabaseIndexOnMacro.new(database_connection)
     end
 
