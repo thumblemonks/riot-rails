@@ -51,7 +51,7 @@ class Room < ActiveRecord::Base
   has_many :doors
   has_one :floor
   belongs_to :house
-  belongs_to :owner
+  belongs_to :owner, :class_name => 'SomethingElse'
 
   def self.create_with_good_data(attributes={})
     create!({:location => "a", :email => "a@b.c", :name => "Junior"}.merge(attributes))
@@ -75,7 +75,7 @@ module RiotRails
         topic
       end
     end
-    
+
     def assertion_test_passes(description, success_message=nil, &block)
       should("pass #{description}") do
         instance_eval(&block).run(@situation)

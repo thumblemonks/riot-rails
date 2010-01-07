@@ -1,13 +1,26 @@
+require 'ruby-debug'
 module RiotRails
   module ActiveRecord
   protected
 
     class ReflectionAssertionMacro < Riot::AssertionMacro
     private
-      def assert_reflection(expected, record, attribute)
+      def assert_reflection(expected, record, attribute, options)
+        options ||= {}
         reflection = record.class.reflect_on_association(attribute)
         if !reflection.nil? && (expected == reflection.macro.to_s)
-          pass("#{attribute.inspect} is a #{expected} association")
+          options_matched = options.all? do |k, v|
+            reflection.options[k] == v
+          end
+
+          if options_matched
+            pass("#{attribute.inspect} is a #{expected} association")
+          else
+            options_str = options.map do |k, v|
+              "#{k.inspect} => #{v.inspect}"
+            end.join(", ")
+            fail("should #{expected} #{attribute.inspect} with #{options_str}")
+          end
         else
           fail("#{attribute.inspect} is not a #{expected} association")
         end
@@ -28,13 +41,14 @@ module RiotRails
     #   end
     class HasManyMacro < ReflectionAssertionMacro
       register :has_many
-      
-      def evaluate(actual, attribute)
-        assert_reflection("has_many", actual, attribute)
+
+      def evaluate(actual, *expectings)
+        attribute, options = *expectings
+        assert_reflection("has_many", actual, attribute, options)
       end
     end
 
-    # An ActiveRecord assertion macro that expects to pass when a given attribute is defined as a 
+    # An ActiveRecord assertion macro that expects to pass when a given attribute is defined as a
     # +belongs_to+ association. Will fail if an association is not defined for the attribute or if the
     # association is not +belongs_to+.
     #
@@ -45,9 +59,10 @@ module RiotRails
     #   end
     class BelongsToMacro < ReflectionAssertionMacro
       register :belongs_to
-      
-      def evaluate(actual, attribute)
-        assert_reflection("belongs_to", actual, attribute)
+
+      def evaluate(actual, *expectings)
+        attribute, options = *expectings
+        assert_reflection("belongs_to", actual, attribute, options)
       end
     end
 
