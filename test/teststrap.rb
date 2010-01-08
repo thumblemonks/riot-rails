@@ -48,8 +48,9 @@ class Room < ActiveRecord::Base
   validates_length_of :name, :within => 5..20
   validates_length_of :contents, :within => 0..100, :allow_blank => true
 
-  has_many :doors
-  has_one :floor
+  has_many :doors, :class_name => 'Porthole'
+  has_one :floor, :class_name => "Substrate"
+  has_and_belongs_to_many :walls, :join_table => "floorplans"
   belongs_to :house
   belongs_to :owner, :class_name => 'SomethingElse'
 

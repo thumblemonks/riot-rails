@@ -49,6 +49,24 @@ module RiotRails
     end
 
     # An ActiveRecord assertion macro that expects to pass when a given attribute is defined as a
+    # +has_one+ association. Will fail if an association is not defined for the attribute or if the
+    # association is not +has_one+.
+    #
+    #   context "a Room" do
+    #     setup { Room.new }
+    #
+    #     asserts_topic.has_one(:floor)
+    #   end
+    class HasOneMacro < ReflectionAssertionMacro
+      register :has_one
+
+      def evaluate(actual, *expectings)
+        attribute, options = *expectings
+        assert_reflection("has_one", actual, attribute, options)
+      end
+    end
+
+    # An ActiveRecord assertion macro that expects to pass when a given attribute is defined as a
     # +belongs_to+ association. Will fail if an association is not defined for the attribute or if the
     # association is not +belongs_to+.
     #
@@ -63,6 +81,24 @@ module RiotRails
       def evaluate(actual, *expectings)
         attribute, options = *expectings
         assert_reflection("belongs_to", actual, attribute, options)
+      end
+    end
+
+    # An ActiveRecord assertion macro that expects to pass when a given attribute is defined as a
+    # +has_and_belongs_to_many+ association. Will fail if an association is not defined for the attribute or if the
+    # association is not +has_and_belongs_to_many+.
+    #
+    #   context "a Room" do
+    #     setup { Room.new }
+    #
+    #     asserts_topic.has_and_belongs_to_many(:walls)
+    #   end
+    class HasAndBelongsToManyMacro < ReflectionAssertionMacro
+      register :has_and_belongs_to_many
+
+      def evaluate(actual, *expectings)
+        attribute, options = *expectings
+        assert_reflection("has_and_belongs_to_many", actual, attribute, options)
       end
     end
 
