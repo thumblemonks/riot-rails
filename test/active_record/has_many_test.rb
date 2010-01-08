@@ -15,4 +15,8 @@ context "The has_many assertion macro" do
   should("fail when attribute is not a has_many, but is a has_one association") do
     topic.has_many(:floor).run(Riot::Situation.new)
   end.equals([:fail, ":floor is not a has_many association"])
+
+  should("fail when association options are specified, but they do not match the record") do
+    topic.has_many(:doors, :class_name => "Portal").run(Riot::Situation.new)
+  end.equals([:fail, %q[should has_many :doors with :class_name => "Portal"]])
 end # The has_many assertion macro
