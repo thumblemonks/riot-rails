@@ -38,9 +38,7 @@ context "The rails_context macro" do
 
   asserts("Object") { Object }.respond_to(:rails_context)
 
-  asserts("a new Riot::Context") do
-    Riot::Context.new("foo") {}
-  end.respond_to(:rails_context)
+  asserts("a new Riot::Context") { Riot::Context.new("foo") {} }.respond_to(:rails_context)
 
   asserts("its description") do
     Riot::Context.new("foo") {}.rails_context(Room) {}.description
