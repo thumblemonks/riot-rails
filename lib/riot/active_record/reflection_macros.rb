@@ -5,15 +5,19 @@ module RiotRails
 
     class ReflectionAssertionMacro < Riot::AssertionMacro
     private
-      def options_match?(reflection, options)
+      def reflection_match?(expected, reflection)
+        !reflection.nil? && (expected == reflection.macro.to_s)
+      end
+
+      def options_match_for_reflection?(reflection, options)
         options.all? { |k, v| reflection.options[k] == v }
       end
 
-      def assert_reflection(expected, record, attribute, options={})
+      def assert_reflection(expected, record, attribute, options=nil)
         options ||= {}
         reflection = record.class.reflect_on_association(attribute)
-        if !reflection.nil? && (expected == reflection.macro.to_s)
-          if options_match?(reflection, options)
+        if reflection_match?(expected, reflection)
+          if options_match_for_reflection?(reflection, options)
             pass("#{attribute.inspect} is a #{expected} association")
           else
             fail("expected #{expected} #{attribute.inspect} with #{options.inspect}")
