@@ -18,5 +18,5 @@ context "The has_and_belongs_to_many assertion macro" do
 
   should("fail when association options are specified, but they do not match the record") do
     topic.has_and_belongs_to_many(:walls, :join_table => "blueprints").run(Riot::Situation.new)
-  end.equals([:fail, %q[should has_and_belongs_to_many :walls with :join_table => "blueprints"]])
+  end.equals([:fail, %q[expected has_and_belongs_to_many :walls with :join_table => "blueprints"]])
 end # The has_and_belongs_to_many assertion macro

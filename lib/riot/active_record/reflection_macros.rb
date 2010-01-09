@@ -5,7 +5,7 @@ module RiotRails
 
     class ReflectionAssertionMacro < Riot::AssertionMacro
     private
-      def assert_reflection(expected, record, attribute, options)
+      def assert_reflection(expected, record, attribute, options={})
         options ||= {}
         reflection = record.class.reflect_on_association(attribute)
         if !reflection.nil? && (expected == reflection.macro.to_s)
@@ -19,7 +19,7 @@ module RiotRails
             options_str = options.map do |k, v|
               "#{k.inspect} => #{v.inspect}"
             end.join(", ")
-            fail("should #{expected} #{attribute.inspect} with #{options_str}")
+            fail("expected #{expected} #{attribute.inspect} with #{options_str}")
           end
         else
           fail("#{attribute.inspect} is not a #{expected} association")
@@ -66,23 +66,6 @@ module RiotRails
       end
     end
 
-    # An ActiveRecord assertion macro that expects to pass when a given attribute is defined as a +has_one+
-    # association. Will fail if an association is not defined for the attribute or if the association is
-    # not +has_one+.
-    #
-    #   context "a Room" do
-    #     setup { Room.new }
-    #
-    #     asserts_topic.has_one(:floor)
-    #   end
-    class HasOneMacro < ReflectionAssertionMacro
-      register :has_one
-      
-      def evaluate(actual, attribute)
-        assert_reflection("has_one", actual, attribute)
-      end
-    end
-
     # An ActiveRecord assertion macro that expects to pass when a given attribute is defined as a 
     # +belongs_to+ association. Will fail if an association is not defined for the attribute or if the
     # association is not +belongs_to+.
@@ -102,8 +85,8 @@ module RiotRails
     end
 
     # An ActiveRecord assertion macro that expects to pass when a given attribute is defined as a
-    # +has_and_belongs_to_many+ association. Will fail if an association is not defined for the attribute or if the
-    # association is not +has_and_belongs_to_many+.
+    # +has_and_belongs_to_many+ association. Will fail if an association is not defined for the attribute or 
+    # if the association is not +has_and_belongs_to_many+.
     #
     #   context "a Room" do
     #     setup { Room.new }

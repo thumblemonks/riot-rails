@@ -18,5 +18,5 @@ context "The has_many assertion macro" do
 
   should("fail when association options are specified, but they do not match the record") do
     topic.has_many(:doors, :class_name => "Portal").run(Riot::Situation.new)
-  end.equals([:fail, %q[should has_many :doors with :class_name => "Portal"]])
+  end.equals([:fail, %q[expected has_many :doors with :class_name => "Portal"]])
 end # The has_many assertion macro

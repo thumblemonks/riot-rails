@@ -18,5 +18,5 @@ context "The belongs_to assertion macro" do
 
   should("fail when association options are specified, but they do not match the record") do
     topic.belongs_to(:owner, :class_name => "Person").run(Riot::Situation.new)
-  end.equals([:fail, %q[should belongs_to :owner with :class_name => "Person"]])
+  end.equals([:fail, %q[expected belongs_to :owner with :class_name => "Person"]])
 end # The has_many assertion macro
