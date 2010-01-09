@@ -157,6 +157,13 @@ module RiotRails
       end
     end
 
+    # An ActiveRecord assertion to test that an attribute is invalid along with the expected error message
+    # (or error message partial). The assumption is that a value has already been set.
+    #
+    #    rails_context User do
+    #      hookup { topic.bio = "I'm a goofy clown" }
+    #      asserts_topic.attribute_is_invalid :bio, "cannot contain adjectives"
+    #    end
     class AttributeIsInvalidMacro < ValidationAssertionMacro
       register :attribute_is_invalid
 
