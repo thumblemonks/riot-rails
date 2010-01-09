@@ -18,5 +18,5 @@ context "The has_one assertion macro" do
 
   should("fail when association options are specified, but they do not match the record") do
     topic.has_one(:floor, :class_name => "Surface").run(Riot::Situation.new)
-  end.equals([:fail, %q[expected has_one :floor with :class_name => "Surface"]])
+  end.equals([:fail, %q[expected has_one :floor with {:class_name=>"Surface"}]])
 end # The has_one assertion macro
