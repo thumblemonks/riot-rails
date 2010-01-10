@@ -1,4 +1,3 @@
-require 'riot/rails_context'
 require 'action_controller/test_case'
 require 'action_view/test_case'
 

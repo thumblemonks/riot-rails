@@ -3,7 +3,7 @@ require 'teststrap'
 class FoosController < ActionController::Base
 end
 
-context "A controller test" do
+rails_context "A controller test" do
   controlling :foos
 
   asserts_controller.kind_of(FoosController)
@@ -22,7 +22,7 @@ context "A controller test" do
   end.raises(::ActionController::UnknownAction, "No action responded to burberry")
 end # A controller test
 
-context "A controller test using class as argument" do
+rails_context "A controller test using class as argument" do
   controlling FoosController
 
   asserts_controller.kind_of(FoosController)

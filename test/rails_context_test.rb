@@ -1,6 +1,6 @@
 require 'teststrap'
 
-context "The basic RailsContext " do
+context "The basic RailsContext" do
   setup do
     RiotRails::RailsContext.new("Room") { }
   end
@@ -71,6 +71,19 @@ context "The rails_context macro" do
     asserts(:new_record?)
     asserts(:email).equals("i.am@chee.se")
   end # for an ActiveRecord class
+
+  context "for an ActionController class" do
+    setup do
+      situation = Riot::Situation.new
+      topic.rails_context(RoomsController) {}.local_run(Riot::SilentReporter.new, situation)
+      situation
+    end
+  
+    asserts(:topic).kind_of(::ActionController::TestRequest)
+    asserts_topic.assigns(:request)
+    asserts_topic.assigns(:response)
+    asserts_topic.assigns(:controller)
+  end # for an ActionController class
 
   context "defined from the root" do
     setup do

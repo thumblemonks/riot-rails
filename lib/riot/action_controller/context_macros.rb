@@ -1,4 +1,4 @@
-module Riot #:nodoc:
+module RiotRails #:nodoc:
   module ActionController #:nodoc:
 
     module ContextMacros
@@ -46,6 +46,4 @@ module Riot #:nodoc:
     end # ContextMacros
 
   end # ActionController
-end # Riot
-
-Riot::Context.instance_eval { include Riot::ActionController::ContextMacros }
+end # RiotRails

@@ -16,11 +16,6 @@ Tons of documentation to come. Try looking at the [RDoc](http://rdoc.info/projec
 
     require 'riot/rails'
 
-That will add support for everything Riot Rails supports. If you only need ActiveRecord support - for example - do something like this:
-
-    require 'riot'
-    require 'riot/active_record'
-
 ### ActiveRecord
 
 Awesome stuff in the works. Doc coming soon.

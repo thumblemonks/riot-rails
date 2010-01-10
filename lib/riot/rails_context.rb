@@ -1,6 +1,8 @@
 module RiotRails
   
   class RailsContext < Riot::Context
+    include ActionController::ContextMacros
+
     def initialize(description, parent=nil, &definition)
       @options = {:transactional => false, :transaction_helper => ::ActiveRecord::Base}
       super(description.to_s, parent, &definition)
@@ -48,7 +50,13 @@ module RiotRails
 
   def self.railsify_context(description, &block)
     new_ctx = yield
-    new_ctx.premium_setup { description.new } if description.kind_of?(Class)
+    if description.kind_of?(Class)
+      if description.ancestors.include?(::ActionController::Base)
+        new_ctx.controlling(description)
+      elsif description.ancestors.include?(::ActiveRecord::Base)
+        new_ctx.premium_setup { description.new }
+      end
+    end
     new_ctx
   end
 

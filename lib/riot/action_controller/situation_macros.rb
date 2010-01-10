@@ -1,4 +1,4 @@
-module Riot #:nodoc:
+module RiotRails #:nodoc:
   module ActionController #:nodoc:
 
     module SituationMacros
@@ -6,9 +6,9 @@ module Riot #:nodoc:
     end # SituationMacros
 
   end # ActionController
-end # Riot
+end # RiotRails
 
 Riot::Situation.instance_eval do
   include ActionController::TestProcess
-  include Riot::ActionController::SituationMacros
+  include RiotRails::ActionController::SituationMacros
 end
