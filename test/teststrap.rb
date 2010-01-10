@@ -77,7 +77,7 @@ module RiotRails
       end
     end
 
-    def assertion_test_passes(description, success_message=nil, &block)
+    def assertion_test_passes(description, success_message="", &block)
       should("pass #{description}") do
         instance_eval(&block).run(@situation)
       end.equals([:pass, success_message])

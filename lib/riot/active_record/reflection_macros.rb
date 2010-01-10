@@ -18,12 +18,12 @@ module RiotRails
         reflection = record.class.reflect_on_association(attribute)
         if reflection_match?(expected, reflection)
           if options_match_for_reflection?(reflection, options)
-            pass("#{attribute.inspect} is a #{expected} association")
+            pass new_message(attribute).is_a.push(expected).association
           else
-            fail("expected #{expected} #{attribute.inspect} with #{options.inspect}")
+            fail expected_message.push("#{expected} #{attribute.inspect}").with(options)
           end
         else
-          fail("#{attribute.inspect} is not a #{expected} association")
+          fail new_message(attribute).is_not_a.push(expected).association
         end
       end
     end
