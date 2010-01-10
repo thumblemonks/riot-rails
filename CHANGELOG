@@ -1,5 +1,26 @@
 *master*
 
+* rails_context now recognizes controllers [jaknowlden]
+
+    rails_context RoomsController do
+      setup { get :index }
+      asserts_controller.reponse_status :ok
+    end
+
+  Plus, you can only use controlling within a rails_context now
+  
+    rails_context "rooms" do
+      controlling :rooms
+      setup { get :index }
+      asserts_controller.reponse_status :ok
+    end
+
+* controlling now lets you pass a controller class reference in [jaknowlden]
+
+    rails_context "rooms" do
+      controlling RoomsController
+    end
+
 * Reflection macros now test the options [emschwar]
 
     rails_context Room do
