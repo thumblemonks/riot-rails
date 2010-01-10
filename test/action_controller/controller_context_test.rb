@@ -20,5 +20,10 @@ context "A controller test" do
   asserts("an unknown action call") do
     get :burberry
   end.raises(::ActionController::UnknownAction, "No action responded to burberry")
+end # A controller test
 
-end # a controller test
+context "A controller test using class as argument" do
+  controlling FoosController
+
+  asserts_controller.kind_of(FoosController)
+end # A controller test using class as argument

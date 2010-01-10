@@ -60,7 +60,13 @@ class Room < ActiveRecord::Base
 end
 
 #
-# Test refactorings
+# Controller definition
+
+class RoomsController < ActionController::Base
+end
+
+#
+# What?
 
 require 'riot/rails'
 

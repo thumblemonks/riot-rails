@@ -11,7 +11,7 @@ module Riot #:nodoc:
       #     setup { get :index }
       #   end
       def controlling(controller_name)
-        controller_class = "#{controller_name.to_s.camelize}Controller".constantize
+        controller_class = constantize_controller_name(controller_name)
         setup do
           controller_class.instance_eval { include ::ActionController::TestCase::RaiseActionExceptions }
           @request = ::ActionController::TestRequest.new
@@ -38,6 +38,10 @@ module Riot #:nodoc:
       #   asserts("controller") { controller }.redirected_to { new_foo_path }
       def asserts_controller
         asserts("controller") { controller }
+      end
+    private
+      def constantize_controller_name(name)
+        name.kind_of?(Class) ? name : "#{name.to_s.camelize}Controller".constantize
       end
     end # ContextMacros
 

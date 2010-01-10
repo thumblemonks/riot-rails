@@ -58,7 +58,7 @@ context "The rails_context macro" do
     asserts("situation.topic") { topic.topic }.nil
   end # with description as a string
 
-  context "for an ActiveRecord object" do
+  context "for an ActiveRecord class" do
     setup do
       situation = Riot::Situation.new
       topic.rails_context(Room) do
@@ -70,7 +70,7 @@ context "The rails_context macro" do
     asserts_topic.kind_of(Room)
     asserts(:new_record?)
     asserts(:email).equals("i.am@chee.se")
-  end # for an ActiveRecord object
+  end # for an ActiveRecord class
 
   context "defined from the root" do
     setup do
