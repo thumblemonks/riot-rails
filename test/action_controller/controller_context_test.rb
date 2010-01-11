@@ -1,6 +1,10 @@
 require 'teststrap'
 
 class FoosController < ActionController::Base
+  def index
+    @thing = "hoo ray"
+    render :text => ''
+  end
 end
 
 rails_context "A controller test" do
@@ -30,6 +34,13 @@ rails_context "A controller test using class as argument" do
 end # A controller test using class as argument
 
 rails_context FoosController do
-  hookup { @actual_class_name = topic.class.name }
+  hookup do
+    @actual_class_name = topic.class.name
+    get :index
+  end
+
   asserts("actual class name") { @actual_class_name }.equals("FoosController")
+
+  asserts_assigned(:thing).equals("hoo ray")
+  asserts_assigned(:that).nil
 end # A controller test with a hookup using the controller

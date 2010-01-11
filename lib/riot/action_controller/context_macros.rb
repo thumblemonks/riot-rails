@@ -3,10 +3,9 @@ module RiotRails #:nodoc:
 
     module ContextMacros
       # Sets up a context (and possibly child contexts) for testing a controller. Right now, it just takes a
-      # symbol. Should change to allow you to pass in the class directly. You should put this at or near the
-      # top of your context definition.
+      # symbol. Should change to allow you to pass in the class directly.
       #
-      #   context "the FooBarsController" do
+      #   rails_context "the FooBarsController" do
       #     controlling :foo_bars
       #     setup { get :index }
       #   end
@@ -25,7 +24,7 @@ module RiotRails #:nodoc:
 
       # Creates a shortcut assertion that is to be used with the assertion macros for ActionController.
       #
-      #   context "the FoosController" do
+      #   rails_context "the FoosController" do
       #     controlling :foos
       #     setup { get :index }
       #
@@ -39,6 +38,19 @@ module RiotRails #:nodoc:
       #   asserts("controller") { controller }.redirected_to { new_foo_path }
       def asserts_controller
         asserts("controller") { controller }
+      end
+
+      # Creates a shortcut assertion that returns the value of an assigned variable from the controller
+      #
+      #   rails_context UsersController do
+      #     setup { get :show, :id => 1 }
+      #
+      #     asserts_assigned(:user).kind_of(User)
+      #   end
+      def asserts_assigned(variable)
+        asserts("value assigned to @#{variable}") do
+          @controller.instance_variable_get("@#{variable}".to_sym)
+        end
       end
     private
       def constantize_controller_name(name)

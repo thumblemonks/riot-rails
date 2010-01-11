@@ -1,5 +1,13 @@
 *master*
 
+* Added asserts_assigned context macro [jaknowlden]
+
+    rails_context UsersController do
+      setup { get :show, :id => 1 }
+
+      asserts_assigned(:user).kind_of(User)
+    end
+
 * rails_context now recognizes controllers [jaknowlden]
 
     rails_context RoomsController do
