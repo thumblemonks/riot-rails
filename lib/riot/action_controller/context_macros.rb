@@ -12,13 +12,14 @@ module RiotRails #:nodoc:
       #   end
       def controlling(controller_name)
         controller_class = constantize_controller_name(controller_name)
-        setup do
+        premium_setup do
           controller_class.instance_eval { include ::ActionController::TestCase::RaiseActionExceptions }
           @request = ::ActionController::TestRequest.new
           @response = ::ActionController::TestResponse.new
           @controller = controller_class.new
           @controller.params = {}
           @controller.request = @request
+          @controller
         end
       end
 

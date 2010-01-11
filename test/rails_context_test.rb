@@ -79,7 +79,7 @@ context "The rails_context macro" do
       situation
     end
   
-    asserts(:topic).kind_of(::ActionController::TestRequest)
+    asserts(:topic).kind_of(RoomsController)
     asserts_topic.assigns(:request)
     asserts_topic.assigns(:response)
     asserts_topic.assigns(:controller)

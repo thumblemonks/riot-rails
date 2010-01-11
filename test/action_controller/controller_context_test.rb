@@ -7,6 +7,7 @@ rails_context "A controller test" do
   controlling :foos
 
   asserts_controller.kind_of(FoosController)
+  asserts_topic.kind_of(FoosController)
 
   asserts("request is accessible") { request }.kind_of(::ActionController::TestRequest)
   asserts("response is accessible") { response }.kind_of(::ActionController::TestResponse)
@@ -27,3 +28,8 @@ rails_context "A controller test using class as argument" do
 
   asserts_controller.kind_of(FoosController)
 end # A controller test using class as argument
+
+rails_context FoosController do
+  hookup { @actual_class_name = topic.class.name }
+  asserts("actual class name") { @actual_class_name }.equals("FoosController")
+end # A controller test with a hookup using the controller
