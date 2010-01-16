@@ -55,25 +55,28 @@ module RiotRails
     # status code or the integer code itself. Not currently supporting status ranges; such as: +:success+,
     # +:redirect+, etc.
     #
-    #   controller.response_code(:ok)
-    #   controller.response_code(200)
+    # It's important to note that the actual value provided must respond to +#response_code+. It's best to
+    # run this assertion on the response
+    #
+    #   asserts(:response).code(:ok)
+    #   asserts(:response).code(200)
     #   
-    #   controller.response_code(:not_found)
-    #   controller.response_code(404)
+    #   asserts(:response).code(:not_found)
+    #   asserts(:response).code(404)
     #   
     #   # A redirect
-    #   controller.response_code(:found)
-    #   controller.response_code(302)
+    #   asserts(:response).code(:found)
+    #   asserts(:response).code(302)
     #
     # See +ActionController::StatusCodes+ for the list of available codes.
     class ResponseCodeMacro < Riot::AssertionMacro
-      register :response_code
+      register :code
 
       def evaluate(actual, expected_code)
         if expected_code.kind_of?(Symbol)
           expected_code = ::ActionController::StatusCodes::SYMBOL_TO_STATUS_CODE[expected_code]
         end
-        actual_code = actual.response.response_code
+        actual_code = actual.response_code
         if expected_code == actual_code
           pass("returns response code #{expected_code}")
         else
