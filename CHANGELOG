@@ -1,9 +1,25 @@
 *master*
 
+* Assed asserts_request and asserts_response context macros. They also take a possible method to call.
+  [jaknowlden]
+
+    rails_context UsersController do
+      hookup { get :show, :id => 1 }
+
+      asserts_response.kind_of(ActionController::TestResponse)
+      asserts_response(:body).kind_of(String)
+
+      asserts_request.kind_of(ActionController::TestRequest)
+      asserts_request(:cookies).kind_of(Hash)
+    end
+
+* Controller assertions now no longer assume the actual value is a controller instance. Instead, the actual
+  value is something that should quack like a response. [jaknowlden]
+
 * Added asserts_assigned context macro [jaknowlden]
 
     rails_context UsersController do
-      setup { get :show, :id => 1 }
+      hookup { get :show, :id => 1 }
 
       asserts_assigned(:user).kind_of(User)
     end
@@ -11,7 +27,7 @@
 * rails_context now recognizes controllers [jaknowlden]
 
     rails_context RoomsController do
-      setup { get :index }
+      hookup { get :index }
       asserts_controller.reponse_status :ok
     end
 
@@ -19,7 +35,7 @@
   
     rails_context "rooms" do
       controlling :rooms
-      setup { get :index }
+      hookup { get :index }
       asserts_controller.reponse_status :ok
     end
 
