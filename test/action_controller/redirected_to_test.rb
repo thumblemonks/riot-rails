@@ -19,23 +19,23 @@ context "Asserting the redirect of an action" do
   end
 
   context "when doing an actual redirect" do
-    setup_for_assertion_test { get :index }
+    hookup_for_assertion_test { get :index }
 
     assertion_test_passes("when expected url matches actual redirect url", "redirected to /gremlins/new") do
-      topic.asserts_controller.redirected_to { new_gremlin_path }
+      topic.asserts(:response).redirected_to { new_gremlin_path }
     end
 
     assertion_test_fails("when expected url does not exactly match actual redirect url",
     "expected to redirect to <http://test.host/gremlins/new>, not </gremlins/new>") do
-      topic.asserts_controller.redirected_to { new_gremlin_url }
+      topic.asserts(:response).redirected_to { new_gremlin_url }
     end
   end # when doing an actual redirect
 
   context "when not actually doing a redirect" do
-    setup_for_assertion_test { get :show }
+    hookup_for_assertion_test { get :show }
     assertion_test_fails("with message about expecting a redirect",
     "expected response to be a redirect, but was 200") do
-      topic.asserts_controller.redirected_to { new_gremlin_path }
+      topic.asserts(:response).redirected_to { new_gremlin_path }
     end
   end # when not actually doing a redirect
 end # Asserting the redirect of an action

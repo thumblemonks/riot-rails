@@ -17,7 +17,7 @@ module RiotRails
           pass
         else
           verb = expected.kind_of?(Regexp) ? "match" : "equal"
-          fail("expected response body #{actual_body.inspect} to #{verb} #{expected.inspect}")
+          fail expected_message.response_body(actual_body).to.push("#{verb} #{expected.inspect}")
         end
       end
     end
@@ -44,9 +44,9 @@ module RiotRails
         actual_template_path = actual.rendered[:template].to_s
         actual_template_name = File.basename(actual_template_path)
         if actual_template_name.to_s.match(/^#{name}(\.\w+)*$/)
-          pass("renders template #{name.inspect}")
+          pass new_message.renders_template(name)
         else
-          fail("expected template #{name.inspect}, not #{actual_template_path.inspect}")
+          fail expected_message.template(name).not(actual_template_path)
         end
       end
     end
@@ -86,28 +86,31 @@ module RiotRails
     end
 
     # Asserts that the response from an action is a redirect and that the path or URL matches your
-    # expectations. If the response code is not in the 300s, the assertion will fail. If the reponse code
+    # expectations. If the response code is not in the 300s, the assertion will fail. If the ressponse code
     # is fine, but the redirect-to path or URL do not exactly match your expectation, the assertion will
     # fail.
     #
-    # +redirected_to+ expects you to provide your expected path in a lambda. This is so you can use named
-    # routes, which are - as it turns out - handy. It's also what I would expect to be able to do.
+    # In order to use named routes which are handy, provide the path in a block. +redirected_to+ expects the
+    # actual value to quack like a response object, which means it must respond to +response_code+ and
+    # +redirected_to+.
     #
-    #   controlling :people
-    #   setup do
-    #     post :create, :person { ... }
+    #   rails_context PeopleController do
+    #     hookup do
+    #       post :create, :person { ... }
+    #     end
+    #
+    #     asserts(:response).redirected_to { person_path(...) }
     #   end
-    #
-    #   controller.redirected_to { person_path(...) }
     #
     # PS: There is a difference between saying +named_route_path+ and +named_route_url+ and Riot Rails will
     # be very strict (read: annoying) about it :)
     class RedirectedToMacro < Riot::AssertionMacro
       register :redirected_to
+
       def evaluate(actual, expected_redirect)
-        actual_response_code = actual.response.response_code
+        actual_response_code = actual.response_code
         if (300...400).member?(actual_response_code)
-          actual_redirect = actual.url_for(actual.response.redirected_to)
+          actual_redirect = actual.redirected_to
           msg = "expected to redirect to <#{expected_redirect}>, not <#{actual_redirect}>"
           expected_redirect == actual_redirect ? pass("redirected to #{expected_redirect}") : fail(msg)
         else
