@@ -43,4 +43,10 @@ rails_context FoosController do
 
   asserts_assigned(:thing).equals("hoo ray")
   asserts_assigned(:that).nil
+
+  asserts_response.kind_of(ActionController::TestResponse)
+  asserts_response(:response_code).equals(200)
+
+  asserts_request.kind_of(ActionController::TestRequest)
+  asserts_request(:cookies).kind_of(Hash)
 end # A controller test with a hookup using the controller

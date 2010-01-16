@@ -70,6 +70,8 @@ end
 
 require 'riot/rails'
 
+Riot.dots if ENV["TM_MODE"]
+
 module RiotRails
   module Context
     def setup_test_context(context_description="test context")
