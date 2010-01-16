@@ -1,15 +1,18 @@
 module RiotRails
   module ActionController
-    # Asserts that the body of the response equals or matches the expected expression. Expects actual to
-    # be the controller.
+    # Asserts that calling body on whatever is passed in matches the expected value. Expected value can be a
+    # literal string or a regular expression. It makes most sense to provide this macro with the response.
     #
-    #   controller.renders("a bunch of html")
-    #   controller.renders(/bunch of/)
+    #   rails_context UsersController do
+    #     hookup { get :index }
+    #     asserts(:response).renders("a bunch of html")
+    #     asserts(:response).renders(/bunch of/)
+    #   end
     class RendersMacro < Riot::AssertionMacro
       register :renders
 
       def evaluate(actual, expected)
-        actual_body = actual.response.body
+        actual_body = actual.body
         if (expected.kind_of?(Regexp) ? (actual_body =~ expected) : (expected == actual_body))
           pass
         else
@@ -22,18 +25,23 @@ module RiotRails
     # Asserts that the name you provide is the basename of the rendered template. For instance, if you
     # expect the rendered template is named "foo_bar.html.haml" and you pass "foo_bar" into
     # renders_template, the assertion would pass. If instead you pass "foo" into renders_template, the
-    # assertion will fail. Using Rails' assert_template both assertions would pass
+    # assertion will fail. Using Rails' assert_template both assertions would pass.
     #
-    #   controlling :things
-    #   controller.renders_template(:index)
-    #   controller.renders_template("index")
-    #   controller.renders_template("index.erb") # fails even if that's the name of the template
+    # It's important to note that the actual value provided must respond to +#rendered+. It's best to run
+    # this assertion on the response
+    #
+    #   rails_context ThingsController do
+    #     hookup { get :index }
+    #     asserts(:response).renders_template(:index)
+    #     asserts(:response).renders_template("index")
+    #     asserts(:response).renders_template("index.erb") # fails even if that's the name of the template
+    #   end
     class RendersTemplateMacro < Riot::AssertionMacro
       register :renders_template
       
       def evaluate(actual, expected_name)
         name = expected_name.to_s
-        actual_template_path = actual.response.rendered[:template].to_s
+        actual_template_path = actual.rendered[:template].to_s
         actual_template_name = File.basename(actual_template_path)
         if actual_template_name.to_s.match(/^#{name}(\.\w+)*$/)
           pass("renders template #{name.inspect}")

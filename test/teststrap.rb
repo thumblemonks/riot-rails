@@ -77,10 +77,11 @@ module RiotRails
     end
 
     def setup_for_assertion_test(&block)
-      setup do
-        topic.setup(&block).run(@situation)
-        topic
-      end
+      hookup { topic.setup(&block).run(@situation) }
+    end
+
+    def hookup_for_assertion_test(&block)
+      hookup { topic.hookup(&block).run(@situation) }
     end
 
     def assertion_test_passes(description, success_message="", &block)
