@@ -10,13 +10,13 @@ context "The has_one assertion macro" do
 
   should("fail when record does not have a has_one association defined for attribute") do
     topic.has_one(:windows).run(Riot::Situation.new)
-  end.equals([:fail, ":windows is not a has_one association"])
+  end.equals([:fail, ":windows is not a has_one association", blah, blah])
 
   should("fail when attribute is not a has_one, but is a has_many association") do
     topic.has_one(:doors).run(Riot::Situation.new)
-  end.equals([:fail, ":doors is not a has_one association"])
+  end.equals([:fail, ":doors is not a has_one association", blah, blah])
 
   should("fail when association options are specified, but they do not match the record") do
     topic.has_one(:floor, :class_name => "Surface").run(Riot::Situation.new)
-  end.equals([:fail, %q[expected has_one :floor with {:class_name=>"Surface"}]])
+  end.equals([:fail, %q[expected has_one :floor with {:class_name=>"Surface"}], blah, blah])
 end # The has_one assertion macro

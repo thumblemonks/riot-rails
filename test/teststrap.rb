@@ -1,8 +1,8 @@
 $:.unshift File.join(File.dirname(__FILE__), "..", "lib")
 
 require 'rubygems'
-require 'active_record'
-require 'action_controller'
+# require 'active_record'
+# require 'action_controller'
 
 class NilIO
   def write(*args); end
@@ -25,18 +25,19 @@ end
 #
 # Setup faux Rails environment
 
-RAILS_ROOT = File.join(File.dirname(__FILE__), 'rails_root')
-
-require File.join(RAILS_ROOT, "config", "routes.rb")
+ENV['RAILS_ENV'] = 'test'
+ENV['RAILS_ROOT'] = File.join(File.dirname(__FILE__), 'rails_root')
+require File.join(ENV['RAILS_ROOT'], "config", "environment")
 
 shhh do
+  require 'sqlite3'
   ActiveRecord::Base.configurations = {"test" => { "adapter" => "sqlite3", "database" => ":memory:"}}
   ActiveRecord::Base.establish_connection("test")
-  load(File.join(RAILS_ROOT, "db", "schema.rb"))
+  load(File.join(ENV['RAILS_ROOT'], "db", "schema.rb"))
 end
 
 ActiveRecord::Base.logger = Logger.new(NilIO.new)
-ActionController::Base.view_paths = [File.join(RAILS_ROOT, 'app', 'views')]
+ActionController::Base.view_paths = [File.join(Rails.root, 'app', 'views')]
 
 #
 # Model definition
@@ -67,6 +68,16 @@ end
 
 #
 # What?
+
+class Blah
+  def ==(o) true; end
+  def inspect; "<blah>"; end
+  alias :to_s :inspect
+end
+
+class Object
+  def blah; Blah.new; end
+end
 
 require 'riot/rails'
 

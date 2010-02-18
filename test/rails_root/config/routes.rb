@@ -1,5 +1,4 @@
-ActionController::Routing::Routes.draw do |map|
-  map.resources :gremlins
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
+RiotRails::Application.routes.draw do |map|
+  resources :gremlins
+  match ':controller(/:action(/:id(.:format)))'
 end

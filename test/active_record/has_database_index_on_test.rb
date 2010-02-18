@@ -24,21 +24,21 @@ context "The has_database_index_on macro" do
 
   should("fail when no index for column") do
     topic.has_database_index_on(:foo).run(Riot::Situation.new)
-  end.equals([:fail, %Q{expected index on [:foo]}])
+  end.equals([:fail, %Q{expected index on [:foo]}, blah, blah])
 
   should("fail when no index for column set") do
     topic.has_database_index_on(:foo, :bar).run(Riot::Situation.new)
-  end.equals([:fail, %Q{expected index on [:foo, :bar]}])
+  end.equals([:fail, %Q{expected index on [:foo, :bar]}, blah, blah])
 
   should("fail when index found for column, but it's not unique") do
     build_assertion("rooms", ["foo"], false).
       evaluate(Room.new, :foo, :unique => true)
-  end.equals([:fail, %Q{expected unique index on [:foo]}])
+  end.equals([:fail, %Q{expected unique index on [:foo]}, blah, blah])
 
   should("fail when index found for column, but it's unique and should not be") do
     build_assertion("rooms", ["foo"], true).
       evaluate(Room.new, :foo, :unique => false)
-  end.equals([:fail, %Q{expected index on [:foo]}])
+  end.equals([:fail, %Q{expected index on [:foo]}, blah, blah])
 
   should("pass when index found for column") do
     build_assertion("rooms", ["foo"], false).

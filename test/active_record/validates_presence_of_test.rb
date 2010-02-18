@@ -10,5 +10,5 @@ context "The validates_presence_of assertion macro" do
 
   should("fail when attribute does not require presence") do
     topic.validates_presence_of(:contents).run(Riot::Situation.new)
-  end.equals([:fail, "expected to validate presence of :contents"])
+  end.equals([:fail, "expected to validate presence of :contents", blah, blah])
 end # The validates_presence_of assertion macro

@@ -6,19 +6,19 @@ context "The validates_length_of assertion macro" do
 
   should("fail when minimum length causes an error") do
     topic.validates_length_of(:name, (4..15)).run(Riot::Situation.new)
-  end.equals([:fail, ":name should be able to be 4 characters"])
+  end.equals([:fail, ":name should be able to be 4 characters", blah, blah])
 
   should("fail when value less than minimum value does not cause an error") do
     topic.validates_length_of(:name, (6..15)).run(Riot::Situation.new)
-  end.equals([:fail, ":name expected to be more than 5 characters"])
+  end.equals([:fail, ":name expected to be more than 5 characters", blah, blah])
 
   should("fail when maximum length causes an error") do
     topic.validates_length_of(:name, (5..21)).run(Riot::Situation.new)
-  end.equals([:fail, ":name should be able to be 21 characters"])
+  end.equals([:fail, ":name should be able to be 21 characters", blah, blah])
 
   should("fail when value greater than maximum value does not cause an error") do
     topic.validates_length_of(:name, (5..19)).run(Riot::Situation.new)
-  end.equals([:fail, ":name expected to be less than 20 characters"])
+  end.equals([:fail, ":name expected to be less than 20 characters", blah, blah])
 
   should("pass when only a value can only be within the specific range") do
     topic.validates_length_of(:name, (5..20)).run(Riot::Situation.new)

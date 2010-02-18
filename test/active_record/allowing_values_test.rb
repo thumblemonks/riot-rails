@@ -14,7 +14,7 @@ context "The allow_values_for assertion macro" do
 
   should("fail when attribute is provided a valid and an invalid value") do
     topic.allows_values_for(:email, "a", "e@f.gh").run(Riot::Situation.new)
-  end.equals([:fail, %Q{expected :email to allow values ["a"]}])
+  end.equals([:fail, %Q{expected :email to allow values ["a"]}, blah, blah])
 end # The allow_values_for assertion macro
 
 context "The does_not_allow_values_for assertion macro" do
@@ -31,7 +31,7 @@ context "The does_not_allow_values_for assertion macro" do
 
   should("fail when attribute is provided a valid and an invalid value") do
     topic.does_not_allow_values_for(:email, "a", "e@f.gh").run(Riot::Situation.new)
-  end.equals([:fail, %Q{expected :email not to allow values ["e@f.gh"]}])
+  end.equals([:fail, %Q{expected :email not to allow values ["e@f.gh"]}, blah, blah])
 end # The does_not_allow_values_for assertion macro
 
 context "The is_invalid_when assertion macro" do
@@ -52,13 +52,13 @@ context "The is_invalid_when assertion macro" do
 
   should("fail when attribute is valid") do
     topic.is_invalid_when(:email, "a@b.cd", "is invalid").run(Riot::Situation.new)
-  end.equals([:fail, %Q{expected :email to be invalid when value is "a@b.cd"}])
+  end.equals([:fail, %Q{expected :email to be invalid when value is "a@b.cd"}, blah, blah])
 
   should("fail when exact error message not found") do
     topic.is_invalid_when(:email, "fake", "can't be blank").run(Riot::Situation.new)
-  end.equals([:fail, %Q{expected :email to be invalid with error message "can't be blank"}])
+  end.equals([:fail, %Q{expected :email to be invalid with error message "can't be blank"}, blah, blah])
 
   should("fail when error message not matched to returned errors") do
     topic.is_invalid_when(:email, "fake", /blank/).run(Riot::Situation.new)
-  end.equals([:fail, %Q{expected :email to be invalid with error message /blank/}])
+  end.equals([:fail, %Q{expected :email to be invalid with error message /blank/}, blah, blah])
 end # The is_invalid_when assertion macro

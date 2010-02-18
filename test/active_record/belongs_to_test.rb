@@ -10,13 +10,13 @@ context "The belongs_to assertion macro" do
 
   should("fail when record does not have a belongs_to association defined for attribute") do
     topic.belongs_to(:someone_else).run(Riot::Situation.new)
-  end.equals([:fail, ":someone_else is not a belongs_to association"])
+  end.equals([:fail, ":someone_else is not a belongs_to association", blah, blah])
 
   should("fail when attribute is not a belongs_to, but is a has_one association") do
     topic.belongs_to(:floor).run(Riot::Situation.new)
-  end.equals([:fail, ":floor is not a belongs_to association"])
+  end.equals([:fail, ":floor is not a belongs_to association", blah, blah])
 
   should("fail when association options are specified, but they do not match the record") do
     topic.belongs_to(:owner, :class_name => "Person").run(Riot::Situation.new)
-  end.equals([:fail, %q[expected belongs_to :owner with {:class_name=>"Person"}]])
+  end.equals([:fail, %q[expected belongs_to :owner with {:class_name=>"Person"}], blah, blah])
 end # The has_many assertion macro

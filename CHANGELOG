@@ -1,6 +1,6 @@
-*master*
+*0.0.9.pre*
 
-* Assed asserts_request and asserts_response context macros. They also take a possible method to call.
+* Added asserts_request and asserts_response context macros. They also take a possible method to call.
   [jaknowlden]
 
     rails_context UsersController do

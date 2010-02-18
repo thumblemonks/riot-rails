@@ -4,10 +4,15 @@ module RiotRails
 
     class ValidationAssertionMacro < Riot::AssertionMacro
     private
-      def error_from_writing_value(model, attribute, value)
-        model.write_attribute(attribute, value)
+      def errors_from_writing_value(model, attribute, value)
+        # TODO: Fix me to not use __send__
+        model.__send__(:write_attribute, attribute, value)
         model.valid?
-        model.errors.on(attribute)
+        model.errors[attribute]
+      end
+
+      def errors_from_writing_value?(*args)
+        errors_from_writing_value(*args).any?
       end
     end
 
@@ -26,7 +31,7 @@ module RiotRails
       def evaluate(actual, attribute, *values)
         bad_values = []
         values.each do |value|
-          bad_values << value if error_from_writing_value(actual, attribute, value)
+          bad_values << value if errors_from_writing_value?(actual, attribute, value)
         end
         bad_values.empty? ? pass : fail(expected_message(attribute).to_allow_values(bad_values))
       end
@@ -44,7 +49,7 @@ module RiotRails
       def evaluate(actual, attribute, *values)
         good_values = []
         values.each do |value|
-          good_values << value unless error_from_writing_value(actual, attribute, value)
+          good_values << value unless errors_from_writing_value?(actual, attribute, value)
         end
         good_values.empty? ? pass : fail(expected_message(attribute).not_to_allow_values(good_values))
       end
@@ -61,7 +66,7 @@ module RiotRails
       register :is_invalid_when
 
       def evaluate(actual, attribute, value, expected_error=nil)
-        actual_errors = Array(error_from_writing_value(actual, attribute, value))
+        actual_errors = errors_from_writing_value(actual, attribute, value)
         if actual_errors.empty?
           fail expected_message(attribute).to_be_invalid_when_value_is(value)
         elsif expected_error && !has_error_message?(expected_error, actual_errors)
@@ -87,7 +92,7 @@ module RiotRails
       register :validates_presence_of
 
       def evaluate(actual, attribute)
-        if error_from_writing_value(actual, attribute, nil)
+        if errors_from_writing_value?(actual, attribute, nil)
           pass new_message.validates_presence_of(attribute)
         else
           fail expected_message.to_validate_presence_of(attribute)
@@ -113,10 +118,10 @@ module RiotRails
         else
           copied_model = actual_record.class.new
           actual_record.attributes.each do |dup_attribute, dup_value|
-            copied_model.write_attribute(dup_attribute, dup_value)
+            copied_model.__send__(:write_attribute, dup_attribute, dup_value)
           end
-          copied_value = actual_record.read_attribute(attribute)
-          if error_from_writing_value(copied_model, attribute, copied_value)
+          copied_value = actual_record.__send__(:read_attribute, attribute)
+          if errors_from_writing_value?(copied_model, attribute, copied_value)
             pass new_message(attribute).is_unique
           else
             fail expected_message.to_fail_because(attribute).is_not_unique
@@ -140,13 +145,14 @@ module RiotRails
       def evaluate(actual, attribute, range)
         min, max = range.first, range.last
         [min, max].each do |length|
-          errors = error_from_writing_value(actual, attribute, "r" * length)
-          return fail(new_message(attribute).should_be_able_to_be(length).characters) if errors
+          if errors_from_writing_value?(actual, attribute, "r" * length)
+            return fail(new_message(attribute).should_be_able_to_be(length).characters)
+          end
         end
 
-        if (min-1) > 0 && error_from_writing_value(actual, attribute, "r" * (min-1)).nil?
+        if (min-1) > 0 && !errors_from_writing_value?(actual, attribute, "r" * (min-1))
           fail new_message(attribute).expected_to_be_more_than(min - 1).characters
-        elsif error_from_writing_value(actual, attribute, "r" * (max+1)).nil?
+        elsif !errors_from_writing_value?(actual, attribute, "r" * (max+1))
           fail new_message(attribute).expected_to_be_less_than(max + 1).characters
         else
           pass new_message.validates_length_of(attribute).is_within(range)
@@ -166,8 +172,8 @@ module RiotRails
 
       def evaluate(actual, attribute, error_message)
         actual.valid?
-        errors = actual.errors.on(attribute)
-        if errors.nil?
+        errors = actual.errors[attribute]
+        if errors.empty?
           fail new_message(attribute).expected_to_be_invalid
         elsif errors.include?(error_message)
           pass new_message(attribute).is_invalid
