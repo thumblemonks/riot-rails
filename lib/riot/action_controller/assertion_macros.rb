@@ -41,9 +41,9 @@ module RiotRails
       
       def evaluate(actual, expected_name)
         name = expected_name.to_s
-        actual_template_path = actual.rendered[:template].to_s
+        actual_template_path = Array(actual.template.rendered[:template]).map(&:inspect).first.to_s # yuck
         actual_template_name = File.basename(actual_template_path)
-        if actual_template_name.to_s.match(/^#{name}(\.\w+)*$/)
+        if actual_template_name.to_s.match(%r[^#{name}(\.\w+)*$])
           pass new_message.renders_template(name)
         else
           fail expected_message.template(name).not(actual_template_path)
@@ -74,7 +74,7 @@ module RiotRails
 
       def evaluate(actual, expected_code)
         if expected_code.kind_of?(Symbol)
-          expected_code = ::ActionController::StatusCodes::SYMBOL_TO_STATUS_CODE[expected_code]
+          expected_code = ::Rack::Utils::SYMBOL_TO_STATUS_CODE[expected_code]
         end
         actual_code = actual.response_code
         if expected_code == actual_code

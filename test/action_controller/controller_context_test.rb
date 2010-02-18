@@ -26,7 +26,7 @@ rails_context "A controller test" do
 
   asserts("an unknown action call") do
     get :burberry
-  end.raises(::ActionController::UnknownAction, "No action responded to burberry")
+  end.raises(::ActionController::UnknownAction, "The action 'burberry' could not be found")
 end # A controller test
 
 rails_context "A controller test using class as argument" do

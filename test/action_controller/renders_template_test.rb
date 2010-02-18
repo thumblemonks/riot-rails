@@ -17,12 +17,12 @@ context "Asserting the rendered template for an action" do
     hookup_for_assertion_test { get :foo_bar }
 
     assertion_test_passes("when rendered template name matches expectation", %Q{renders template "foo_bar"}) do
-      topic.asserts(:response).renders_template('foo_bar')
+      topic.asserts_controller.renders_template('foo_bar')
     end
 
     assertion_test_fails("when rendered template does not match expectation",
-    %Q{expected template "bar_foo", not "rendered_templates/foo_bar.html.erb"}) do
-      topic.asserts(:response).renders_template('bar_foo')
+    %Q{expected template "bar_foo", not "app/views/rendered_templates/foo_bar.html.erb"}) do
+      topic.asserts_controller.renders_template('bar_foo')
     end
   end # that rendered a template
 
@@ -30,18 +30,18 @@ context "Asserting the rendered template for an action" do
     hookup_for_assertion_test { get :text_me }
 
     assertion_test_passes("when providing nil as expectation", %Q{renders template ""}) do
-      topic.asserts(:response).renders_template(nil)
+      topic.asserts_controller.renders_template(nil)
     end
 
     assertion_test_passes("when providing empty string as expectation", %Q{renders template ""}) do
-      topic.asserts(:response).renders_template("")
+      topic.asserts_controller.renders_template("")
     end
   end # that did not render a template, as was expected
 
   context "that did not render a template but expected one" do
     hookup_for_assertion_test { get :text_me }
     assertion_test_fails("with message", %Q{expected template "text_me", not ""}) do
-      topic.asserts(:response).renders_template('text_me')
+      topic.asserts_controller.renders_template('text_me')
     end
   end # that did not render a template but expected one
 
@@ -49,8 +49,8 @@ context "Asserting the rendered template for an action" do
     hookup_for_assertion_test { get :foo_bar }
 
     assertion_test_fails("with message",
-    %Q{expected template "foo", not "rendered_templates/foo_bar.html.erb"}) do
-      topic.asserts(:response).renders_template('foo')
+    %Q{expected template "foo", not "app/views/rendered_templates/foo_bar.html.erb"}) do
+      topic.asserts_controller.renders_template('foo')
     end
   end # that rendered a template with a partial match on template name
 
