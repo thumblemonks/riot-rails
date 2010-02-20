@@ -110,7 +110,7 @@ module RiotRails
       def evaluate(actual, expected_redirect)
         actual_response_code = actual.response_code
         if (300...400).member?(actual_response_code)
-          actual_redirect = actual.redirected_to
+          actual_redirect = actual.redirect_url
           msg = "expected to redirect to <#{expected_redirect}>, not <#{actual_redirect}>"
           expected_redirect == actual_redirect ? pass("redirected to #{expected_redirect}") : fail(msg)
         else

@@ -71,6 +71,9 @@ module RiotRails #:nodoc:
 end # RiotRails
 
 Riot::Situation.instance_eval do
-  include ActionDispatch::TestProcess
   include RiotRails::ActionController::HttpSupport
+  # include ActionDispatch::TestProcess
+  Rails::Application.routes.named_routes.install(self)
+  include ActionController::UrlFor
+  default_url_options[:host] = "test.host"
 end
