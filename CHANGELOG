@@ -4,13 +4,9 @@
 
     module RiotRails
       register_context_helper do
-        def can_help?(description)
-          # some code to determine if this is the right handler for the context's description
-        end
-
         def prepare_context(original_description, context)
           # ...
-          context.<do-something-before-the-context-runs>
+          context.<do-something-before-the-context-runs-if-you-want-to>
           # ...
         end
       end

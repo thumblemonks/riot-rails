@@ -4,11 +4,8 @@ module RiotRails
     helpers << Class.new(&handler_block).new
   end
 
-  def self.railsify_context(description, &block)
-    new_ctx = yield
-    handler = helpers.detect { |handler| handler.can_help?(description) }
-    handler.prepare_context(description, new_ctx) if handler
-    new_ctx
+  def self.railsify_context(description, context)
+    helpers.each { |helper| helper.prepare_context(description, context) }
   end
 
   class RailsContext < Riot::Context
@@ -64,7 +61,9 @@ module RiotRails
     #   rails_context SomeKindOfClass do
     #   end
     def rails_context(description, &definition)
-      RiotRails.railsify_context(description) { context(description.to_s, RailsContext, &definition) }
+      context = context(description.to_s, RailsContext, &definition)
+      RiotRails.railsify_context(description, context)
+      context
     end
   end # Root
 
@@ -76,7 +75,9 @@ module RiotRails
     #     end
     #   end
     def rails_context(description, &definition)
-      RiotRails.railsify_context(description) { new_context(description.to_s, RailsContext, &definition) }
+      context = new_context(description.to_s, RailsContext, &definition)
+      RiotRails.railsify_context(description, context)
+      context
     end
   end # Context
 end # RiotRails
