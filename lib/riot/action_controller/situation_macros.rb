@@ -1,6 +1,7 @@
 module RiotRails #:nodoc:
   module ActionController #:nodoc:
 
+    # Nabbed form actionpack-3.0.0.beta
     module HttpSupport
       attr_reader :controller, :request, :response
       
@@ -72,7 +73,8 @@ end # RiotRails
 
 Riot::Situation.instance_eval do
   include RiotRails::ActionController::HttpSupport
-  # include ActionDispatch::TestProcess
+
+  # Making routes work in the situation
   Rails::Application.routes.named_routes.install(self)
   include ActionController::UrlFor
   default_url_options[:host] = "test.host"

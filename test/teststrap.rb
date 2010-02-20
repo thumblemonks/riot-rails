@@ -47,7 +47,12 @@ class Object
   def blah; Blah.new; end
 end
 
+#
+# Riot setup
+
 require 'riot/rails'
+require 'riot/active_record'
+require 'riot/action_controller'
 
 Riot.dots if ENV["TM_MODE"]
 

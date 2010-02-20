@@ -86,5 +86,8 @@ module RiotRails #:nodoc:
       end
     end # ContextMacros
 
+    # We do this everywhere because you never know when someone might define a rails_context that doesn't
+    # automatically translate to an ActionController context
+    RailsContext.instance_eval { include ContextMacros }
   end # ActionController
 end # RiotRails
