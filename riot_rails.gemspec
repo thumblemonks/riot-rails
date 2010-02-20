@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{riot_rails}
-  s.version = "0.0.8"
+  s.version = "0.0.9.pre"
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin 'Gus' Knowlden"]
-  s.date = %q{2010-01-15}
+  s.date = %q{2010-02-20}
   s.description = %q{Riot specific test support for Rails apps. Protest the slow app.}
   s.email = %q{gus@gusg.us}
   s.extra_rdoc_files = [
@@ -78,6 +78,7 @@ Gem::Specification.new do |s|
      "test/active_record/validates_presence_of_test.rb",
      "test/active_record/validates_uniqueness_of_test.rb",
      "test/rails_context_test.rb",
+     "test/rails_root/config/environment.rb",
      "test/rails_root/config/routes.rb",
      "test/rails_root/db/schema.rb",
      "test/teststrap.rb"
@@ -88,15 +89,18 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<riot>, [">= 0.10.2"])
-      s.add_development_dependency(%q<activerecord>, [">= 2.3.2"])
+      s.add_runtime_dependency(%q<riot>, [">= 0.10.13.pre"])
+      s.add_development_dependency(%q<activerecord>, [">= 3.0.0.pre"])
+      s.add_development_dependency(%q<actionpack>, [">= 3.0.0.pre"])
     else
-      s.add_dependency(%q<riot>, [">= 0.10.2"])
-      s.add_dependency(%q<activerecord>, [">= 2.3.2"])
+      s.add_dependency(%q<riot>, [">= 0.10.13.pre"])
+      s.add_dependency(%q<activerecord>, [">= 3.0.0.pre"])
+      s.add_dependency(%q<actionpack>, [">= 3.0.0.pre"])
     end
   else
-    s.add_dependency(%q<riot>, [">= 0.10.2"])
-    s.add_dependency(%q<activerecord>, [">= 2.3.2"])
+    s.add_dependency(%q<riot>, [">= 0.10.13.pre"])
+    s.add_dependency(%q<activerecord>, [">= 3.0.0.pre"])
+    s.add_dependency(%q<actionpack>, [">= 3.0.0.pre"])
   end
 end
 
