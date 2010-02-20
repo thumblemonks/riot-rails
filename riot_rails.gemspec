@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{riot_rails}
-  s.version = "0.0.8"
+  s.version = "0.0.9.pre"
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin 'Gus' Knowlden"]
-  s.date = %q{2010-01-15}
+  s.date = %q{2010-02-20}
   s.description = %q{Riot specific test support for Rails apps. Protest the slow app.}
   s.email = %q{gus@gusg.us}
   s.extra_rdoc_files = [
@@ -24,10 +24,12 @@ Gem::Specification.new do |s|
      "VERSION",
      "lib/riot/action_controller.rb",
      "lib/riot/action_controller/assertion_macros.rb",
+     "lib/riot/action_controller/context_helper.rb",
      "lib/riot/action_controller/context_macros.rb",
      "lib/riot/action_controller/situation_macros.rb",
      "lib/riot/active_record.rb",
      "lib/riot/active_record/assertion_macros.rb",
+     "lib/riot/active_record/context_helper.rb",
      "lib/riot/active_record/database_macros.rb",
      "lib/riot/active_record/reflection_macros.rb",
      "lib/riot/active_record/validation_macros.rb",
@@ -52,6 +54,7 @@ Gem::Specification.new do |s|
      "test/active_record/validates_uniqueness_of_test.rb",
      "test/rails_context_test.rb",
      "test/rails_root/app/views/rendered_templates/foo_bar.html.erb",
+     "test/rails_root/config/environment.rb",
      "test/rails_root/config/routes.rb",
      "test/rails_root/db/schema.rb",
      "test/teststrap.rb"
@@ -78,6 +81,7 @@ Gem::Specification.new do |s|
      "test/active_record/validates_presence_of_test.rb",
      "test/active_record/validates_uniqueness_of_test.rb",
      "test/rails_context_test.rb",
+     "test/rails_root/config/environment.rb",
      "test/rails_root/config/routes.rb",
      "test/rails_root/db/schema.rb",
      "test/teststrap.rb"

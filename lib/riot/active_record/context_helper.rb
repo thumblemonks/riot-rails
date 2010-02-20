@@ -1,7 +1,7 @@
 module RiotRails
   register_context_helper do
-    def prepare_context(description, context)
-      context.premium_setup { description.new } if active_record_context?(description)
+    def prepare_context(context)
+      context.premium_setup { context.description.new } if active_record_context?(context)
 
       context.transaction do |&original_block|
         ::ActiveRecord::Base.transaction do
@@ -11,7 +11,8 @@ module RiotRails
       end
     end
   private
-    def active_record_context?(description)
+    def active_record_context?(context)
+      description = context.description
       description.kind_of?(Class) && description.ancestors.include?(::ActiveRecord::Base)
     end
   end

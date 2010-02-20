@@ -32,8 +32,9 @@ begin
     gem.email = "gus@gusg.us"
     gem.homepage = "http://github.com/thumblemonks/riot_rails"
     gem.authors = ["Justin 'Gus' Knowlden"]
-    gem.add_dependency("riot", ">= 0.10.2")
-    gem.add_development_dependency("activerecord", ">= 2.3.2")
+    gem.add_dependency("riot", ">= 0.10.13.pre")
+    gem.add_development_dependency("activerecord", ">= 3.0.0.pre")
+    gem.add_development_dependency("actionpack", ">= 3.0.0.pre")
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

@@ -10,12 +10,8 @@ context "The basic RailsContext" do
 end # The basic RailsContext
 
 context "The transactional RailsContext" do
-  setup do
-    RiotRails::RailsContext.new("Room") do
-      set :transactional, true
-      transaction { |&block| raise Exception, "Hello" }
-    end
-  end
+  setup { RiotRails::RailsContext.new("Room") { set :transactional, true } }
+  hookup { topic.transaction { |&block| raise Exception, "Hello" } }
 
   asserts(:transactional?)
 
@@ -40,6 +36,10 @@ context "The rails_context macro" do
 
   asserts("its description") do
     Riot::Context.new("foo") {}.rails_context(Room) {}.description
+  end.equals(Room)
+
+  asserts("its detailed description") do
+    Riot::Context.new("foo") {}.rails_context(Room) {}.detailed_description
   end.equals("foo Room")
 
   asserts("its type") do

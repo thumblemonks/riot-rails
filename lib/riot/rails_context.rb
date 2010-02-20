@@ -4,17 +4,17 @@ module RiotRails
     helpers << Class.new(&handler_block).new
   end
 
-  # We're going to allow any helper to help out. Not just one.
-  def self.railsify_context(description, context)
-    helpers.each { |helper| helper.prepare_context(description, context) }
-    context
-  end
-
   class RailsContext < Riot::Context
     def initialize(description, parent=nil, &definition)
       @options = {:transactional => false}
       transaction { |&default_block| raise Exception, "No transaction handler" }
-      super(description.to_s, parent, &definition)
+      super(description, parent, &definition)
+      apply_helpers
+    end
+
+    # We're going to allow any helper to help out. Not just one.
+    def apply_helpers
+      RiotRails.helpers.each { |helper| helper.prepare_context(self) }
     end
 
     # Set options for the specific rails_context. For instance, you can tell the context to be transactional
@@ -63,8 +63,7 @@ module RiotRails
     #   rails_context SomeKindOfClass do
     #   end
     def rails_context(description, &definition)
-      context = context(description.to_s, RailsContext, &definition)
-      RiotRails.railsify_context(description, context)
+      context(description, RailsContext, &definition)
     end
   end # Root
 
@@ -76,8 +75,7 @@ module RiotRails
     #     end
     #   end
     def rails_context(description, &definition)
-      context = new_context(description.to_s, RailsContext, &definition)
-      RiotRails.railsify_context(description, context)
+      new_context(description, RailsContext, &definition)
     end
   end # Context
 end # RiotRails
