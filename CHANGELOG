@@ -1,5 +1,27 @@
 *0.0.9.pre*
 
+* To accommodate the last change, added concept of context helpers. It's so simple you can define your own. [jaknowlden]
+
+    module RiotRails
+      register_context_helper do
+        def can_help?(description)
+          # some code to determine if this is the right handler for the context's description
+        end
+
+        def prepare_context(original_description, context)
+          # ...
+          context.<do-something-before-the-context-runs>
+          # ...
+        end
+      end
+    end
+
+* Well. Aren't we special? We don't have include ActiveRecord or ActionController code if we don't want to. But if you do: [jaknowlden]
+
+    # teststrap.rb
+    require 'riot/activerecord'      # implicit riot/rails require
+    require 'riot/actioncontroller'  # also an implicit riot/rails require
+
 * Added asserts_request and asserts_response context macros. They also take a possible method to call.
   [jaknowlden]
 

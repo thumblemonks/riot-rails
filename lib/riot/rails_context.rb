@@ -1,10 +1,12 @@
 module RiotRails
-  def self.handlers; @handlers ||= []; end
-  def self.register_handler(handler_class); handlers << handler_class; end
+  def self.helpers; @helpers ||= []; end
+  def self.register_context_helper(&handler_block)
+    helpers << Class.new(&handler_block).new
+  end
 
   def self.railsify_context(description, &block)
     new_ctx = yield
-    handler = handlers.detect { |handler| handler.handle?(description) }
+    handler = helpers.detect { |handler| handler.can_help?(description) }
     handler.prepare_context(description, new_ctx) if handler
     new_ctx
   end
