@@ -7,15 +7,13 @@ context "The basic RailsContext" do
 
   asserts_topic.kind_of(Riot::Context)
   asserts(:transactional?).not!
-  asserts(:transaction_helper).equals(::ActiveRecord::Base)
 end # The basic RailsContext
 
 context "The transactional RailsContext" do
   setup do
-    helper = Class.new { def self.transaction(&block) yield; end }
     RiotRails::RailsContext.new("Room") do
       set :transactional, true
-      set :transaction_helper, helper
+      transaction { |&block| raise Exception, "Hello" }
     end
   end
 
@@ -23,7 +21,7 @@ context "The transactional RailsContext" do
 
   asserts("calling local run") do
     topic.local_run(Riot::SilentReporter.new, Riot::Situation.new)
-  end.raises(::ActiveRecord::Rollback)
+  end.raises(Exception, "Hello")
 
   context "with a child context" do
     setup do

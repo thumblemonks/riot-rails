@@ -4,16 +4,25 @@ module RiotRails
     helpers << Class.new(&handler_block).new
   end
 
+  # We're going to allow any helper to help out. Not just one.
   def self.railsify_context(description, context)
     helpers.each { |helper| helper.prepare_context(description, context) }
+    context
   end
 
   class RailsContext < Riot::Context
-
     def initialize(description, parent=nil, &definition)
-      @options = {:transactional => false, :transaction_helper => ::ActiveRecord::Base}
+      @options = {:transactional => false}
+      transaction { |&default_block| raise Exception, "No transaction handler" }
       super(description.to_s, parent, &definition)
     end
+
+    # Set options for the specific rails_context. For instance, you can tell the context to be transactional
+    #
+    #   rails_context "Foo" do
+    #     set :transactional, true
+    #   end
+    def set(property, value) options[property] = value; end
 
     # Technically, this is a secret ... but whatever. It's ruby. Basically, just make this setup more
     # important than any of the others.
@@ -38,19 +47,12 @@ module RiotRails
       options[:transactional] || (parent.respond_to?(:transactional?) && parent.transactional?)
     end
 
-    def transaction_helper
-      options[:transaction_helper]
-    end
+    # TODO: cleanup how we handle transactions and context helpers
+    def transaction(&block) @transaction_block = block; end
 
     def local_run(*args)
-      return super unless transactional?
-      transaction_helper.transaction do
-        super
-        raise ::ActiveRecord::Rollback
-      end
+      transactional? ? @transaction_block.call { super(*args) } : super
     end
-
-    def set(property, value) options[property] = value; end
   private
     attr_reader :options
   end
@@ -63,7 +65,6 @@ module RiotRails
     def rails_context(description, &definition)
       context = context(description.to_s, RailsContext, &definition)
       RiotRails.railsify_context(description, context)
-      context
     end
   end # Root
 
@@ -77,7 +78,6 @@ module RiotRails
     def rails_context(description, &definition)
       context = new_context(description.to_s, RailsContext, &definition)
       RiotRails.railsify_context(description, context)
-      context
     end
   end # Context
 end # RiotRails
