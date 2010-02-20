@@ -92,15 +92,18 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<riot>, [">= 0.10.2"])
-      s.add_development_dependency(%q<activerecord>, [">= 2.3.2"])
+      s.add_runtime_dependency(%q<riot>, [">= 0.10.13.pre"])
+      s.add_development_dependency(%q<activerecord>, [">= 3.0.0.pre"])
+      s.add_development_dependency(%q<actionpack>, [">= 3.0.0.pre"])
     else
-      s.add_dependency(%q<riot>, [">= 0.10.2"])
-      s.add_dependency(%q<activerecord>, [">= 2.3.2"])
+      s.add_dependency(%q<riot>, [">= 0.10.13.pre"])
+      s.add_dependency(%q<activerecord>, [">= 3.0.0.pre"])
+      s.add_dependency(%q<actionpack>, [">= 3.0.0.pre"])
     end
   else
-    s.add_dependency(%q<riot>, [">= 0.10.2"])
-    s.add_dependency(%q<activerecord>, [">= 2.3.2"])
+    s.add_dependency(%q<riot>, [">= 0.10.13.pre"])
+    s.add_dependency(%q<activerecord>, [">= 3.0.0.pre"])
+    s.add_dependency(%q<actionpack>, [">= 3.0.0.pre"])
   end
 end
 
