@@ -44,16 +44,16 @@ module RiotRails #:nodoc:
         parameters ||= {}
         @request.assign_parameters(@controller.class.name.underscore.sub(/_controller$/, ''), action.to_s, parameters)
 
-        # @request.session = ActionController::TestSession.new(session) unless session.nil?
-        # @request.session["flash"] = @request.flash.update(flash || {})
-        # @request.session["flash"].sweep
+        @request.session = ActionController::TestSession.new(session) unless session.nil?
+        @request.session["flash"] = @request.flash.update(flash || {})
+        @request.session["flash"].sweep
 
         @controller.request = @request
         @controller.params.merge!(parameters)
         build_request_uri(action, parameters)
         ::ActionController::Base.class_eval { include ::ActionController::Testing }
         @controller.process_with_new_base_test(@request, @response)
-        # @request.session.delete('flash') if @request.session['flash'].blank?
+        @request.session.delete('flash') if @request.session['flash'].blank?
         @response
       end
 
@@ -73,9 +73,6 @@ end # RiotRails
 
 Riot::Situation.instance_eval do
   include RiotRails::ActionController::HttpSupport
-
-  # Making routes work in the situation
-  Rails::Application.routes.named_routes.install(self)
-  include ActionController::UrlFor
+  include ::ActionController::UrlFor
   default_url_options[:host] = "test.host"
 end

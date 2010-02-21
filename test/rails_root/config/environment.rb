@@ -1,17 +1,19 @@
 ENV['RAILS_ENV'] = 'test'
 
+require 'sqlite3'
 require "active_record/railtie"
 require "action_controller/railtie"
 # require "action_mailer/railtie"
 # require "active_resource/railtie"
 
-module Rails
-  def self.root; File.expand_path(File.join(File.dirname(__FILE__), "..")); end
+module RiotRails
+  class Application < Rails::Application
+    config.root = File.expand_path(File.join(File.dirname(__FILE__), ".."))
+    config.action_controller.session = { :key => "_riotrails_session", :secret => ("i own you." * 3) }
+  end
 end
 
-module RiotRails
-  class Application < Rails::Application; end
-end
+RiotRails::Application.initialize!
 
 require File.join(Rails.root, "config", "routes.rb")
 
@@ -36,11 +38,7 @@ def shhh(&block)
 end
 
 shhh do
-  require 'sqlite3'
-  ActiveRecord::Base.configurations = {"test" => { "adapter" => "sqlite3", "database" => ":memory:"}}
-  ActiveRecord::Base.establish_connection("test")
   load(File.join(Rails.root, "db", "schema.rb"))
 end
 
 ActiveRecord::Base.logger = Logger.new(NilIO.new)
-ActionController::Base.view_paths = [File.join(Rails.root, 'app', 'views')]
