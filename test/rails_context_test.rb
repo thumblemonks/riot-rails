@@ -56,20 +56,6 @@ context "The rails_context macro" do
     asserts("situation.topic") { topic.topic }.nil
   end # with description as a string
 
-  context "for an ActiveRecord class" do
-    setup do
-      situation = Riot::Situation.new
-      topic.rails_context(Room) do
-        hookup { topic.email = "i.am@chee.se" }
-      end.local_run(Riot::SilentReporter.new, situation)
-      situation.topic
-    end
-  
-    asserts_topic.kind_of(Room)
-    asserts(:new_record?)
-    asserts(:email).equals("i.am@chee.se")
-  end # for an ActiveRecord class
-
   context "for an ActionController class" do
     setup do
       situation = Riot::Situation.new
@@ -94,7 +80,7 @@ context "The rails_context macro" do
       end
     end
 
-    hookup { topic.rails_context(Room) {} }
+    hookup { topic.rails_context(Object) {} }
 
     asserts(:defined_contexts).size(1)
     asserts("context type") { topic.defined_contexts.first }.kind_of(RiotRails::RailsContext)
