@@ -9,7 +9,10 @@ require "action_controller/railtie"
 module RiotRails
   class Application < Rails::Application
     config.root = File.expand_path(File.join(File.dirname(__FILE__), ".."))
-    config.action_controller.session = { :key => "_riotrails_session", :secret => ("i own you." * 3) }
+
+    config.session_store :cookie_store, {:key => "_riotrails_session"}
+    # config.secret_token = "i own you." * 3
+    config.cookie_secret = "i own you." * 3
   end
 end
 
