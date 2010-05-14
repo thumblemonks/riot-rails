@@ -1,11 +1,12 @@
 $:.unshift File.join(File.dirname(__FILE__), "..", "lib")
 
 require 'rubygems'
+require 'pathname'
 
 #
 # Setup faux Rails environment
 
-require File.join(File.dirname(__FILE__), 'rails_root', "config", "environment")
+require(Pathname(__FILE__).dirname + 'rails_root' + 'config' + 'environment')
 
 #
 # Model definition
@@ -26,12 +27,6 @@ class Room < ActiveRecord::Base
   def self.create_with_good_data(attributes={})
     create!({:location => "a", :email => "a@b.c", :name => "Junior"}.merge(attributes))
   end
-end
-
-#
-# Controller definition
-
-class RoomsController < ActionController::Base
 end
 
 #
