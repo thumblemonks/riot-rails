@@ -1,6 +1,6 @@
 require 'teststrap'
 
-rails_context RoomsController do
+context RoomsController do
   context "for a GET request" do
     setup do
       get "/rooms/index"

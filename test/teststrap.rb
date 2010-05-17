@@ -1,7 +1,7 @@
-$:.unshift File.join(File.dirname(__FILE__), "..", "lib")
-
 require 'rubygems'
 require 'pathname'
+
+$:.unshift File.join(File.dirname(__FILE__), "..", "lib")
 
 #
 # Setup faux Rails environment
@@ -81,24 +81,3 @@ module RiotRails
 end # RiotRails
 
 Riot::Context.instance_eval { include RiotRails::Context }
-
-#
-## Let's see if we can get this way working sometime in the future
-
-# def get(action, options={})
-#   @env = {}
-#   @request = ActionController::TestRequest.new(@env)
-#   # @request = Rack::MockRequest.new(@app)
-#   # @response = @request.request("GET", path, options)
-#   # request = ActionController::TestRequest.new(@env)
-#   @request.query_parameters["action"] = action
-#   @env["action_controller.rescue.request"] = @request
-#   @env["action_controller.rescue.response"] = ActionController::TestResponse.new
-#   @app.call(@env)
-# end
-
-# setup do
-  # DashboardsController.instance_eval { include ActionController::TestCase::RaiseActionExceptions }
-  # @controller_class = DashboardsController
-  # @app = DashboardsController
-# end
