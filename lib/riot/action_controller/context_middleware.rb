@@ -12,7 +12,7 @@ module RiotRails
       context.helper(:env) { @env }
       context.helper(:controller) { @controller }
       context.helper(:request) { @request }
-      context.helper(:response) { @response }
+      context.helper(:response) { last_response }
 
       context.setup(true) do
         self.class_eval do
