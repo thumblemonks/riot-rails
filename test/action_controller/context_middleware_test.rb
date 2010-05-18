@@ -26,7 +26,7 @@ context "ActionController middleware" do
   asserts("helper request") { topic.request }.equals { assigned(:@request) }
 
   asserts("@response") { assigned(:@response) }.kind_of(Rack::Response)
-  asserts("helper response") { topic.response }.equals { assigned(:@response) }
+  asserts("helper response when no request made") { topic.response }.raises(Rack::Test::Error)
 
   asserts_topic.responds_to(:get)
   asserts_topic.responds_to(:post)

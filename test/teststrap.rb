@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'pathname'
+require 'ostruct'
 
 $:.unshift File.join(File.dirname(__FILE__), "..", "lib")
 

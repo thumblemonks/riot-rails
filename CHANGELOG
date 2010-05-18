@@ -1,5 +1,23 @@
 *0.0.10.pre.3*
 
+* Added asserts_response context macro. You can also provide method names to be called against the response. [jaknowlden]
+
+    context FoosController do
+      setup { get "/foos" }
+
+      asserts_response.exists
+      asserts_response(:status).equals(200)
+      asserts_response(:body).matches(/Bar baz/)
+    end # FoosController
+
+* Added GET support for ActionController testing, a la Rack testing methods. [jaknowlden]
+
+    context MyController do
+      setup { get "/my/dashboard", "foo" => "bar" }
+    end # MyController
+
+* Redoing support for ActionController. Dropped everything started from scratch. Also, moved the context-helper stuff into Riot and called it ContextMiddleware. Reimplemented helpers as middleware here. [jaknowlden]
+
 *0.0.9.pre*
 
 * To accommodate the last change, added concept of context helpers. It's so simple you can define your own. [jaknowlden]

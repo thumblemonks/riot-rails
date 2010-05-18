@@ -8,6 +8,17 @@ module RiotRails
     end # handle?
 
     def call(context)
+      setup_context_macros(context)
+      setup_situation(context)
+    end
+  private
+    def setup_context_macros(context)
+      context.class_eval do
+        include RiotRails::ActionController::AssertsResponse
+      end
+    end
+
+    def setup_situation(context)
       context.helper(:app) { @app }
       context.helper(:env) { @env }
       context.helper(:controller) { @controller }
