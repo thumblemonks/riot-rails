@@ -26,11 +26,11 @@ end
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "riot_rails"
+    gem.name = "riot-rails"
     gem.summary = "Riot specific test support for Rails apps"
     gem.description = "Riot specific test support for Rails apps. Protest the slow app."
     gem.email = "gus@gusg.us"
-    gem.homepage = "http://github.com/thumblemonks/riot_rails"
+    gem.homepage = "http://github.com/thumblemonks/riot-rails"
     gem.authors = ["Justin 'Gus' Knowlden"]
     gem.add_dependency("riot", ">= 0.10.13")
     gem.add_dependency("rack-test", ">= 0.5.3")
