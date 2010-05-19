@@ -12,14 +12,12 @@ context "An asserts_response context macro" do
     a_situation
   end
 
-  setup { Riot::Context.new(RoomsController) {} }
+  setup do
+    Riot::Context.new(RoomsController) {}
+  end
 
   context "when referenced without arguments" do
-    setup do
-      # situation = Riot::Situation.new
-      # situation.helper(:response) { OpenStruct.new(:status => 200) }
-      topic.asserts_response
-    end
+    setup { topic.asserts_response }
 
     asserts_topic.kind_of(Riot::Assertion)
     asserts(:to_s).equals("asserts response")
