@@ -3,20 +3,28 @@ module RiotRails
     class ControllerMismatch < Exception; end
 
     module HttpMethods
+      def http_reset
+        @env = {}
+      end
+
       def get(uri, params={}, &block)
-        env['action_dispatch.request.path_parameters'] = {:action => action_for_uri(uri)}
-        current_session.get(uri, params, env, &block)
+        http_reset
+        @env = ::Rack::MockRequest.env_for(uri, {:params => params})
+        @env['action_dispatch.show_exceptions'] = false
+        @app.call(@env)
       end
-    private
-      def action_for_uri(uri)
-        controller_name = controller.controller_name
-        recognized_path = Rails.application.routes.recognize_path(uri)
 
-        return recognized_path[:action] if controller_name == recognized_path[:controller]
-
-        error_msg = "Expected %s controller, not %s"
-        raise ControllerMismatch, error_msg % [controller_name, recognized_path[:controller]]
-      end
+      def post; raise Exception, "POST isn't ready yet"; end
+      def put; raise Exception, "PUT isn't ready yet"; end
+      def delete; raise Exception, "DELETE isn't ready yet"; end
     end # HttpMethods
   end # ActionController
+
+  module RackRequest
+    def self.included(base)
+      base.class_eval { alias :parameters :params }
+    end
+  end
 end # RiotRails
+
+Rack::Request.instance_eval { include RiotRails::RackRequest }

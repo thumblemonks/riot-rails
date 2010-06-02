@@ -1,4 +1,4 @@
 test:
   adapter: "sqlite3"
-  database: ":memory:"
+  database: <%= Rails.root + "db" + "test.db" %>
 

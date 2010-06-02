@@ -1,2 +1,4 @@
 test/rails_root/log/*
 pkg/*
+riot-rails.tmproj
+test/rails_root/db/*.db

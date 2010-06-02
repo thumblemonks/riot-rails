@@ -21,22 +21,23 @@ module RiotRails
     def setup_situation(context)
       context.helper(:app) { @app }
       context.helper(:env) { @env }
-      context.helper(:controller) { @controller }
-      context.helper(:request) { @request }
-      context.helper(:response) { last_response }
+      context.helper(:controller) { env["action_controller.instance"] }
+
+      context.helper(:request) do
+        return controller.request if controller
+        raise Exception, "No request made yet"
+      end
+
+      context.helper(:response) do
+        return controller.response if controller
+        raise Exception, "No response since no request made yet"
+      end
 
       context.setup(true) do
-        self.class_eval do
-          include Rack::Test::Methods
-          include RiotRails::ActionController::HttpMethods
-        end
-
-        @env = {}
-        @controller = context.description.new.tap do |controller|
-          controller.request = @request = Rack::Request.new(@env).tap { |rq| rq.session }
-          @response = Rack::Response.new
-        end
-        @app = context.description
+        self.class_eval { include RiotRails::ActionController::HttpMethods }
+        @app = ::Rails.application
+        http_reset
+        context.description
       end # context.setup(true)
     end # call
 

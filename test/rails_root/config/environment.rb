@@ -11,7 +11,6 @@ module RiotRails
     config.root = File.expand_path(File.join(File.dirname(__FILE__), ".."))
 
     config.session_store :cookie_store, {:key => "_riotrails_session"}
-    # config.secret_token = "i own you." * 3
     config.cookie_secret = "i own you." * 3
   end
 end
