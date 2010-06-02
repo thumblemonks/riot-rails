@@ -1,5 +1,7 @@
 *0.0.10.pre.3*
 
+* Renamed to riot-rails and am hoping @dasch is kind of enough to let me be an owner on the gem he originally pushed. The ol' bait and and switch. [jaknowlden]
+
 * Added asserts_response context macro. You can also provide method names to be called against the response. [jaknowlden]
 
     context FoosController do
