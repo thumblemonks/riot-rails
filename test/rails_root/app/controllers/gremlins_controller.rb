@@ -6,4 +6,8 @@ class GremlinsController < ActionController::Base
   def show
     render :text => "show me the money"
   end
+
+  def create
+    render :text => "makin' money"
+  end
 end

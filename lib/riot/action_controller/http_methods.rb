@@ -12,6 +12,7 @@ module RiotRails
     private
       def perform_request(request_method, uri, params)
         http_reset
+        params = params.inject({}) { |acc,(key,val)| acc[key] = val.to_s; acc }
         @env = ::Rack::MockRequest.env_for(uri, {:params => params, :method => request_method})
         @env['action_dispatch.show_exceptions'] = false
         @app.call(@env)
