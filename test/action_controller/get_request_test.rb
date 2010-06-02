@@ -6,10 +6,6 @@ context RoomsController do
     get "/rooms/blah"
   end.raises(AbstractController::ActionNotFound, "The action 'blah' could not be found")
 
-  asserts("controller does not match the one under test") do
-    get "/gremlins"
-  end.raises(RiotRails::ActionController::ControllerMismatch, "Expected rooms controller, not gremlins")
-
   context "for a GET request" do
     helper(:action_name) { env['action_dispatch.request.path_parameters'][:action] }
 

@@ -11,13 +11,7 @@ module RiotRails
         http_reset
         @env = ::Rack::MockRequest.env_for(uri, {:params => params})
         @env['action_dispatch.show_exceptions'] = false
-        returning(@app.call(@env)) do |call_response|
-          c = @env["action_controller.instance"]
-          unless c.class.controller_name == topic.controller_name
-            msg = "Expected #{topic.controller_name} controller, not #{c.class.controller_name}"
-            raise ControllerMismatch, msg
-          end
-        end
+        @app.call(@env)
       end
 
       def post; raise Exception, "POST isn't ready yet"; end
