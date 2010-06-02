@@ -4,14 +4,8 @@ module RiotRails
 
     module HttpMethods
       def http_reset; @env = {}; end
-
-      def get(uri, params={})
-        perform_request("GET", uri, params)
-      end
-
-      def post(uri, params={})
-        perform_request("POST", uri, params)
-      end
+      def get(uri, params={}) perform_request("GET", uri, params); end
+      def post(uri, params={}) perform_request("POST", uri, params); end
 
       def put(uri, params={}); raise Exception, "PUT isn't ready yet"; end
       def delete(uri, params={}); raise Exception, "DELETE isn't ready yet"; end
