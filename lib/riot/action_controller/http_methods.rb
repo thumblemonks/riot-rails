@@ -3,20 +3,25 @@ module RiotRails
     class ControllerMismatch < Exception; end
 
     module HttpMethods
-      def http_reset
-        @env = {}
+      def http_reset; @env = {}; end
+
+      def get(uri, params={})
+        perform_request("GET", uri, params)
       end
 
-      def get(uri, params={}, &block)
+      def post(uri, params={})
+        perform_request("POST", uri, params)
+      end
+
+      def put(uri, params={}); raise Exception, "PUT isn't ready yet"; end
+      def delete(uri, params={}); raise Exception, "DELETE isn't ready yet"; end
+    private
+      def perform_request(request_method, uri, params)
         http_reset
-        @env = ::Rack::MockRequest.env_for(uri, {:params => params})
+        @env = ::Rack::MockRequest.env_for(uri, {:params => params, :method => request_method})
         @env['action_dispatch.show_exceptions'] = false
         @app.call(@env)
       end
-
-      def post; raise Exception, "POST isn't ready yet"; end
-      def put; raise Exception, "PUT isn't ready yet"; end
-      def delete; raise Exception, "DELETE isn't ready yet"; end
     end # HttpMethods
   end # ActionController
 

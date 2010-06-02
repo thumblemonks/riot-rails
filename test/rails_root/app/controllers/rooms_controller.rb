@@ -3,6 +3,10 @@ class RoomsController < ActionController::Base
     render :text => "foo"
   end
 
+  def create
+    render :text => "created bar #{params.inspect}"
+  end
+
   def echo_params
     serialized_params = (params.keys - ["action"]).sort.map {|k| "#{k}=#{params[k]}" }.join(",")
     render :text => serialized_params

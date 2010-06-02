@@ -2,19 +2,20 @@ require 'teststrap'
 
 context RoomsController do
 
-  asserts("unknown action for existing controller") do
+  asserts("GETs unknown action for existing controller") do
     get "/rooms/blah"
   end.raises(AbstractController::ActionNotFound, "The action 'blah' could not be found")
 
   context "for a GET request" do
     helper(:action_name) { env['action_dispatch.request.path_parameters'][:action] }
 
-    context "without with parameters" do
-      setup { get "/rooms" }
+    context "without parameters" do
+      setup { get "/rooms/index" }
 
       asserts("action name") { action_name }.equals("index")
       asserts("response status") { response.status }.equals(200)
       asserts("response body") { response.body }.equals("foo")
+      asserts("request method") { request.request_method }.equals(:get)
 
       context "response headers" do
         setup { response.headers.keys }
@@ -22,7 +23,7 @@ context RoomsController do
         asserts_topic.includes("ETag")
         asserts_topic.includes("Cache-Control")
       end # response headers
-    end # without with parameters
+    end # without parameters
 
     context "with parameters" do
       setup { get "/rooms/echo_params", {:name => "Juiceton", :foo => "blaz"} }
