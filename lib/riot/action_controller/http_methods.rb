@@ -1,7 +1,5 @@
 module RiotRails
   module ActionController
-    class ControllerMismatch < Exception; end
-
     module HttpMethods
       def http_reset; @env = {}; end
       def get(uri, params={}) perform_request("GET", uri, params); end
@@ -18,12 +16,4 @@ module RiotRails
       end
     end # HttpMethods
   end # ActionController
-
-  module RackRequest
-    def self.included(base)
-      base.class_eval { alias :parameters :params }
-    end
-  end
 end # RiotRails
-
-Rack::Request.instance_eval { include RiotRails::RackRequest }
