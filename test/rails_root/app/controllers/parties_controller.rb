@@ -4,7 +4,10 @@ class PartiesController < ActionController::Base
   end
 
   def create
-    puts params.inspect
     render :text => "give this monkey what he wants"
+  end
+
+  def update
+    render :text => "i'll put that over here"
   end
 end

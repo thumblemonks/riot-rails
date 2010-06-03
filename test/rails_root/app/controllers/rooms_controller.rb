@@ -4,7 +4,11 @@ class RoomsController < ActionController::Base
   end
 
   def create
-    render :text => "created bar #{params.inspect}"
+    render :text => "created #{params.inspect}"
+  end
+
+  def update
+    render :text => "updated #{params.inspect}"
   end
 
   def echo_params
