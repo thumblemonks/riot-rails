@@ -11,6 +11,10 @@ class RoomsController < ActionController::Base
     render :text => "updated #{params.inspect}"
   end
 
+  def destroy
+    render :text => "destroyed #{params.inspect}"
+  end
+
   def echo_params
     serialized_params = (params.keys - ["action"]).sort.map {|k| "#{k}=#{params[k]}" }.join(",")
     render :text => serialized_params

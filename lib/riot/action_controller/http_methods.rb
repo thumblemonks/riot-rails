@@ -7,8 +7,7 @@ module RiotRails
       def get(uri, params={}) perform_request("GET", uri, params); end
       def post(uri, params={}) perform_request("POST", uri, params); end
       def put(uri, params={}); perform_request("PUT", uri, params); end
-
-      def delete(uri, params={}); raise Exception, "DELETE isn't ready yet"; end
+      def delete(uri, params={}); perform_request("DELETE", uri, params); end
     private
       def perform_request(request_method, uri, params)
         http_reset

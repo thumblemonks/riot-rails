@@ -10,4 +10,8 @@ class PartiesController < ActionController::Base
   def update
     render :text => "i'll put that over here"
   end
+
+  def destroy
+    render :text => "all gone"
+  end
 end

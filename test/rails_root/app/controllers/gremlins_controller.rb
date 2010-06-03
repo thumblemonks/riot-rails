@@ -14,4 +14,8 @@ class GremlinsController < ActionController::Base
   def update
     render :text => "savin' money"
   end
+
+  def destroy
+    render :text => "spendin' money"
+  end
 end
