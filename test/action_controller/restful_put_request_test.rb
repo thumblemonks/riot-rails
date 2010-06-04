@@ -5,7 +5,7 @@ context "RESTful PUT request on resource" do
   context GremlinsController do
     setup { put("/gremlins/2") }
 
-    asserts("request method") { request.request_method }.equals(:put)
+    asserts("request method") { request.request_method }.equals("PUT")
     asserts("controller name") { controller.controller_name }.equals("gremlins")
     asserts("action name") { controller.action_name }.equals("update")
     asserts("id param") { controller.params["id"] }.equals("2")
@@ -15,7 +15,7 @@ context "RESTful PUT request on resource" do
   context PartiesController do
     setup { put("/gremlins/2/parties/3", "foo" => "bar") }
 
-    asserts("request method") { request.request_method }.equals(:put)
+    asserts("request method") { request.request_method }.equals("PUT")
     asserts("controller name") { controller.controller_name }.equals("parties")
     asserts("action name") { controller.action_name }.equals("update")
 

@@ -12,7 +12,7 @@ context RoomsController do
     context "without parameters" do
       setup { post "/rooms/create" }
 
-      asserts("request method") { request.request_method }.equals(:post)
+      asserts("request method") { request.request_method }.equals("POST")
       asserts("action name") { action_name }.equals("create")
       asserts("response status") { response.status }.equals(200)
       asserts("response body") { response.body }.equals { "created #{controller.params.inspect}" }
@@ -28,7 +28,7 @@ context RoomsController do
     context "with parameters" do
       setup { post "/rooms/create", {:momma => "loves you", "love_you_too" => "mom"} }
 
-      asserts("request method") { request.request_method }.equals(:post)
+      asserts("request method") { request.request_method }.equals("POST")
       asserts("action name") { action_name }.equals("create")
       asserts("response status") { response.status }.equals(200)
 

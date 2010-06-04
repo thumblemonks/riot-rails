@@ -15,7 +15,7 @@ context RoomsController do
       asserts("action name") { action_name }.equals("index")
       asserts("response status") { response.status }.equals(200)
       asserts("response body") { response.body }.equals("foo")
-      asserts("request method") { request.request_method }.equals(:get)
+      asserts("request method") { request.request_method }.equals("GET")
 
       context "response headers" do
         setup { response.headers.keys }

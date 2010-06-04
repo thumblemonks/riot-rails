@@ -12,7 +12,7 @@ context RoomsController do
     context "without parameters" do
       setup { delete "/rooms/destroy" }
 
-      asserts("request method") { request.request_method }.equals(:delete)
+      asserts("request method") { request.request_method }.equals("DELETE")
       asserts("action name") { action_name }.equals("destroy")
       asserts("response status") { response.status }.equals(200)
       asserts("response body") { response.body }.equals { "destroyed #{controller.params.inspect}" }
@@ -28,7 +28,7 @@ context RoomsController do
     context "with parameters" do
       setup { delete "/rooms/destroy", {:momma => "loves you", "love_you_too" => "mom"} }
 
-      asserts("request method") { request.request_method }.equals(:delete)
+      asserts("request method") { request.request_method }.equals("DELETE")
       asserts("action name") { action_name }.equals("destroy")
       asserts("response status") { response.status }.equals(200)
 

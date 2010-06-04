@@ -5,6 +5,7 @@ context "RESTful GET request on resource" do
   context GremlinsController do
     setup { get("/gremlins/1") }
 
+    asserts("request method") { request.request_method }.equals("GET")
     asserts("controller name") { controller.controller_name }.equals("gremlins")
     asserts("action name") { controller.action_name }.equals("show")
     asserts("id param") { controller.params["id"] }.equals("1")
@@ -14,6 +15,7 @@ context "RESTful GET request on resource" do
   context PartiesController do
     setup { get("/gremlins/1/parties/2") }
 
+    asserts("request method") { request.request_method }.equals("GET")
     asserts("controller name") { controller.controller_name }.equals("parties")
     asserts("action name") { controller.action_name }.equals("show")
     asserts("gremlin_id param") { controller.params["gremlin_id"] }.equals("1")
