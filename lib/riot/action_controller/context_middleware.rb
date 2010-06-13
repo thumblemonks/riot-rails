@@ -2,16 +2,19 @@ module RiotRails
   class ActionControllerMiddleware < Riot::ContextMiddleware
     register
 
+    def call(context)
+      if handle?(context)
+        setup_context_macros(context)
+        setup_situation(context)
+      end
+      middleware.call(context)
+    end
+  private
     def handle?(context)
       description = context.description
       description.kind_of?(Class) && description.ancestors.include?(::ActionController::Base)
-    end # handle?
-
-    def call(context)
-      setup_context_macros(context)
-      setup_situation(context)
     end
-  private
+
     def setup_context_macros(context)
       context.class_eval do
         include RiotRails::ActionController::AssertsResponse
