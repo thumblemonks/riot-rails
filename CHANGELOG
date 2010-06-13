@@ -1,3 +1,9 @@
+*0.2.0.pre*
+
+* Using latest middleware construct from Riot 0.11.1. Also using eigen-class for hijacking local_run in the transactional, active record middleware. [jaknowlden]
+
+* Bumping version up arbitrarily in order to move it past the previous 0.1.0 that we hijacked from @dasch :) [jaknowlden]
+
 *0.0.10.pre.3*
 
 * Renamed to riot-rails and am hoping @dasch is kind of enough to let me be an owner on the gem he originally pushed. The ol' bait and and switch. [jaknowlden]
