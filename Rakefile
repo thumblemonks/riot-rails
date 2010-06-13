@@ -32,7 +32,7 @@ begin
     gem.email = "gus@gusg.us"
     gem.homepage = "http://github.com/thumblemonks/riot-rails"
     gem.authors = ["Justin 'Gus' Knowlden"]
-    gem.add_dependency("riot", ">= 0.11.0")
+    gem.add_dependency("riot", ">= 0.11.1")
     gem.add_dependency("rack-test", ">= 0.5.3")
     gem.add_development_dependency("activerecord", ">= 3.0.0.beta3")
     gem.add_development_dependency("actionpack", ">= 3.0.0.beta3")
