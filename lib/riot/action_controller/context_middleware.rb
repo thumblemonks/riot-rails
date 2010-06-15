@@ -24,17 +24,12 @@ module RiotRails
     def setup_situation(context)
       context.helper(:app) { @app }
       context.helper(:env) { @env }
-      context.helper(:controller) { env["action_controller.instance"] }
-
-      context.helper(:request) do
-        return controller.request if controller
-        raise Exception, "No request made yet"
+      context.helper(:controller) do
+        env["action_controller.instance"] || raise(Exception, "Instance of controller not found")
       end
 
-      context.helper(:response) do
-        return controller.response if controller
-        raise Exception, "No response since no request made yet"
-      end
+      context.helper(:request) { controller.request }
+      context.helper(:response) { @response || raise(Exception, "No response found") }
 
       context.setup(true) do
         self.class_eval { include RiotRails::ActionController::HttpMethods }

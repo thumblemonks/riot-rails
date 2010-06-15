@@ -20,15 +20,12 @@ context "ActionController middleware" do
     asserts("@env") { assigned(:@env) }.equals({})
     asserts("helper env") { topic.env }.equals { assigned(:@env) }
 
-    asserts("helper controller") { topic.controller }.equals { assigned(:@controller) }
+    asserts("helper controller") do
+      topic.controller
+    end.raises(Exception, "Instance of controller not found")
 
-    asserts("request before any request made") do
-      topic.request
-    end.raises(Exception, "No request made yet")
-
-    asserts("response before any request made") do
-      topic.response
-    end.raises(Exception, "No response since no request made yet")
+    asserts(:request).raises(Exception, "Instance of controller not found")
+    asserts(:response).raises(Exception, "No response found")
 
     asserts_topic.responds_to(:get)
     asserts_topic.responds_to(:post)
@@ -59,8 +56,8 @@ context "ActionController middleware" do
       topic.env["action_controller.instance"]
     end.kind_of(RoomsController)
 
-    asserts("helper request") { topic.request }.kind_of(Rack::Request)
-    asserts("helper response") { topic.response }.kind_of(Rack::Response)
+    asserts(:request).kind_of(Rack::Request)
+    asserts(:response).kind_of(Rack::Response)
   end # post-request state
 
 end # ActionController middleware

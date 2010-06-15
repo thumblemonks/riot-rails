@@ -1,5 +1,9 @@
 *0.2.0.pre.1*
 
+* When rails does redirects, it does not set action_controller.instance as you might expect; users should still have access to the response, though. This fixes that [jaknowlden]
+
+*0.2.0.pre.1*
+
 * Actually relying on riot-0.11.1. Whoops. [jaknowlden]
 
 *0.2.0.pre*
