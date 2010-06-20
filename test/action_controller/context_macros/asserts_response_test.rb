@@ -32,4 +32,13 @@ context "An asserts_response context macro" do
     asserts(:to_s).equals("asserts response #status")
     asserts("output of running the test") { topic.run(situation).first }.equals(:pass)
   end
+
+  context "used in the child context of an ActionController context" do
+    setup do
+      child_context = topic.context("child") {}
+      child_context.asserts_response.run(situation)
+    end
+  
+    asserts_topic.equals([:pass, ""])
+  end # used in the child context of an ActionController context
 end # An asserts_response context macro

@@ -1,4 +1,8 @@
-*0.2.0.pre.1*
+*0.2.0.pre.3*
+
+* ISSUE: Whelp, needed to account for parent contexts being ActionController handlers. Fixed [jaknowlden]
+
+*0.2.0.pre.2*
 
 * When rails does redirects, it does not set action_controller.instance as you might expect; users should still have access to the response, though. This fixes that [jaknowlden]
 

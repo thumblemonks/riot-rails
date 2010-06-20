@@ -3,22 +3,25 @@ module RiotRails
     register
 
     def call(context)
-      if handle?(context)
-        setup_context_macros(context)
-        setup_situation(context)
-      end
+      setup_situation(context) if handle?(context.description)
+      setup_context_macros(context) if nested_handle?(context)
       middleware.call(context)
     end
   private
-    def handle?(context)
-      description = context.description
+    def handle?(description)
       description.kind_of?(Class) && description.ancestors.include?(::ActionController::Base)
     end
 
+    # Walking the description chain looking to see if any of them are serviceable
+    #
+    # TODO: see if we can't define a method on the context to observe instead of calling
+    # action_controller_description? each time
+    def nested_handle?(context)
+      (handle?(context.description) || nested_handle?(context.parent)) if context.respond_to?(:description)
+    end
+
     def setup_context_macros(context)
-      context.class_eval do
-        include RiotRails::ActionController::AssertsResponse
-      end
+      context.class_eval { include RiotRails::ActionController::AssertsResponse }
     end
 
     def setup_situation(context)
