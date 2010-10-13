@@ -1,0 +1,1 @@
+require 'riot/core_ext/hash'
