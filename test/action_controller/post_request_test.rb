@@ -39,6 +39,17 @@ context RoomsController do
       asserts("params") { controller.params }.includes("momma")
       asserts("params") { controller.params }.includes("love_you_too")
     end # with parameters
+    
+    context "with nested parameters" do
+      setup { post "/rooms/create", {:momma => {:loves => {:son => :yes, :daughter => :also} } } }
+      
+      asserts("params") { controller.params }.includes("momma")
+      asserts("params") { controller.params[:momma] }.includes("loves")
+      asserts("params") { controller.params[:momma][:loves] }.includes("son")
+      asserts("params") { controller.params[:momma][:loves][:son] }.equals("yes")
+      asserts("params") { controller.params[:momma][:loves] }.includes("daughter")
+      asserts("params") { controller.params[:momma][:loves][:daughter] }.equals("also")
+    end
 
   end # for a POST request
 

@@ -8,8 +8,7 @@ module RiotRails
       def delete(uri, params={}); perform_request("DELETE", uri, params); end
     private
       def perform_request(request_method, uri, params)
-        params = params.inject({}) { |acc,(key,val)| acc[key] = val.to_s; acc }
-        @env = ::Rack::MockRequest.env_for(uri, {:params => params, :method => request_method}).merge(@env)
+        @env = ::Rack::MockRequest.env_for(uri, {:params => params.stringify_values, :method => request_method}).merge(@env)
         @env['action_dispatch.show_exceptions'] = false
         @app.call(@env).tap { |state| @response = state.last }
       end
